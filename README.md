@@ -73,14 +73,18 @@ $ cargo install rustscan
 $ cargo install sqlx-cli
 ```
 
+```
 cargo bench -- --save-baseline before
 cargo bench -- --save-baseline change
 critcmp before change
+```
 
 # HELP
 
+```
 cargo watch -x "run | bunyan"
 catflap -- cargo watch -x "run | bunyan"
+```
 
 grpcurl \
     -d '{"username":"smhmayboudi","password":"smhmayboudi"}' \
