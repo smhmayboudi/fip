@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+echo '+cargo check'
+cargo check --all-features --workspace
+
+echo '+cargo test'
+cargo test --all-features --workspace
+
+echo '+cargo install audit'
+cargo install cargo-audit
+
+echo '+cargo audit'
+cargo audit

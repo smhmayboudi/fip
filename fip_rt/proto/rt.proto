@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package fip.rt;
+
+service Rt {
+    rpc Delete (RtDeleteReqDto) returns (RtResDto);
+    rpc DeleteByClaimsSub (RtDeleteByClaimsSubReqDto) returns (RtResDto);
+    rpc Find (RtFindReqDto) returns (stream RtResDto);
+    rpc FindOne (RtFindOneReqDto) returns (RtResDto);
+    rpc FindOneByClaimsSub (RtFindOneByClaimsSubReqDto) returns (RtResDto);
+    rpc Save (RtSaveReqDto) returns (RtResDto);
+    rpc Update (RtUpdateReqDto) returns (RtResDto);
+    rpc Validate (RtValidateReqDto) returns (RtResDto);
+    rpc ValidateByClaimsSub (RtValidateByClaimsSubReqDto) returns (RtResDto);
+}
+
+message RtDeleteReqDto {
+    string claims_jti = 1;
+}
+
+message RtDeleteByClaimsSubReqDto {
+    string claims_sub = 1;
+}
+
+message RtFindReqDto {
+}
+
+message RtFindOneReqDto {
+    string claims_jti = 1;
+}
+
+message RtFindOneByClaimsSubReqDto {
+    string claims_sub = 1;
+}
+
+message RtSaveReqDto {
+    string claims_aud = 1;
+    int64 claims_exp = 2;
+    int64 claims_iat = 3;
+    string claims_iss = 4;
+    string claims_jti = 5;
+    int64 claims_nbf = 6;
+    string claims_sub = 7;
+    bool token_blocked = 8;
+    string token_blocked_description = 9;
+}
+
+message RtUpdateReqDto {
+    string claims_aud = 1;
+    int64 claims_exp = 2;
+    int64 claims_iat = 3;
+    string claims_iss = 4;
+    string claims_jti = 5;
+    int64 claims_nbf = 6;
+    string claims_sub = 7;
+    bool token_blocked = 8;
+    string token_blocked_description = 9;
+}
+
+message RtValidateReqDto {
+    string claims_jti = 1;
+}
+
+message RtValidateByClaimsSubReqDto {
+    string claims_sub = 1;
+}
+
+message RtResDto {
+    string claims_aud = 1;
+    int64 claims_exp = 2;
+    int64 claims_iat = 3;
+    string claims_iss = 4;
+    string claims_jti = 5;
+    int64 claims_nbf = 6;
+    string claims_sub = 7;
+    bool token_blocked = 8;
+    string token_blocked_description = 9;
+}

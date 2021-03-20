@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package fip.api.rt;
+
+import "rt.proto";
+
+service Rt {
+    rpc FindOne (fip.rt.RtFindOneReqDto) returns (fip.rt.RtResDto);
+}

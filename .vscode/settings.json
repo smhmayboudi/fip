@@ -1,0 +1,40 @@
+{
+    "editor.defaultFormatter": "rust-lang.rust",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "rust-client.updateOnStartup": true,
+    "rust.all_features": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "at",
+            "group": "fip",
+            "database": "${workspaceFolder:fip}/fip_at/at.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:fip}/fip_jwks/jwks.db",
+            "name": "jwks",
+            "group": "fip"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "rt",
+            "group": "fip",
+            "database": "${workspaceFolder:fip}/fip_rt/rt.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "user",
+            "group": "fip",
+            "database": "${workspaceFolder:fip}/fip_user/user.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.startupEditor": "newUntitledFile"
+}

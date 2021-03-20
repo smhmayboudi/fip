@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package fip.api.auth;
+
+service Auth {
+    rpc Login (AuthLoginReqDto) returns (AuthLoginResDto);
+    rpc Logout (AuthLogoutReqDto) returns (AuthLogoutResDto);
+    rpc Token (AuthTokenReqDto) returns (AuthTokenResDto);
+}
+
+message AuthLoginReqDto {
+    string username = 1;
+    string password = 2;
+}
+
+message AuthLogoutReqDto {}
+
+message AuthTokenReqDto {
+    string token = 1;
+}
+
+message AuthLoginResDto {
+    string at = 1;
+    string rt = 2;
+}
+
+message AuthLogoutResDto {}
+
+message AuthTokenResDto {
+    string token = 1;
+}

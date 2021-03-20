@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package fip.at;
+
+service At {
+    rpc Delete (AtDeleteReqDto) returns (AtResDto);
+    rpc DeleteByClaimsSub (AtDeleteByClaimsSubReqDto) returns (AtResDto);
+    rpc Find (AtFindReqDto) returns (stream AtResDto);
+    rpc FindOne (AtFindOneReqDto) returns (AtResDto);
+    rpc FindOneByClaimsSub (AtFindOneByClaimsSubReqDto) returns (AtResDto);
+    rpc Save (AtSaveReqDto) returns (AtResDto);
+    rpc Update (AtUpdateReqDto) returns (AtResDto);
+    rpc Validate (AtValidateReqDto) returns (AtResDto);
+    rpc ValidateByClaimsSub (AtValidateByClaimsSubReqDto) returns (AtResDto);
+}
+
+message AtDeleteReqDto {
+    string claims_jti = 1;
+}
+
+message AtDeleteByClaimsSubReqDto {
+    string claims_sub = 1;
+}
+
+message AtFindReqDto {
+}
+
+message AtFindOneReqDto {
+    string claims_jti = 1;
+}
+
+message AtFindOneByClaimsSubReqDto {
+    string claims_sub = 1;
+}
+
+message AtSaveReqDto {
+    string claims_aud = 1;
+    int64 claims_exp = 2;
+    int64 claims_iat = 3;
+    string claims_iss = 4;
+    string claims_jti = 5;
+    int64 claims_nbf = 6;
+    string claims_sub = 7;
+    string header_typ = 8;
+    string header_alg = 9;
+    string header_cty = 10;
+    string header_jku = 11;
+    string header_kid = 12;
+    string header_x5u = 13;
+    string header_x5t = 14;
+    bool token_blocked = 15;
+    string token_blocked_description = 16;
+}
+
+message AtUpdateReqDto {
+    string claims_aud = 1;
+    int64 claims_exp = 2;
+    int64 claims_iat = 3;
+    string claims_iss = 4;
+    string claims_jti = 5;
+    int64 claims_nbf = 6;
+    string claims_sub = 7;
+    string header_typ = 8;
+    string header_alg = 9;
+    string header_cty = 10;
+    string header_jku = 11;
+    string header_kid = 12;
+    string header_x5u = 13;
+    string header_x5t = 14;
+    bool token_blocked = 15;
+    string token_blocked_description = 16;
+}
+
+message AtValidateReqDto {
+    string claims_jti = 1;
+}
+
+message AtValidateByClaimsSubReqDto {
+    string claims_sub = 1;
+}
+
+message AtResDto {
+    string claims_aud = 1;
+    int64 claims_exp = 2;
+    int64 claims_iat = 3;
+    string claims_iss = 4;
+    string claims_jti = 5;
+    int64 claims_nbf = 6;
+    string claims_sub = 7;
+    string header_typ = 8;
+    string header_alg = 9;
+    string header_cty = 10;
+    string header_jku = 11;
+    string header_kid = 12;
+    string header_x5u = 13;
+    string header_x5t = 14;
+    bool token_blocked = 15;
+    string token_blocked_description = 16;
+}

@@ -1,0 +1,44 @@
+[build-dependencies]
+tonic-build = { default-features = false, version = "0.4.0" }
+
+[dependencies]
+anyhow = { default-features = false, features = ["std"], version = "1.0.38" }
+chrono = { default-features = false, version = "0.4.19" }
+dotenv = { default-features = false, version = "0.15.0" }
+envy = { default-features = false, version = "0.4.2" }
+fip_common = { default-features = false, path = "../fip_common", version = "0.1.0" }
+futures = { default-features = false, version = "0.3.13" }
+opentelemetry = { default-features = false, features = ["tokio-support", "trace"], version = "0.12.0" }
+opentelemetry-jaeger = { default-features = false, features = ["tokio"], version = "0.11.0" }
+prost = { default-features = false, version = "0.7.0" }
+# rdkafka = { default-features = false, features = ["cmake-build"], version = "0.25.0" }
+serde = { default-features = false, features = ["derive"], version = "1.0.124" }
+sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.1" }
+tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.3.0" }
+tokio-stream = { default-features = false, version = "0.1.4" }
+tonic = { default-features = false, features = ["transport"], version = "0.4.0" }
+tonic-health = { default-features = false, features = ["transport"], version = "0.3.0" }
+tracing = { default-features = false, version = "0.1.25" }
+tracing-appender = { default-features = false, version = "0.1.2" }
+tracing-bunyan-formatter = { default-features = false, version = "0.1.7" }
+tracing-error = { default-features = false, version = "0.1.2" }
+tracing-opentelemetry = { default-features = false, features = ["tracing-log"], version = "0.11.0" }
+tracing-subscriber = { default-features = false, features = ["env-filter"], version = "0.2.17" }
+uuid = { default-features = false, features = ["v4"], version = "0.8.2" }
+
+[dev-dependencies]
+cargo-husky = { default-features = false, features = ["user-hooks"], version = "1.5.0" }
+
+[package]
+authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
+categories = ["network-programming"]
+description = "fip_at"
+edition = "2018"
+homepage = ""
+include = ["src/**/*", "proto/*", "build.rs"]
+keywords = ["fpi", "at"]
+license = "MIT"
+name = "fip_at"
+publish = false
+repository =  "https://github.com/smhmayboudi/fip"
+version = "0.1.0"

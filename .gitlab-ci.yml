@@ -1,0 +1,101 @@
+# BEGIN job-specific configuration
+
+default:
+  cache:
+    key: "${CI_PROJECT_PATH_SLUG}"
+    paths:
+    - ".yarn"
+    - "node_modules"
+    - "yarn-packages-offline-cache"
+  image: "node:12.19.1"
+
+.default-rule: &default-rule
+  only: 
+  - "merge-requests"
+
+.build: &build
+  extends:
+  - ".default-rule"
+  script:
+  - "yarn install --cache .yarn --prefer-offline"
+  - "node_modules/.bin/nest build $MODULE_NAME"
+  stage: "build"
+  when: "manual"
+
+.test: &test
+  artifacts:
+    when: "always"
+    paths:
+    - "coverage"
+    expire_in: "7 days"
+  extends:
+  - ".default-rule"
+  script:
+  - "yarn install --cache .yarn --prefer-offline"
+  - "node_modules/.bin/jest --ci --config ./jest.config.json --coverage $MODULE_NAME_TEST"
+  stage: "test"
+  when: "manual"
+
+.coverage: &coverage
+  artifacts:
+    expire_in: "7 days"
+    paths:
+    - "public/$MODULE_NAME"
+  extends:
+  - ".default-rule"
+  script:
+  - "rm -rf public/$MODULE_NAME/*"
+  - "mkdir -p public/$MODULE_NAME"
+  - "cp -r coverage/lcov-report/* public/$MODULE_NAME/"
+  stage: "coverage"
+  when: "manual"
+
+.dockerization: &dockerization
+  extends:
+    - ".default-rule"
+  image: "docker:19.03.12"
+  script:
+  - "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+  - "docker pull $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest || true"
+  - "docker build --cache-from $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest -f $DOCKERFILE --tag $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest ."
+  - "docker push $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHA"
+  - "docker push $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest"
+  # - "docker run -v '$MOUNT_POINT:/mnt' $IMAGE_NAME /mnt/script/to/run/tests"
+  services:
+  - "docker:19.03.12-dind"
+  stage: "dockerization"
+  variables:
+    DOCKER_DRIVER: "overlay2"
+    DOCKER_HOST: "tcp://127.0.0.1:2375"
+    DOCKER_TLS_CERTDIR: ""
+    # MOUNT_POINT: "$CI_PROJECT_DIR/mnt"
+  when: "manual"
+
+# END job-specific configuration
+
+# BEGIN project-specific configuration
+
+# END project-specific configuration
+
+# BEGIN actual pipeline definition
+
+stages:
+- "build"
+- "test"
+- "coverage"
+- "dockerization"
+
+include:
+- local: "/apps/at/.gitlab-ci.yml"
+- local: "/apps/jwks/.gitlab-ci.yml"
+- local: "/apps/fip-api/.gitlab-ci.yml"
+- local: "/apps/rt/.gitlab-ci.yml"
+- local: "/apps/user/.gitlab-ci.yml"
+- local: "/libs/apm/.gitlab-ci.yml"
+- local: "/libs/common/.gitlab-ci.yml"
+- local: "/libs/dgraph/.gitlab-ci.yml"
+- local: "/libs/eventstore/.gitlab-ci.yml"
+- local: "/libs/prom/.gitlab-ci.yml"
+- local: "/libs/sentry/.gitlab-ci.yml"
+
+# END actual pipeline definition
