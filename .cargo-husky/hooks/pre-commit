@@ -1,0 +1,22 @@
+#!/bin/bash
+set -eu
+
+echo '+cargo add clippy'
+rustup component add clippy
+
+echo '+cargo clippy'
+cargo clippy --all-features -- -D warnings
+
+echo '+cargo add rustfmt'
+rustup component add rustfmt
+
+echo '+cargo fmt'
+cargo fmt -- --check
+
+IFS='
+'
+echo '+git add'
+for LINE in `git diff --staged --name-status | grep .rs | grep -v 'D' | grep -v 'R'`; do
+    FILE=(`echo $LINE | awk 'match($0, /.*/) {print $2}'`)
+    git add $FILE
+done

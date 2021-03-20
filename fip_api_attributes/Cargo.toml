@@ -1,0 +1,24 @@
+[dependencies]
+# proc-macro2 = { default-features = false, version = "1.0.24" }
+quote = { default-features = false, features = ["proc-macro"], version = "1.0.9" }
+syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.64" }
+
+[dev-dependencies]
+cargo-husky = { default-features = false, features = ["user-hooks"], version = "1.5.0" }
+
+[lib]
+proc-macro = true
+
+[package]
+authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
+categories = ["network-programming"]
+description = "fip_api_attributes"
+edition = "2018"
+homepage = ""
+include = ["src/**/*"]
+keywords = ["fpi", "api", "attributes"]
+license = "MIT"
+name = "fip_api_attributes"
+publish = false
+repository =  "https://github.com/smhmayboudi/fip"
+version = "0.1.0"

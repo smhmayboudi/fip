@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package fip.api.jwks;
+
+import "jwks.proto";
+
+service Jwks {
+    rpc FindOne (fip.jwks.JwksFindOneReqDto) returns (fip.jwks.JwksResDto);
+}

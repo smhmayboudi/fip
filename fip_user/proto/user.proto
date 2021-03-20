@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package fip.user;
+
+service User {
+    rpc Delete (UserDeleteReqDto) returns (UserResDto);
+    rpc DeleteByCellphone (UserDeleteByCellphoneReqDto) returns (UserResDto);
+    rpc DeleteByUsername (UserDeleteByUsernameReqDto) returns (UserResDto);
+    rpc Find (UserFindReqDto) returns (stream UserResDto);
+    rpc FindOne (UserFindOneReqDto) returns (UserResDto);
+    rpc FindOneByCellphone (UserFindOneByCellphoneReqDto) returns (UserResDto);
+    rpc FindOneByUsername (UserFindOneByUsernameReqDto) returns (UserResDto);
+    rpc Save (UserSaveReqDto) returns (UserResDto);
+    rpc Update (UserUpdateReqDto) returns (UserResDto);
+}
+
+message UserDeleteReqDto {
+    string id = 1;
+}
+
+message UserDeleteByCellphoneReqDto {
+    string cellphone = 1;
+}
+
+message UserDeleteByUsernameReqDto {
+    string username = 1;
+}
+
+message UserFindReqDto {
+}
+
+message UserFindOneReqDto {
+    string id = 1;
+}
+
+message UserFindOneByCellphoneReqDto {
+    string cellphone = 1;
+}
+
+message UserFindOneByUsernameReqDto {
+    string username = 1;
+}
+
+message UserSaveReqDto {
+    string avatar = 1;
+    string biography = 2;
+    int64 birth_date = 3;
+    string cellphone = 4;
+    string email = 5;
+    string first_name = 6;
+    string gender = 7;
+    string id = 8;
+    string language_code = 9;
+    string last_name = 10;
+    string password = 11;
+    int64 registered_at = 12;
+    string username = 13;
+}
+
+message UserUpdateReqDto {
+    string avatar = 1;
+    string biography = 2;
+    int64 birth_date = 3;
+    string cellphone = 4;
+    string email = 5;
+    string first_name = 6;
+    string gender = 7;
+    string id = 8;
+    string language_code = 9;
+    string last_name = 10;
+    string password = 11;
+    int64 registered_at = 12;
+    string username = 13;
+}
+
+message UserResDto {
+    string avatar = 1;
+    string biography = 2;
+    int64 birth_date = 3;
+    string cellphone = 4;
+    string email = 5;
+    string first_name = 6;
+    string gender = 7;
+    string id = 8;
+    string language_code = 9;
+    string last_name = 10;
+    string password = 11;
+    int64 registered_at = 12;
+    string username = 13;
+}

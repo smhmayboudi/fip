@@ -1,0 +1,212 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'fip_api'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=fip_api",
+                    "--package=fip_api"
+                ],
+                "filter": {
+                    "name": "fip_api",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'fip_api'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=fip_api",
+                    "--package=fip_api"
+                ],
+                "filter": {
+                    "name": "fip_api",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'fip_common'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=fip_common"
+                ],
+                "filter": {
+                    "name": "fip_common",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'fip_at'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=fip_at",
+                    "--package=fip_at"
+                ],
+                "filter": {
+                    "name": "fip_at",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'fip_at'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=fip_at",
+                    "--package=fip_at"
+                ],
+                "filter": {
+                    "name": "fip_at",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'fip_jwks'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=fip_jwks",
+                    "--package=fip_jwks"
+                ],
+                "filter": {
+                    "name": "fip_jwks",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'fip_jwks'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=fip_jwks",
+                    "--package=fip_jwks"
+                ],
+                "filter": {
+                    "name": "fip_jwks",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'fip_rt'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=fip_rt",
+                    "--package=fip_rt"
+                ],
+                "filter": {
+                    "name": "fip_rt",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'fip_rt'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=fip_rt",
+                    "--package=fip_rt"
+                ],
+                "filter": {
+                    "name": "fip_rt",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'fip_user'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=fip_user",
+                    "--package=fip_user"
+                ],
+                "filter": {
+                    "name": "fip_user",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'fip_user'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=fip_user",
+                    "--package=fip_user"
+                ],
+                "filter": {
+                    "name": "fip_user",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

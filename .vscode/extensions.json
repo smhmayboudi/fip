@@ -1,0 +1,19 @@
+{
+    "recommendations": [
+        "bungcip.better-toml",
+        "coenraads.bracket-pair-colorizer-2",
+        "eamodio.gitlens",
+        "ibm.output-colorizer",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-sqlite",
+        "pkief.material-icon-theme",
+        "rust-lang.rust",
+        "ryanluker.vscode-coverage-gutters",
+        "serayuzgur.crates",
+        "streetsidesoftware.code-spell-checker",
+        "tyriar.sort-lines",
+        "vadimcn.vscode-lldb"
+    ]
+}
