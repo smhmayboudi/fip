@@ -2,8 +2,8 @@ use crate::{
     auth::{
         config::Config,
         proto::server::{
-            auth_server::Auth, AuthLoginReqDto, AuthLoginResDto, AuthLogoutReqDto,
-            AuthLogoutResDto, AuthTokenReqDto, AuthTokenResDto,
+            auth_server::Auth, AuthLoginReq, AuthLoginRes, AuthLogoutReq, AuthLogoutRes,
+            AuthTokenReq, AuthTokenRes,
         },
         service::Service,
     },
@@ -11,6 +11,7 @@ use crate::{
 };
 // use fip_common::common_opentelemetry::MetadataMap;
 use tonic::{Request, Response, Status};
+// use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Debug)]
@@ -30,12 +31,12 @@ impl Auth for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn login(
         &self,
-        request: Request<AuthLoginReqDto>,
-    ) -> Result<Response<AuthLoginResDto>, Status> {
+        request: Request<AuthLoginReq>,
+    ) -> Result<Response<AuthLoginRes>, Status> {
         // let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
         //     propagator.extract(&MetadataMap(request.metadata()))
         // });
-        // let span = tracing::Span::current();
+        // let span = Span::current();
         // span.set_parent(parent_context);
         let req = request.get_ref();
         let res = self.service.login(req).await?;
@@ -45,12 +46,12 @@ impl Auth for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn logout(
         &self,
-        request: Request<AuthLogoutReqDto>,
-    ) -> Result<Response<AuthLogoutResDto>, Status> {
+        request: Request<AuthLogoutReq>,
+    ) -> Result<Response<AuthLogoutRes>, Status> {
         // let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
         //     propagator.extract(&MetadataMap(request.metadata()))
         // });
-        // let span = tracing::Span::current();
+        // let span = Span::current();
         // span.set_parent(parent_context);
         let req = request.get_ref();
         let sub = Self::sub(&request)?;
@@ -61,12 +62,12 @@ impl Auth for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn token(
         &self,
-        request: Request<AuthTokenReqDto>,
-    ) -> Result<Response<AuthTokenResDto>, Status> {
+        request: Request<AuthTokenReq>,
+    ) -> Result<Response<AuthTokenRes>, Status> {
         // let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
         //     propagator.extract(&MetadataMap(request.metadata()))
         // });
-        // let span = tracing::Span::current();
+        // let span = Span::current();
         // span.set_parent(parent_context);
         let req = request.get_ref();
         let sub = Self::sub(&request)?;

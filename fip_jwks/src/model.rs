@@ -1,4 +1,4 @@
-use crate::proto::{JwksResDto, JwksSaveReqDto, JwksUpdateReqDto};
+use crate::proto::{JwksRes, JwksSaveReq, JwksUpdateReq};
 use sqlx::FromRow;
 
 #[derive(Debug, FromRow)]
@@ -8,8 +8,8 @@ pub struct Model {
     pub public_key: String,
 }
 
-impl From<&JwksSaveReqDto> for Model {
-    fn from(req: &JwksSaveReqDto) -> Self {
+impl From<&JwksSaveReq> for Model {
+    fn from(req: &JwksSaveReq) -> Self {
         Self {
             id: req.id.clone(),
             private_key: req.private_key.clone(),
@@ -18,8 +18,8 @@ impl From<&JwksSaveReqDto> for Model {
     }
 }
 
-impl From<&JwksUpdateReqDto> for Model {
-    fn from(req: &JwksUpdateReqDto) -> Self {
+impl From<&JwksUpdateReq> for Model {
+    fn from(req: &JwksUpdateReq) -> Self {
         Self {
             id: req.id.clone(),
             private_key: req.private_key.clone(),
@@ -28,9 +28,9 @@ impl From<&JwksUpdateReqDto> for Model {
     }
 }
 
-impl Into<JwksResDto> for Model {
-    fn into(self) -> JwksResDto {
-        JwksResDto {
+impl Into<JwksRes> for Model {
+    fn into(self) -> JwksRes {
+        JwksRes {
             id: self.id,
             private_key: self.private_key,
             public_key: self.public_key,

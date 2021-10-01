@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 cd ../fip_at
 rm -fr at.db*

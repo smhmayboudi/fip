@@ -1,0 +1,44 @@
+# BEGIN project-specific configuration
+
+.fip_jwks: &fip_jwks
+  variables:
+    DOCKERFILE: "/fip_jwks/Dockerfile"
+    IMAGE_NAME: "fip-api"
+    PACKAGE: "fip_jwks"
+  only:
+    changes:
+    - "/fip_jwks/**/*"
+
+# END project-specific configuration
+
+# BEGIN actual pipeline definition
+
+build:fip_jwks:
+  extends:
+  - ".build"
+  - ".fip_jwks"
+
+test:fip_jwks:
+  extends:
+  - ".test"
+  - ".fip_jwks"
+  needs:
+  - "build:fip_jwks"
+
+coverage:fip_jwks:
+  dependencies:
+    - "test:fip_jwks"
+  extends:
+  - ".coverage"
+  - ".fip_jwks"
+  needs:
+  - "test:fip_jwks"
+
+deploy:fip_jwks:
+  extends:
+  - ".deploy"
+  - ".fip_jwks"
+  needs:
+  - "test:fip_jwks"
+
+# END actual pipeline definition

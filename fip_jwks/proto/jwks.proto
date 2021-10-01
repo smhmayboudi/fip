@@ -3,42 +3,42 @@ syntax = "proto3";
 package fip.jwks;
 
 service Jwks {
-    rpc Delete (JwksDeleteReqDto) returns (JwksResDto);
-    rpc Find (JwksFindReqDto) returns (stream JwksResDto);
-    rpc FindOne (JwksFindOneReqDto) returns (JwksResDto);
-    rpc FindOneRandom (JwksFindOneRandomReqDto) returns (JwksResDto);
-    rpc Save (JwksSaveReqDto) returns (JwksResDto);
-    rpc Update (JwksUpdateReqDto) returns (JwksResDto);
+    rpc Delete (JwksDeleteReq) returns (JwksRes);
+    rpc Find (JwksFindReq) returns (stream JwksRes);
+    rpc FindOne (JwksFindOneReq) returns (JwksRes);
+    rpc FindOneRandom (JwksFindOneRandomReq) returns (JwksRes);
+    rpc Save (JwksSaveReq) returns (JwksRes);
+    rpc Update (JwksUpdateReq) returns (JwksRes);
 }
 
-message JwksDeleteReqDto {
+message JwksDeleteReq {
     string id = 1;
 }
 
-message JwksFindReqDto {
+message JwksFindReq {
 }
 
 
-message JwksFindOneReqDto {
+message JwksFindOneReq {
     string id = 1;
 }
 
-message JwksFindOneRandomReqDto {
+message JwksFindOneRandomReq {
 }
 
-message JwksSaveReqDto {
-    string id = 1;
-    string private_key = 2;
-    string public_key = 3;
-}
-
-message JwksUpdateReqDto {
+message JwksSaveReq {
     string id = 1;
     string private_key = 2;
     string public_key = 3;
 }
 
-message JwksResDto {
+message JwksUpdateReq {
+    string id = 1;
+    string private_key = 2;
+    string public_key = 3;
+}
+
+message JwksRes {
     string id = 1;
     string private_key = 2;
     string public_key = 3;

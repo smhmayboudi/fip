@@ -10,11 +10,6 @@ CI/CD
 DOCKER
 TEST
 
-Factory Pattern
-Service Locator Pattern
-Dependency Injection Container
-Inversion of Control
-
 AT ->
     Service
         -> TokenBlock

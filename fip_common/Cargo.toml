@@ -1,15 +1,41 @@
+# [[bench]]
+
+# [[bin]]
+
+# [[example]]
+
+# [[test]]
+
+# [badges]
+
+# [build-dependencies]
+
 [dependencies]
-http = { default-features = false, version = "0.2.3" }
+http = { default-features = false, version = "0.2.4" }
 jsonwebtoken = { default-features = false, version = "7.2.0" }
-opentelemetry = { default-features = false, features = ["tokio-support", "trace"], version = "0.12.0" }
-rdkafka = { default-features = false, features = ["cmake-build"], version = "0.25.0" }
-sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.1" }
-thiserror = { default-features = false, version = "1.0.24" }
-tonic = { default-features = false, features = ["transport"], version = "0.4.0" }
+opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
+rdkafka = { default-features = false, features = ["cmake-build"], version = "0.26.0" }
+sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.7" }
+thiserror = { default-features = false, version = "1.0.29" }
+tonic = { default-features = false, features = ["transport"], version = "0.5.2" }
 tracing-error = { default-features = false, version = "0.1.2" }
 
 [dev-dependencies]
 cargo-husky = { default-features = false, features = ["user-hooks"], version = "1.5.0" }
+# [features]
+
+[lib]
+# bench = true          # Is benchmarked by default.
+crate-type = ["rlib"]   # The crate types to generate.
+# doc = true            # Is documented by default.
+# doctest = true        # Documentation examples are tested by default.
+# edition = "2018"      # The edition of the target.
+# harness = true        # Use libtest harness.
+name = "fip_common"     # The name of the target.
+path = "src/lib.rs"     # The source file of the target.
+# proc-macro = false    # Set to `true` for a proc-macro library.
+# required-features = []# Features required to build this target (N/A for lib).
+# test = true           # Is tested by default.
 
 [package]
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
@@ -18,9 +44,20 @@ description = "fip_common"
 edition = "2018"
 homepage = ""
 include = ["src/**/*"]
-keywords = ["fpi", "common"]
+keywords = [
+    "fip",
+    "common",
+]
 license = "MIT"
 name = "fip_common"
 publish = false
 repository =  "https://github.com/smhmayboudi/fip"
 version = "0.1.0"
+
+# [profile]
+
+# [patch]
+
+# [replace]
+
+# [workspace]

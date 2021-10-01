@@ -3,8 +3,8 @@
 use crate::{
     config::Config,
     proto::{
-        jwks_server::Jwks, JwksDeleteReqDto, JwksFindOneRandomReqDto, JwksFindOneReqDto,
-        JwksFindReqDto, JwksResDto, JwksSaveReqDto, JwksUpdateReqDto,
+        jwks_server::Jwks, JwksDeleteReq, JwksFindOneRandomReq, JwksFindOneReq, JwksFindReq,
+        JwksRes, JwksSaveReq, JwksUpdateReq,
     },
     service::Service,
 };
@@ -13,6 +13,7 @@ use futures::Stream;
 use std::pin::Pin;
 use tokio_stream::wrappers::ReceiverStream;
 use tonic::{Request, Response, Status};
+use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Debug)]
@@ -29,17 +30,14 @@ impl Controller {
 
 #[tonic::async_trait]
 impl Jwks for Controller {
-    type FindStream = Pin<Box<dyn Stream<Item = Result<JwksResDto, Status>> + Send + Sync>>;
+    type FindStream = Pin<Box<dyn Stream<Item = Result<JwksRes, Status>> + Send + Sync>>;
 
     #[tracing::instrument(fields(otel.kind = "server"))]
-    async fn delete(
-        &self,
-        request: Request<JwksDeleteReqDto>,
-    ) -> Result<Response<JwksResDto>, Status> {
+    async fn delete(&self, request: Request<JwksDeleteReq>) -> Result<Response<JwksRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.extract(&MetadataMap(request.metadata()))
         });
-        let span = tracing::Span::current();
+        let span = Span::current();
         span.set_parent(parent_context);
         let req = request.get_ref();
         let res = self.service.delete(req).await?;
@@ -49,12 +47,12 @@ impl Jwks for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find(
         &self,
-        request: Request<JwksFindReqDto>,
+        request: Request<JwksFindReq>,
     ) -> Result<Response<Self::FindStream>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.extract(&MetadataMap(request.metadata()))
         });
-        let span = tracing::Span::current();
+        let span = Span::current();
         span.set_parent(parent_context);
         let req = request.get_ref();
         let res = self.service.find(req).await?;
@@ -74,12 +72,12 @@ impl Jwks for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find_one(
         &self,
-        request: Request<JwksFindOneReqDto>,
-    ) -> Result<Response<JwksResDto>, Status> {
+        request: Request<JwksFindOneReq>,
+    ) -> Result<Response<JwksRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.extract(&MetadataMap(request.metadata()))
         });
-        let span = tracing::Span::current();
+        let span = Span::current();
         span.set_parent(parent_context);
         let req = request.get_ref();
         let res = self.service.find_one(req).await?;
@@ -89,12 +87,12 @@ impl Jwks for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find_one_random(
         &self,
-        request: Request<JwksFindOneRandomReqDto>,
-    ) -> Result<Response<JwksResDto>, Status> {
+        request: Request<JwksFindOneRandomReq>,
+    ) -> Result<Response<JwksRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.extract(&MetadataMap(request.metadata()))
         });
-        let span = tracing::Span::current();
+        let span = Span::current();
         span.set_parent(parent_context);
         let req = request.get_ref();
         let res = self.service.find_one_random(req).await?;
@@ -102,11 +100,11 @@ impl Jwks for Controller {
     }
 
     #[tracing::instrument(fields(otel.kind = "server"))]
-    async fn save(&self, request: Request<JwksSaveReqDto>) -> Result<Response<JwksResDto>, Status> {
+    async fn save(&self, request: Request<JwksSaveReq>) -> Result<Response<JwksRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.extract(&MetadataMap(request.metadata()))
         });
-        let span = tracing::Span::current();
+        let span = Span::current();
         span.set_parent(parent_context);
         let req = request.get_ref();
         let res = self.service.save(req).await?;
@@ -114,14 +112,11 @@ impl Jwks for Controller {
     }
 
     #[tracing::instrument(fields(otel.kind = "server"))]
-    async fn update(
-        &self,
-        request: Request<JwksUpdateReqDto>,
-    ) -> Result<Response<JwksResDto>, Status> {
+    async fn update(&self, request: Request<JwksUpdateReq>) -> Result<Response<JwksRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.extract(&MetadataMap(request.metadata()))
         });
-        let span = tracing::Span::current();
+        let span = Span::current();
         span.set_parent(parent_context);
         let req = request.get_ref();
         let res = self.service.update(req).await?;

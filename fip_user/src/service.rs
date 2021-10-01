@@ -2,9 +2,9 @@ use crate::{
     config::Config,
     model::Model,
     proto::{
-        UserDeleteByCellphoneReqDto, UserDeleteByUsernameReqDto, UserDeleteReqDto,
-        UserFindOneByCellphoneReqDto, UserFindOneByUsernameReqDto, UserFindOneReqDto,
-        UserFindReqDto, UserResDto, UserSaveReqDto, UserUpdateReqDto,
+        UserDeleteByCellphoneReq, UserDeleteByUsernameReq, UserDeleteReq,
+        UserFindOneByCellphoneReq, UserFindOneByUsernameReq, UserFindOneReq, UserFindReq, UserRes,
+        UserSaveReq, UserUpdateReq,
     },
     repository::Repository,
 };
@@ -25,7 +25,7 @@ impl Service {
 
 impl Service {
     #[tracing::instrument]
-    pub async fn delete(&self, req: &UserDeleteReqDto) -> Result<UserResDto, CommonError> {
+    pub async fn delete(&self, req: &UserDeleteReq) -> Result<UserRes, CommonError> {
         let res = self.repository.find_one(&req.id).await?;
         let _ = self.repository.delete(&req.id).await?;
         Ok(res.into())
@@ -34,8 +34,8 @@ impl Service {
     #[tracing::instrument]
     pub async fn delete_by_cellphone(
         &self,
-        req: &UserDeleteByCellphoneReqDto,
-    ) -> Result<UserResDto, CommonError> {
+        req: &UserDeleteByCellphoneReq,
+    ) -> Result<UserRes, CommonError> {
         let res = self
             .repository
             .find_one_by_cellphone(&req.cellphone)
@@ -47,21 +47,21 @@ impl Service {
     #[tracing::instrument]
     pub async fn delete_by_username(
         &self,
-        req: &UserDeleteByUsernameReqDto,
-    ) -> Result<UserResDto, CommonError> {
+        req: &UserDeleteByUsernameReq,
+    ) -> Result<UserRes, CommonError> {
         let res = self.repository.find_one_by_username(&req.username).await?;
         let _ = self.repository.delete_by_username(&req.username).await?;
         Ok(res.into())
     }
 
     #[tracing::instrument]
-    pub async fn find(&self, _req: &UserFindReqDto) -> Result<Vec<UserResDto>, CommonError> {
+    pub async fn find(&self, _req: &UserFindReq) -> Result<Vec<UserRes>, CommonError> {
         let res = self.repository.find().await?;
         Ok(res.into_iter().map(|model| model.into()).collect())
     }
 
     #[tracing::instrument]
-    pub async fn find_one(&self, req: &UserFindOneReqDto) -> Result<UserResDto, CommonError> {
+    pub async fn find_one(&self, req: &UserFindOneReq) -> Result<UserRes, CommonError> {
         let res = self.repository.find_one(&req.id).await?;
         Ok(res.into())
     }
@@ -69,8 +69,8 @@ impl Service {
     #[tracing::instrument]
     pub async fn find_one_by_cellphone(
         &self,
-        req: &UserFindOneByCellphoneReqDto,
-    ) -> Result<UserResDto, CommonError> {
+        req: &UserFindOneByCellphoneReq,
+    ) -> Result<UserRes, CommonError> {
         let res = self
             .repository
             .find_one_by_cellphone(&req.cellphone)
@@ -81,14 +81,14 @@ impl Service {
     #[tracing::instrument]
     pub async fn find_one_by_username(
         &self,
-        req: &UserFindOneByUsernameReqDto,
-    ) -> Result<UserResDto, CommonError> {
+        req: &UserFindOneByUsernameReq,
+    ) -> Result<UserRes, CommonError> {
         let res = self.repository.find_one_by_username(&req.username).await?;
         Ok(res.into())
     }
 
     #[tracing::instrument]
-    pub async fn save(&self, req: &UserSaveReqDto) -> Result<UserResDto, CommonError> {
+    pub async fn save(&self, req: &UserSaveReq) -> Result<UserRes, CommonError> {
         let mut model: Model = req.into();
         model.id = Uuid::new_v4().to_string().to_uppercase();
         let _ = self.repository.save(&model).await?;
@@ -96,7 +96,7 @@ impl Service {
     }
 
     #[tracing::instrument]
-    pub async fn update(&self, req: &UserUpdateReqDto) -> Result<UserResDto, CommonError> {
+    pub async fn update(&self, req: &UserUpdateReq) -> Result<UserRes, CommonError> {
         let model = req.into();
         let _ = self.repository.update(&model).await?;
         Ok(model.into())

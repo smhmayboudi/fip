@@ -2,9 +2,8 @@ use crate::{
     config::Config,
     model::Model,
     proto::{
-        RtDeleteByClaimsSubReqDto, RtDeleteReqDto, RtFindOneByClaimsSubReqDto, RtFindOneReqDto,
-        RtFindReqDto, RtResDto, RtSaveReqDto, RtUpdateReqDto, RtValidateByClaimsSubReqDto,
-        RtValidateReqDto,
+        RtDeleteByClaimsSubReq, RtDeleteReq, RtFindOneByClaimsSubReq, RtFindOneReq, RtFindReq,
+        RtRes, RtSaveReq, RtUpdateReq, RtValidateByClaimsSubReq, RtValidateReq,
     },
     repository::Repository,
 };
@@ -25,7 +24,7 @@ impl Service {
 
 impl Service {
     #[tracing::instrument]
-    pub async fn delete(&self, req: &RtDeleteReqDto) -> Result<RtResDto, CommonError> {
+    pub async fn delete(&self, req: &RtDeleteReq) -> Result<RtRes, CommonError> {
         let res = self.repository.find_one(&req.claims_jti).await?;
         let _e = self.repository.delete(&req.claims_jti).await?;
         Ok(res.into())
@@ -34,8 +33,8 @@ impl Service {
     #[tracing::instrument]
     pub async fn delete_by_claims_sub(
         &self,
-        req: &RtDeleteByClaimsSubReqDto,
-    ) -> Result<RtResDto, CommonError> {
+        req: &RtDeleteByClaimsSubReq,
+    ) -> Result<RtRes, CommonError> {
         let res = self
             .repository
             .find_one_by_claims_sub(&req.claims_sub)
@@ -48,13 +47,13 @@ impl Service {
     }
 
     #[tracing::instrument]
-    pub async fn find(&self, _req: &RtFindReqDto) -> Result<Vec<RtResDto>, CommonError> {
+    pub async fn find(&self, _req: &RtFindReq) -> Result<Vec<RtRes>, CommonError> {
         let res = self.repository.find().await?;
         Ok(res.into_iter().map(|model| model.into()).collect())
     }
 
     #[tracing::instrument]
-    pub async fn find_one(&self, req: &RtFindOneReqDto) -> Result<RtResDto, CommonError> {
+    pub async fn find_one(&self, req: &RtFindOneReq) -> Result<RtRes, CommonError> {
         let res = self.repository.find_one(&req.claims_jti).await?;
         Ok(res.into())
     }
@@ -62,8 +61,8 @@ impl Service {
     #[tracing::instrument]
     pub async fn find_one_by_claims_sub(
         &self,
-        req: &RtFindOneByClaimsSubReqDto,
-    ) -> Result<RtResDto, CommonError> {
+        req: &RtFindOneByClaimsSubReq,
+    ) -> Result<RtRes, CommonError> {
         let res = self
             .repository
             .find_one_by_claims_sub(&req.claims_sub)
@@ -72,7 +71,7 @@ impl Service {
     }
 
     #[tracing::instrument]
-    pub async fn save(&self, req: &RtSaveReqDto) -> Result<RtResDto, CommonError> {
+    pub async fn save(&self, req: &RtSaveReq) -> Result<RtRes, CommonError> {
         let mut model: Model = req.into();
         model.claims_jti = Uuid::new_v4().to_string().to_uppercase();
         let _ = self.repository.save(&model).await?;
@@ -80,14 +79,14 @@ impl Service {
     }
 
     #[tracing::instrument]
-    pub async fn update(&self, req: &RtUpdateReqDto) -> Result<RtResDto, CommonError> {
+    pub async fn update(&self, req: &RtUpdateReq) -> Result<RtRes, CommonError> {
         let model = req.into();
         let _ = self.repository.update(&model).await?;
         Ok(model.into())
     }
 
     #[tracing::instrument]
-    pub async fn validate(&self, req: &RtValidateReqDto) -> Result<RtResDto, CommonError> {
+    pub async fn validate(&self, req: &RtValidateReq) -> Result<RtRes, CommonError> {
         let res = self.repository.validate(&req.claims_jti).await?;
         Ok(res.into())
     }
@@ -95,8 +94,8 @@ impl Service {
     #[tracing::instrument]
     pub async fn validate_by_claims_sub(
         &self,
-        req: &RtValidateByClaimsSubReqDto,
-    ) -> Result<RtResDto, CommonError> {
+        req: &RtValidateByClaimsSubReq,
+    ) -> Result<RtRes, CommonError> {
         let res = self
             .repository
             .validate_by_claims_sub(&req.claims_sub)

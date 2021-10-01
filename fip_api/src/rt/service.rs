@@ -3,14 +3,15 @@ use crate::{
     rt::{
         config::Config,
         proto::client::{
-            rt_client::RtClient, RtDeleteByClaimsSubReqDto, RtDeleteReqDto,
-            RtFindOneByClaimsSubReqDto, RtFindOneReqDto, RtFindReqDto, RtResDto, RtSaveReqDto,
-            RtUpdateReqDto, RtValidateByClaimsSubReqDto, RtValidateReqDto,
+            rt_client::RtClient, RtDeleteByClaimsSubReq, RtDeleteReq, RtFindOneByClaimsSubReq,
+            RtFindOneReq, RtFindReq, RtRes, RtSaveReq, RtUpdateReq, RtValidateByClaimsSubReq,
+            RtValidateReq,
         },
     },
 };
 use fip_common::{common_error::CommonError, common_opentelemetry::MetadataMapMut};
 use tonic::{transport::Channel, Request, Status};
+use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Debug)]
@@ -42,10 +43,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn delete(&self, req: &RtDeleteReqDto, _sub: &str) -> Result<RtResDto, Status> {
+    pub async fn delete(&self, req: &RtDeleteReq, _sub: &str) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -60,12 +61,12 @@ impl Service {
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete_by_claims_sub(
         &self,
-        req: &RtDeleteByClaimsSubReqDto,
+        req: &RtDeleteByClaimsSubReq,
         _sub: &str,
-    ) -> Result<RtResDto, Status> {
+    ) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -78,10 +79,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn find(&self, req: &RtFindReqDto, _sub: &str) -> Result<Vec<RtResDto>, Status> {
+    pub async fn find(&self, req: &RtFindReq, _sub: &str) -> Result<Vec<RtRes>, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -91,7 +92,7 @@ impl Service {
             err
         })?;
         let mut stream = res.into_inner();
-        let mut res = Vec::new();
+        let mut res = Vec::default();
         while let Some(r) = stream.message().await.map_err(|err| {
             tracing::error!("{:?}", err);
             let _ = tracing_error::SpanTrace::capture();
@@ -103,10 +104,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn find_one(&self, req: &RtFindOneReqDto, _sub: &str) -> Result<RtResDto, Status> {
+    pub async fn find_one(&self, req: &RtFindOneReq, _sub: &str) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -121,12 +122,12 @@ impl Service {
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one_by_claims_sub(
         &self,
-        req: &RtFindOneByClaimsSubReqDto,
+        req: &RtFindOneByClaimsSubReq,
         _sub: &str,
-    ) -> Result<RtResDto, Status> {
+    ) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -142,10 +143,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn save(&self, req: &RtSaveReqDto, _sub: &str) -> Result<RtResDto, Status> {
+    pub async fn save(&self, req: &RtSaveReq, _sub: &str) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -158,10 +159,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn update(&self, req: &RtUpdateReqDto, _sub: &str) -> Result<RtResDto, Status> {
+    pub async fn update(&self, req: &RtUpdateReq, _sub: &str) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -174,10 +175,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn validate(&self, req: &RtValidateReqDto, _sub: &str) -> Result<RtResDto, Status> {
+    pub async fn validate(&self, req: &RtValidateReq, _sub: &str) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -192,12 +193,12 @@ impl Service {
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn validate_by_claims_sub(
         &self,
-        req: &RtValidateByClaimsSubReqDto,
+        req: &RtValidateByClaimsSubReq,
         _sub: &str,
-    ) -> Result<RtResDto, Status> {
+    ) -> Result<RtRes, Status> {
         let mut client = self.rt_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });

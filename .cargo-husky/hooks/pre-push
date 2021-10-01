@@ -1,5 +1,8 @@
 #!/bin/bash
-set -e
+set -eu
+set -o errexit
+set -o pipefail
+set -o nounset
 
 echo '+cargo check'
 cargo check --all-features --workspace

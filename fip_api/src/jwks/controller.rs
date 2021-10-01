@@ -3,7 +3,7 @@ use crate::{
     jwks::{
         config::Config,
         proto::{
-            client::{JwksFindOneReqDto, JwksResDto},
+            client::{JwksFindOneReq, JwksRes},
             server::jwks_server::Jwks,
         },
         service::Service,
@@ -11,6 +11,7 @@ use crate::{
 };
 // use fip_common::common_opentelemetry::MetadataMap;
 use tonic::{Request, Response, Status};
+// use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Debug)]
@@ -30,12 +31,12 @@ impl Jwks for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find_one(
         &self,
-        request: Request<JwksFindOneReqDto>,
-    ) -> Result<Response<JwksResDto>, Status> {
+        request: Request<JwksFindOneReq>,
+    ) -> Result<Response<JwksRes>, Status> {
         // let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
         //     propagator.extract(&MetadataMap(request.metadata()))
         // });
-        // let span = tracing::Span::current();
+        // let span = Span::current();
         // span.set_parent(parent_context);
         let req = request.get_ref();
         let sub = Self::sub(&request)?;

@@ -1,14 +1,14 @@
 use crate::{
     at::{
         config::Config as AtConfig,
-        proto::client::{AtResDto, AtValidateReqDto},
+        proto::client::{AtRes, AtValidateReq},
         service::Service as AtService,
     },
     auth::auth_claims::AuthClaims,
     auth::auth_enforce::AuthEnforce,
     jwks::{
         config::Config as JwksConfig,
-        proto::client::{JwksFindOneReqDto, JwksResDto},
+        proto::client::{JwksFindOneReq, JwksRes},
         service::Service as JwksService,
     },
 };
@@ -88,12 +88,12 @@ where
                     let jwks_service = JwksService::new(JwksConfig::default());
                     let jwks = jwks_service
                         .find_one(
-                            &JwksFindOneReqDto { id: kid },
+                            &JwksFindOneReq { id: kid },
                             "00000000-0000-0000-0000-000000000000",
                         )
                         .await
                         .unwrap_or_default();
-                    if jwks != JwksResDto::default() {
+                    if jwks != JwksRes::default() {
                         let key = DecodingKey::from_rsa_pem(&jwks.public_key.as_bytes())
                             .map_err(|err| {
                                 tracing::error!("{:?}", err);
@@ -112,14 +112,14 @@ where
                         let at_service = AtService::new(AtConfig::default());
                         let at = at_service
                             .validate(
-                                &AtValidateReqDto {
+                                &AtValidateReq {
                                     claims_jti: token_data.claims.jti.clone(),
                                 },
                                 &token_data.claims.sub,
                             )
                             .await
                             .unwrap_or_default();
-                        if at != AtResDto::default() {
+                        if at != AtRes::default() {
                             let sub = token_data.claims.sub;
                             let obj = req.uri().path();
                             let act = req.method().to_string();

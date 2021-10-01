@@ -51,7 +51,7 @@ fn default_kafka_topic_res() -> String {
 }
 
 fn default_socket_address() -> SocketAddr {
-    ([127, 0, 0, 1], 8080).into()
+    ([0, 0, 0, 0], 8080).into()
 }
 
 fn default_token() -> String {
@@ -92,6 +92,12 @@ pub struct Config {
 }
 
 impl Config {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+impl Server {
     pub fn jwt_at_exp_in(&self) -> i64 {
         self.jwt_at_exp_in
     }

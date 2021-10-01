@@ -1,4 +1,4 @@
-use crate::proto::{RtResDto, RtSaveReqDto, RtUpdateReqDto};
+use crate::proto::{RtRes, RtSaveReq, RtUpdateReq};
 use sqlx::FromRow;
 
 #[derive(Debug, FromRow)]
@@ -14,8 +14,8 @@ pub struct Model {
     pub token_blocked_description: String,
 }
 
-impl From<&RtSaveReqDto> for Model {
-    fn from(req: &RtSaveReqDto) -> Self {
+impl From<&RtSaveReq> for Model {
+    fn from(req: &RtSaveReq) -> Self {
         Self {
             claims_aud: req.claims_aud.clone(),
             claims_exp: req.claims_exp,
@@ -30,8 +30,8 @@ impl From<&RtSaveReqDto> for Model {
     }
 }
 
-impl From<&RtUpdateReqDto> for Model {
-    fn from(req: &RtUpdateReqDto) -> Self {
+impl From<&RtUpdateReq> for Model {
+    fn from(req: &RtUpdateReq) -> Self {
         Self {
             claims_aud: req.claims_aud.clone(),
             claims_exp: req.claims_exp,
@@ -46,9 +46,9 @@ impl From<&RtUpdateReqDto> for Model {
     }
 }
 
-impl Into<RtResDto> for Model {
-    fn into(self) -> RtResDto {
-        RtResDto {
+impl Into<RtRes> for Model {
+    fn into(self) -> RtRes {
+        RtRes {
             claims_aud: self.claims_aud,
             claims_exp: self.claims_exp,
             claims_iat: self.claims_iat,

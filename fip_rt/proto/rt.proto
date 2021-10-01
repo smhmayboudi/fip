@@ -3,37 +3,37 @@ syntax = "proto3";
 package fip.rt;
 
 service Rt {
-    rpc Delete (RtDeleteReqDto) returns (RtResDto);
-    rpc DeleteByClaimsSub (RtDeleteByClaimsSubReqDto) returns (RtResDto);
-    rpc Find (RtFindReqDto) returns (stream RtResDto);
-    rpc FindOne (RtFindOneReqDto) returns (RtResDto);
-    rpc FindOneByClaimsSub (RtFindOneByClaimsSubReqDto) returns (RtResDto);
-    rpc Save (RtSaveReqDto) returns (RtResDto);
-    rpc Update (RtUpdateReqDto) returns (RtResDto);
-    rpc Validate (RtValidateReqDto) returns (RtResDto);
-    rpc ValidateByClaimsSub (RtValidateByClaimsSubReqDto) returns (RtResDto);
+    rpc Delete (RtDeleteReq) returns (RtRes);
+    rpc DeleteByClaimsSub (RtDeleteByClaimsSubReq) returns (RtRes);
+    rpc Find (RtFindReq) returns (stream RtRes);
+    rpc FindOne (RtFindOneReq) returns (RtRes);
+    rpc FindOneByClaimsSub (RtFindOneByClaimsSubReq) returns (RtRes);
+    rpc Save (RtSaveReq) returns (RtRes);
+    rpc Update (RtUpdateReq) returns (RtRes);
+    rpc Validate (RtValidateReq) returns (RtRes);
+    rpc ValidateByClaimsSub (RtValidateByClaimsSubReq) returns (RtRes);
 }
 
-message RtDeleteReqDto {
+message RtDeleteReq {
     string claims_jti = 1;
 }
 
-message RtDeleteByClaimsSubReqDto {
+message RtDeleteByClaimsSubReq {
     string claims_sub = 1;
 }
 
-message RtFindReqDto {
+message RtFindReq {
 }
 
-message RtFindOneReqDto {
+message RtFindOneReq {
     string claims_jti = 1;
 }
 
-message RtFindOneByClaimsSubReqDto {
+message RtFindOneByClaimsSubReq {
     string claims_sub = 1;
 }
 
-message RtSaveReqDto {
+message RtSaveReq {
     string claims_aud = 1;
     int64 claims_exp = 2;
     int64 claims_iat = 3;
@@ -45,7 +45,7 @@ message RtSaveReqDto {
     string token_blocked_description = 9;
 }
 
-message RtUpdateReqDto {
+message RtUpdateReq {
     string claims_aud = 1;
     int64 claims_exp = 2;
     int64 claims_iat = 3;
@@ -57,15 +57,15 @@ message RtUpdateReqDto {
     string token_blocked_description = 9;
 }
 
-message RtValidateReqDto {
+message RtValidateReq {
     string claims_jti = 1;
 }
 
-message RtValidateByClaimsSubReqDto {
+message RtValidateByClaimsSubReq {
     string claims_sub = 1;
 }
 
-message RtResDto {
+message RtRes {
     string claims_aud = 1;
     int64 claims_exp = 2;
     int64 claims_iat = 3;

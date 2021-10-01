@@ -1,0 +1,44 @@
+# BEGIN project-specific configuration
+
+.fip_rt: &fip_rt
+  variables:
+    DOCKERFILE: "/fip_rt/Dockerfile"
+    IMAGE_NAME: "fip-api"
+    PACKAGE: "fip_rt"
+  only:
+    changes:
+    - "/fip_rt/**/*"
+
+# END project-specific configuration
+
+# BEGIN actual pipeline definition
+
+build:fip_rt:
+  extends:
+  - ".build"
+  - ".fip_rt"
+
+test:fip_rt:
+  extends:
+  - ".test"
+  - ".fip_rt"
+  needs:
+  - "build:fip_rt"
+
+coverage:fip_rt:
+  dependencies:
+    - "test:fip_rt"
+  extends:
+  - ".coverage"
+  - ".fip_rt"
+  needs:
+  - "test:fip_rt"
+
+deploy:fip_rt:
+  extends:
+  - ".deploy"
+  - ".fip_rt"
+  needs:
+  - "test:fip_rt"
+
+# END actual pipeline definition

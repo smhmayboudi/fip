@@ -3,7 +3,7 @@ use crate::{
     rt::{
         config::Config,
         proto::{
-            client::{RtFindOneReqDto, RtResDto},
+            client::{RtFindOneReq, RtRes},
             server::rt_server::Rt,
         },
         service::Service,
@@ -11,6 +11,7 @@ use crate::{
 };
 // use fip_common::common_opentelemetry::MetadataMap;
 use tonic::{Request, Response, Status};
+// use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Debug)]
@@ -28,14 +29,11 @@ impl Controller {
 #[tonic::async_trait]
 impl Rt for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
-    async fn find_one(
-        &self,
-        request: Request<RtFindOneReqDto>,
-    ) -> Result<Response<RtResDto>, Status> {
+    async fn find_one(&self, request: Request<RtFindOneReq>) -> Result<Response<RtRes>, Status> {
         // let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
         //     propagator.extract(&MetadataMap(request.metadata()))
         // });
-        // let span = tracing::Span::current();
+        // let span = Span::current();
         // span.set_parent(parent_context);
         let req = request.get_ref();
         let sub = Self::sub(&request)?;
