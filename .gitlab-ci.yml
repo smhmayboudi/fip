@@ -4,10 +4,8 @@ default:
   cache:
     key: "${CI_PROJECT_PATH_SLUG}"
     paths:
-    - ".yarn"
-    - "node_modules"
-    - "yarn-packages-offline-cache"
-  image: "node:12.19.1"
+    - "/usr/local/cargo/registry"
+  image: "rust:1.53.0-buster"
 
 .default-rule: &default-rule
   only: 
@@ -17,22 +15,20 @@ default:
   extends:
   - ".default-rule"
   script:
-  - "yarn install --cache .yarn --prefer-offline"
-  - "node_modules/.bin/nest build $MODULE_NAME"
+  - "make add-fmt release"
   stage: "build"
   when: "manual"
 
 .test: &test
   artifacts:
-    when: "always"
+    expire_in: "7 days"
     paths:
     - "coverage"
-    expire_in: "7 days"
+    when: "always"
   extends:
   - ".default-rule"
   script:
-  - "yarn install --cache .yarn --prefer-offline"
-  - "node_modules/.bin/jest --ci --config ./jest.config.json --coverage $MODULE_NAME_TEST"
+  - "make test"
   stage: "test"
   when: "manual"
 
@@ -40,34 +36,36 @@ default:
   artifacts:
     expire_in: "7 days"
     paths:
-    - "public/$MODULE_NAME"
+    - "public/$PACKAGE"
   extends:
   - ".default-rule"
   script:
-  - "rm -rf public/$MODULE_NAME/*"
-  - "mkdir -p public/$MODULE_NAME"
-  - "cp -r coverage/lcov-report/* public/$MODULE_NAME/"
+  - "rm -rf public/$PACKAGE"
+  - "mkdir -p public/$PACKAGE"
+  - "cp -r coverage/lcov-report/* public/$PACKAGE"
   stage: "coverage"
   when: "manual"
 
-.dockerization: &dockerization
+.deploy: &deploy
   extends:
     - ".default-rule"
-  image: "docker:19.03.12"
+  image: "docker:20.10.7"
   script:
   - "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
   - "docker pull $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest || true"
   - "docker build --cache-from $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest -f $DOCKERFILE --tag $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest ."
   - "docker push $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHA"
   - "docker push $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest"
-  # - "docker run -v '$MOUNT_POINT:/mnt' $IMAGE_NAME /mnt/script/to/run/tests"
+  # - "mkdir -p '$MOUNT_POINT'"
+  # - "docker run -v "$MOUNT_POINT:/mnt" $IMAGE_NAME /mnt/script/to/run/tests""
   services:
-  - "docker:19.03.12-dind"
-  stage: "dockerization"
+  - "docker:20.10.7-dind-rootlesss"
+  stage: "deploy"
   variables:
     DOCKER_DRIVER: "overlay2"
-    DOCKER_HOST: "tcp://127.0.0.1:2375"
+    DOCKER_HOST: "tcp://127.0.0.1:2376"
     DOCKER_TLS_CERTDIR: ""
+    # MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
     # MOUNT_POINT: "$CI_PROJECT_DIR/mnt"
   when: "manual"
 
@@ -83,19 +81,13 @@ stages:
 - "build"
 - "test"
 - "coverage"
-- "dockerization"
+- "deploy"
 
 include:
-- local: "/apps/at/.gitlab-ci.yml"
-- local: "/apps/jwks/.gitlab-ci.yml"
-- local: "/apps/fip-api/.gitlab-ci.yml"
-- local: "/apps/rt/.gitlab-ci.yml"
-- local: "/apps/user/.gitlab-ci.yml"
-- local: "/libs/apm/.gitlab-ci.yml"
-- local: "/libs/common/.gitlab-ci.yml"
-- local: "/libs/dgraph/.gitlab-ci.yml"
-- local: "/libs/eventstore/.gitlab-ci.yml"
-- local: "/libs/prom/.gitlab-ci.yml"
-- local: "/libs/sentry/.gitlab-ci.yml"
+- local: "/fip_api/.gitlab-ci.yml"
+- local: "/fip_at/.gitlab-ci.yml"
+- local: "/fip_jwks/.gitlab-ci.yml"
+- local: "/fip_rt/.gitlab-ci.yml"
+- local: "/fip_user/.gitlab-ci.yml"
 
 # END actual pipeline definition

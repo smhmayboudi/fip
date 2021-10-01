@@ -2,8 +2,8 @@ use crate::{
     config::Config,
     model::Model,
     proto::{
-        JwksDeleteReqDto, JwksFindOneRandomReqDto, JwksFindOneReqDto, JwksFindReqDto, JwksResDto,
-        JwksSaveReqDto, JwksUpdateReqDto,
+        JwksDeleteReq, JwksFindOneRandomReq, JwksFindOneReq, JwksFindReq, JwksRes, JwksSaveReq,
+        JwksUpdateReq,
     },
     repository::Repository,
 };
@@ -24,20 +24,20 @@ impl Service {
 
 impl Service {
     #[tracing::instrument]
-    pub async fn delete(&self, req: &JwksDeleteReqDto) -> Result<JwksResDto, CommonError> {
+    pub async fn delete(&self, req: &JwksDeleteReq) -> Result<JwksRes, CommonError> {
         let res = self.repository.find_one(&req.id).await?;
         let _ = self.repository.delete(&req.id).await?;
         Ok(res.into())
     }
 
     #[tracing::instrument]
-    pub async fn find(&self, _req: &JwksFindReqDto) -> Result<Vec<JwksResDto>, CommonError> {
+    pub async fn find(&self, _req: &JwksFindReq) -> Result<Vec<JwksRes>, CommonError> {
         let res = self.repository.find().await?;
         Ok(res.into_iter().map(|model| model.into()).collect())
     }
 
     #[tracing::instrument]
-    pub async fn find_one(&self, req: &JwksFindOneReqDto) -> Result<JwksResDto, CommonError> {
+    pub async fn find_one(&self, req: &JwksFindOneReq) -> Result<JwksRes, CommonError> {
         let res = self.repository.find_one(&req.id).await?;
         Ok(res.into())
     }
@@ -45,14 +45,14 @@ impl Service {
     #[tracing::instrument]
     pub async fn find_one_random(
         &self,
-        _req: &JwksFindOneRandomReqDto,
-    ) -> Result<JwksResDto, CommonError> {
+        _req: &JwksFindOneRandomReq,
+    ) -> Result<JwksRes, CommonError> {
         let res = self.repository.find_one_random().await?;
         Ok(res.into())
     }
 
     #[tracing::instrument]
-    pub async fn save(&self, req: &JwksSaveReqDto) -> Result<JwksResDto, CommonError> {
+    pub async fn save(&self, req: &JwksSaveReq) -> Result<JwksRes, CommonError> {
         let mut model: Model = req.into();
         model.id = Uuid::new_v4().to_string().to_uppercase();
         let _ = self.repository.save(&model).await?;
@@ -60,7 +60,7 @@ impl Service {
     }
 
     #[tracing::instrument]
-    pub async fn update(&self, req: &JwksUpdateReqDto) -> Result<JwksResDto, CommonError> {
+    pub async fn update(&self, req: &JwksUpdateReq) -> Result<JwksRes, CommonError> {
         let model = req.into();
         let _ = self.repository.update(&model).await?;
         Ok(model.into())

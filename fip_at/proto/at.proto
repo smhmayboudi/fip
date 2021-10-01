@@ -3,37 +3,37 @@ syntax = "proto3";
 package fip.at;
 
 service At {
-    rpc Delete (AtDeleteReqDto) returns (AtResDto);
-    rpc DeleteByClaimsSub (AtDeleteByClaimsSubReqDto) returns (AtResDto);
-    rpc Find (AtFindReqDto) returns (stream AtResDto);
-    rpc FindOne (AtFindOneReqDto) returns (AtResDto);
-    rpc FindOneByClaimsSub (AtFindOneByClaimsSubReqDto) returns (AtResDto);
-    rpc Save (AtSaveReqDto) returns (AtResDto);
-    rpc Update (AtUpdateReqDto) returns (AtResDto);
-    rpc Validate (AtValidateReqDto) returns (AtResDto);
-    rpc ValidateByClaimsSub (AtValidateByClaimsSubReqDto) returns (AtResDto);
+    rpc Delete (AtDeleteReq) returns (AtRes);
+    rpc DeleteByClaimsSub (AtDeleteByClaimsSubReq) returns (AtRes);
+    rpc Find (AtFindReq) returns (stream AtRes);
+    rpc FindOne (AtFindOneReq) returns (AtRes);
+    rpc FindOneByClaimsSub (AtFindOneByClaimsSubReq) returns (AtRes);
+    rpc Save (AtSaveReq) returns (AtRes);
+    rpc Update (AtUpdateReq) returns (AtRes);
+    rpc Validate (AtValidateReq) returns (AtRes);
+    rpc ValidateByClaimsSub (AtValidateByClaimsSubReq) returns (AtRes);
 }
 
-message AtDeleteReqDto {
+message AtDeleteReq {
     string claims_jti = 1;
 }
 
-message AtDeleteByClaimsSubReqDto {
+message AtDeleteByClaimsSubReq {
     string claims_sub = 1;
 }
 
-message AtFindReqDto {
+message AtFindReq {
 }
 
-message AtFindOneReqDto {
+message AtFindOneReq {
     string claims_jti = 1;
 }
 
-message AtFindOneByClaimsSubReqDto {
+message AtFindOneByClaimsSubReq {
     string claims_sub = 1;
 }
 
-message AtSaveReqDto {
+message AtSaveReq {
     string claims_aud = 1;
     int64 claims_exp = 2;
     int64 claims_iat = 3;
@@ -52,7 +52,7 @@ message AtSaveReqDto {
     string token_blocked_description = 16;
 }
 
-message AtUpdateReqDto {
+message AtUpdateReq {
     string claims_aud = 1;
     int64 claims_exp = 2;
     int64 claims_iat = 3;
@@ -71,15 +71,15 @@ message AtUpdateReqDto {
     string token_blocked_description = 16;
 }
 
-message AtValidateReqDto {
+message AtValidateReq {
     string claims_jti = 1;
 }
 
-message AtValidateByClaimsSubReqDto {
+message AtValidateByClaimsSubReq {
     string claims_sub = 1;
 }
 
-message AtResDto {
+message AtRes {
     string claims_aud = 1;
     int64 claims_exp = 2;
     int64 claims_iat = 3;

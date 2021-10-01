@@ -3,13 +3,14 @@ use crate::{
     jwks::{
         config::Config,
         proto::client::{
-            jwks_client::JwksClient, JwksDeleteReqDto, JwksFindOneRandomReqDto, JwksFindOneReqDto,
-            JwksFindReqDto, JwksResDto, JwksSaveReqDto, JwksUpdateReqDto,
+            jwks_client::JwksClient, JwksDeleteReq, JwksFindOneRandomReq, JwksFindOneReq,
+            JwksFindReq, JwksRes, JwksSaveReq, JwksUpdateReq,
         },
     },
 };
 use fip_common::{common_error::CommonError, common_opentelemetry::MetadataMapMut};
 use tonic::{transport::Channel, Request, Status};
+use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Debug)]
@@ -41,10 +42,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn delete(&self, req: &JwksDeleteReqDto, _sub: &str) -> Result<JwksResDto, Status> {
+    pub async fn delete(&self, req: &JwksDeleteReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -57,10 +58,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn find(&self, req: &JwksFindReqDto, _sub: &str) -> Result<Vec<JwksResDto>, Status> {
+    pub async fn find(&self, req: &JwksFindReq, _sub: &str) -> Result<Vec<JwksRes>, Status> {
         let mut client = self.jwks_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -70,7 +71,7 @@ impl Service {
             err
         })?;
         let mut stream = res.into_inner();
-        let mut res = Vec::new();
+        let mut res = Vec::default();
         while let Some(r) = stream.message().await.map_err(|err| {
             tracing::error!("{:?}", err);
             let _ = tracing_error::SpanTrace::capture();
@@ -82,14 +83,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn find_one(
-        &self,
-        req: &JwksFindOneReqDto,
-        _sub: &str,
-    ) -> Result<JwksResDto, Status> {
+    pub async fn find_one(&self, req: &JwksFindOneReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -104,12 +101,12 @@ impl Service {
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one_random(
         &self,
-        req: &JwksFindOneRandomReqDto,
+        req: &JwksFindOneRandomReq,
         _sub: &str,
-    ) -> Result<JwksResDto, Status> {
+    ) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -122,10 +119,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn save(&self, req: &JwksSaveReqDto, _sub: &str) -> Result<JwksResDto, Status> {
+    pub async fn save(&self, req: &JwksSaveReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });
@@ -138,10 +135,10 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn update(&self, req: &JwksUpdateReqDto, _sub: &str) -> Result<JwksResDto, Status> {
+    pub async fn update(&self, req: &JwksUpdateReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
         let mut request = Request::new(req.clone());
-        let context = tracing::Span::current().context();
+        let context = Span::current().context();
         opentelemetry::global::get_text_map_propagator(|propagator| {
             propagator.inject_context(&context, &mut MetadataMapMut(request.metadata_mut()))
         });

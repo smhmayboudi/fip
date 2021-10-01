@@ -1,6 +1,82 @@
-[workspace]
-members = ["fip_api", "fip_api_attributes", "fip_at", "fip_common", "fip_jwks", "fip_rt", "fip_user"]
+# [[bench]]
 
-# [workspace.metadata.webcontents]
-# root = "path/to/webproject"
-# tool = ["npm", "run", "build"]
+# [[bin]]
+
+# [[example]]
+
+# [[test]]
+
+# [badges]
+
+# [build-dependencies]
+
+# [dependencies]
+
+# [dev-dependencies]
+
+# [features]
+
+# [package]
+
+[profile.bench]
+codegen-units = 256
+debug = true
+debug-assertions = true
+incremental = true
+lto = false
+opt-level = 0
+overflow-checks = true
+panic = "unwind"
+rpath = false
+split-debuginfo = "off"
+
+[profile.dev]
+codegen-units = 256
+debug = true
+debug-assertions = true
+incremental = true
+lto = false
+opt-level = 0
+overflow-checks = true
+panic = "unwind"
+rpath = false
+split-debuginfo = "off"
+
+[profile.test]
+codegen-units = 256
+debug = true
+debug-assertions = true
+incremental = true
+lto = false
+opt-level = 0
+overflow-checks = true
+panic = "unwind"
+rpath = false
+split-debuginfo = "off"
+
+[profile.release]
+codegen-units = 1
+debug = false
+debug-assertions = false
+incremental = false
+lto = true
+opt-level = "z"
+overflow-checks = false
+panic = "abort"
+rpath = false
+split-debuginfo = "off"
+
+# [patch]
+
+# [replace]
+
+[workspace]
+members = [
+    "fip_api",
+    "fip_api_attributes",
+    "fip_at",
+    "fip_common",
+    "fip_jwks",
+    "fip_rt",
+    "fip_user",
+]

@@ -5,5 +5,5 @@ package fip.api.at;
 import "at.proto";
 
 service At {
-    rpc FindOne (fip.at.AtFindOneReqDto) returns (fip.at.AtResDto);
+    rpc FindOne (fip.at.AtFindOneReq) returns (fip.at.AtRes);
 }

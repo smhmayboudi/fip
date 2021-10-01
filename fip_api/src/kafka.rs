@@ -23,7 +23,7 @@ pub struct Kafka {
 impl Kafka {
     pub fn new(config: Config) -> Self {
         let context = KafkaConsumerContext;
-        let consumer = ClientConfig::new()
+        let consumer = ClientConfig::default()
             .set("auto.offset.reset", "earliest")
             .set("bootstrap.servers", &config.kafka_broker())
             .set("client.id", "fip-api-consumer")
@@ -43,7 +43,7 @@ impl Kafka {
             .unwrap();
 
         let context = KafkaProducerContext;
-        let producer = ClientConfig::new()
+        let producer = ClientConfig::default()
             .set("bootstrap.servers", &config.kafka_broker())
             .set("client.id", "fip-api-producer")
             .set("debug", "all")
@@ -149,7 +149,7 @@ impl Kafka {
 
         let rto = "TEST_RES";
 
-        let headers = OwnedHeaders::new()
+        let headers = OwnedHeaders::default()
             .add("correlation_id", cid)
             .add("reply_to", rto);
 

@@ -3,13 +3,13 @@ syntax = "proto3";
 package fip.api.api;
 
 service Api {
-    rpc FindOne (ApiFindOneReqDto) returns (ApiResDto);
+    rpc FindOne (ApiFindOneReq) returns (ApiRes);
 }
 
-message ApiFindOneReqDto {
+message ApiFindOneReq {
     string id = 1;
 }
 
-message ApiResDto {
+message ApiRes {
     string id = 1;
 }

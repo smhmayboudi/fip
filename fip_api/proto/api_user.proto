@@ -5,5 +5,5 @@ package fip.api.user;
 import "user.proto";
 
 service User {
-    rpc FindOne (fip.user.UserFindOneReqDto) returns (fip.user.UserResDto);
+    rpc FindOne (fip.user.UserFindOneReq) returns (fip.user.UserRes);
 }

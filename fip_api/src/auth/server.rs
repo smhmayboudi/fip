@@ -16,6 +16,12 @@ pub struct Server {
 }
 
 impl Server {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+impl Server {
     pub fn into_inner(self) -> InterceptedServer<AuthServer<Controller>> {
         self.inner
     }

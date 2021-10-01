@@ -1,4 +1,4 @@
-use crate::proto::{UserResDto, UserSaveReqDto, UserUpdateReqDto};
+use crate::proto::{UserRes, UserSaveReq, UserUpdateReq};
 use sqlx::FromRow;
 
 #[derive(Debug, FromRow)]
@@ -18,8 +18,8 @@ pub struct Model {
     pub username: String,
 }
 
-impl From<&UserSaveReqDto> for Model {
-    fn from(req: &UserSaveReqDto) -> Self {
+impl From<&UserSaveReq> for Model {
+    fn from(req: &UserSaveReq) -> Self {
         Self {
             avatar: req.avatar.clone(),
             biography: req.biography.clone(),
@@ -38,8 +38,8 @@ impl From<&UserSaveReqDto> for Model {
     }
 }
 
-impl From<&UserUpdateReqDto> for Model {
-    fn from(req: &UserUpdateReqDto) -> Self {
+impl From<&UserUpdateReq> for Model {
+    fn from(req: &UserUpdateReq) -> Self {
         Self {
             avatar: req.avatar.clone(),
             biography: req.biography.clone(),
@@ -58,9 +58,9 @@ impl From<&UserUpdateReqDto> for Model {
     }
 }
 
-impl Into<UserResDto> for Model {
-    fn into(self) -> UserResDto {
-        UserResDto {
+impl Into<UserRes> for Model {
+    fn into(self) -> UserRes {
+        UserRes {
             avatar: self.avatar,
             biography: self.biography,
             birth_date: self.birth_date,

@@ -1,13 +1,37 @@
+# [[bench]]
+
+# [[bin]]
+
+# [[example]]
+
+# [[test]]
+
+# [badges]
+
+# [build-dependencies]
+
 [dependencies]
 # proc-macro2 = { default-features = false, version = "1.0.24" }
 quote = { default-features = false, features = ["proc-macro"], version = "1.0.9" }
-syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.64" }
+syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.76" }
 
 [dev-dependencies]
 cargo-husky = { default-features = false, features = ["user-hooks"], version = "1.5.0" }
 
+# [features]
+
 [lib]
-proc-macro = true
+# bench = true              # Is benchmarked by default.
+crate-type = ["rlib"]       # The crate types to generate.
+# doc = true                # Is documented by default.
+# doctest = true            # Documentation examples are tested by default.
+# edition = "2018"          # The edition of the target.
+# harness = true            # Use libtest harness.
+name = "fip_api_attributes" # The name of the target.
+path = "src/lib.rs"         # The source file of the target.
+proc-macro = true           # Set to `true` for a proc-macro library.
+# required-features = []    # Features required to build this target (N/A for lib).
+# test = true               # Is tested by default.
 
 [package]
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
@@ -16,9 +40,21 @@ description = "fip_api_attributes"
 edition = "2018"
 homepage = ""
 include = ["src/**/*"]
-keywords = ["fpi", "api", "attributes"]
+keywords = [
+    "fip",
+    "api",
+    "attributes",
+]
 license = "MIT"
 name = "fip_api_attributes"
 publish = false
 repository =  "https://github.com/smhmayboudi/fip"
 version = "0.1.0"
+
+# [profile]
+
+# [patch]
+
+# [replace]
+
+# [workspace]

@@ -1,18 +1,14 @@
-FROM rust:latest as build-env
+FROM docker.io/rust:1.53.0-buster as builder
 WORKDIR /fip
 ADD . .
 RUN rustup component add rustfmt
 # RUN mkdir .cargo
 # RUN RUN cargo vendor > .cargo/config
-RUN cargo build --release --package fip_api
+RUN cargo build  --package fip_api --release
 
-FROM debian:stable-slim
-RUN addgroup --gid 1000 fip
-RUN adduser --gid 1000 --shell /bin/sh --uid 1000 fip
-WORKDIR /fip_api
-COPY --from=build-env /fip/fip_api/auth_model.conf .
-COPY --from=build-env /fip/fip_api/auth_policy.csv .
-COPY --from=build-env /fip/target/release/fip_api .
-RUN chown fip:fip *
-USER fip
-CMD ["./fip_api"]
+FROM gcr.io/distroless/cc:nonroot
+COPY --from=builder /fip/fip_api/auth_model.conf /
+COPY --from=builder /fip/fip_api/auth_policy.csv /
+COPY --from=builder /fip/target/release/fip_api /
+USER 65532
+CMD ["/fip_api"]

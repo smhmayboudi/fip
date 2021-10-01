@@ -1,19 +1,18 @@
 use crate::{
-    at::{proto::client::AtSaveReqDto, service::Service as AtService},
+    at::{proto::client::AtSaveReq, service::Service as AtService},
     auth::{
         auth_claims::AuthClaims,
         config::Config,
         proto::server::{
-            AuthLoginReqDto, AuthLoginResDto, AuthLogoutReqDto, AuthLogoutResDto, AuthTokenReqDto,
-            AuthTokenResDto,
+            AuthLoginReq, AuthLoginRes, AuthLogoutReq, AuthLogoutRes, AuthTokenReq, AuthTokenRes,
         },
     },
-    jwks::{proto::client::JwksFindOneRandomReqDto, service::Service as JwksService},
+    jwks::{proto::client::JwksFindOneRandomReq, service::Service as JwksService},
     rt::{
-        proto::client::{RtSaveReqDto, RtValidateReqDto},
+        proto::client::{RtSaveReq, RtValidateReq},
         service::Service as RtService,
     },
-    user::{proto::client::UserFindOneByUsernameReqDto, service::Service as UserService},
+    user::{proto::client::UserFindOneByUsernameReq, service::Service as UserService},
 };
 use chrono::Utc;
 use fip_common::common_error::CommonError;
@@ -50,11 +49,11 @@ impl Service {
 
 impl Service {
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn login(&self, req: &AuthLoginReqDto) -> Result<AuthLoginResDto, Status> {
+    pub async fn login(&self, req: &AuthLoginReq) -> Result<AuthLoginRes, Status> {
         let user = self
             .user_service
             .find_one_by_username(
-                &UserFindOneByUsernameReqDto {
+                &UserFindOneByUsernameReq {
                     username: req.username.clone(),
                 },
                 "00000000-0000-0000-0000-000000000000",
@@ -65,24 +64,20 @@ impl Service {
         }
         let at = self.access_token(&user.id).await?.token;
         let rt = self.refresh_token(&user.id).await?.token;
-        Ok(AuthLoginResDto { at, rt })
+        Ok(AuthLoginRes { at, rt })
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn logout(
-        &self,
-        _req: &AuthLogoutReqDto,
-        sub: &str,
-    ) -> Result<AuthLogoutResDto, Status> {
+    pub async fn logout(&self, _req: &AuthLogoutReq, sub: &str) -> Result<AuthLogoutRes, Status> {
         self.logout_all(sub).await
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn token(&self, req: &AuthTokenReqDto, sub: &str) -> Result<AuthTokenResDto, Status> {
+    pub async fn token(&self, req: &AuthTokenReq, sub: &str) -> Result<AuthTokenRes, Status> {
         let _ = self
             .rt_service
             .validate(
-                &RtValidateReqDto {
+                &RtValidateReq {
                     claims_jti: req.token.clone(),
                 },
                 sub,
@@ -99,14 +94,14 @@ impl Service {
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    async fn access_token(&self, sub: &str) -> Result<AuthTokenResDto, Status> {
+    async fn access_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
         let iat = Utc::now().timestamp();
         let exp = iat + self.config.jwt_at_exp_in();
         let jti = Uuid::new_v4().to_string().to_uppercase();
         let nbf = iat + self.config.jwt_at_nbf_in();
         let jwks = self
             .jwks_service
-            .find_one_random(&JwksFindOneRandomReqDto {}, sub)
+            .find_one_random(&JwksFindOneRandomReq {}, sub)
             .await?;
         let header = Header {
             typ: Some("JWT".into()),
@@ -134,7 +129,7 @@ impl Service {
             tracing::error!("{:?}", err);
             CommonError::from(err)
         })?;
-        let at = AtSaveReqDto {
+        let at = AtSaveReq {
             header_typ: header.typ.unwrap(),
             header_alg: "RS256".into(),
             header_cty: header.cty.unwrap_or_default(),
@@ -153,23 +148,23 @@ impl Service {
             token_blocked_description: "".into(),
         };
         let _ = self.at_service.save(&at, sub).await?;
-        Ok(AuthTokenResDto { token })
+        Ok(AuthTokenRes { token })
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    async fn logout_all(&self, _sub: &str) -> Result<AuthLogoutResDto, Status> {
-        // self.at_service.update(&AtUpdateReqDto {}, sub).await?;
-        // self.rt_service.update(&RtUpdateReqDto {}, sub).await?;
-        Ok(AuthLogoutResDto {})
+    async fn logout_all(&self, _sub: &str) -> Result<AuthLogoutRes, Status> {
+        // self.at_service.update(&AtUpdateReq {}, sub).await?;
+        // self.rt_service.update(&RtUpdateReq {}, sub).await?;
+        Ok(AuthLogoutRes {})
     }
 
     #[tracing::instrument(fields(otel.kind = "client"))]
-    async fn refresh_token(&self, sub: &str) -> Result<AuthTokenResDto, Status> {
+    async fn refresh_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
         let iat = Utc::now().timestamp();
         let exp = iat + self.config.jwt_rt_exp_in();
         let jti = Uuid::new_v4().to_string().to_uppercase();
         let nbf = iat + self.config.jwt_rt_nbf_in();
-        let rt = RtSaveReqDto {
+        let rt = RtSaveReq {
             claims_aud: self.config.app_name(),
             claims_exp: exp,
             claims_iat: iat,
@@ -181,6 +176,6 @@ impl Service {
             token_blocked_description: "".into(),
         };
         let _ = self.rt_service.save(&rt, sub).await?;
-        Ok(AuthTokenResDto { token: jti })
+        Ok(AuthTokenRes { token: jti })
     }
 }

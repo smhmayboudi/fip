@@ -1,0 +1,44 @@
+# BEGIN project-specific configuration
+
+.fip_api: &fip_api
+  variables:
+    DOCKERFILE: "/fip_api/Dockerfile"
+    IMAGE_NAME: "fip-api"
+    PACKAGE: "fip_api"
+  only:
+    changes:
+    - "/fip_api/**/*"
+
+# END project-specific configuration
+
+# BEGIN actual pipeline definition
+
+build:fip_api:
+  extends:
+  - ".build"
+  - ".fip_api"
+
+test:fip_api:
+  extends:
+  - ".test"
+  - ".fip_api"
+  needs:
+  - "build:fip_api"
+
+coverage:fip_api:
+  dependencies:
+    - "test:fip_api"
+  extends:
+  - ".coverage"
+  - ".fip_api"
+  needs:
+  - "test:fip_api"
+
+deploy:fip_api:
+  extends:
+  - ".deploy"
+  - ".fip_api"
+  needs:
+  - "test:fip_api"
+
+# END actual pipeline definition

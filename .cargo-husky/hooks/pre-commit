@@ -1,11 +1,14 @@
 #!/bin/bash
 set -eu
+set -o errexit
+set -o pipefail
+set -o nounset
 
 echo '+cargo add clippy'
 rustup component add clippy
 
 echo '+cargo clippy'
-cargo clippy --all-features -- -D warnings
+cargo clippy --all-features --all-targets -- -D warnings
 
 echo '+cargo add rustfmt'
 rustup component add rustfmt

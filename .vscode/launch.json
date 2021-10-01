@@ -11,8 +11,8 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=fip_api",
-                    "--package=fip_api"
+                    "--bin fip_api",
+                    "--package fip_api"
                 ],
                 "filter": {
                     "name": "fip_api",
@@ -30,8 +30,8 @@
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=fip_api",
-                    "--package=fip_api"
+                    "--bin fip_api",
+                    "--package fip_api"
                 ],
                 "filter": {
                     "name": "fip_api",
@@ -50,7 +50,7 @@
                     "test",
                     "--no-run",
                     "--lib",
-                    "--package=fip_common"
+                    "--package fip_common"
                 ],
                 "filter": {
                     "name": "fip_common",
@@ -67,8 +67,8 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=fip_at",
-                    "--package=fip_at"
+                    "--bin fip_at",
+                    "--package fip_at"
                 ],
                 "filter": {
                     "name": "fip_at",
@@ -86,8 +86,8 @@
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=fip_at",
-                    "--package=fip_at"
+                    "--bin fip_at",
+                    "--package fip_at"
                 ],
                 "filter": {
                     "name": "fip_at",
@@ -104,8 +104,8 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=fip_jwks",
-                    "--package=fip_jwks"
+                    "--bin fip_jwks",
+                    "--package fip_jwks"
                 ],
                 "filter": {
                     "name": "fip_jwks",
@@ -123,8 +123,8 @@
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=fip_jwks",
-                    "--package=fip_jwks"
+                    "--bin fip_jwks",
+                    "--package fip_jwks"
                 ],
                 "filter": {
                     "name": "fip_jwks",
@@ -141,8 +141,8 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=fip_rt",
-                    "--package=fip_rt"
+                    "--bin fip_rt",
+                    "--package fip_rt"
                 ],
                 "filter": {
                     "name": "fip_rt",
@@ -160,8 +160,8 @@
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=fip_rt",
-                    "--package=fip_rt"
+                    "--bin fip_rt",
+                    "--package fip_rt"
                 ],
                 "filter": {
                     "name": "fip_rt",
@@ -178,8 +178,8 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=fip_user",
-                    "--package=fip_user"
+                    "--bin fip_user",
+                    "--package fip_user"
                 ],
                 "filter": {
                     "name": "fip_user",
@@ -197,8 +197,8 @@
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=fip_user",
-                    "--package=fip_user"
+                    "--bin fip_user",
+                    "--package fip_user"
                 ],
                 "filter": {
                     "name": "fip_user",

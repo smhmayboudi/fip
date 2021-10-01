@@ -2,14 +2,21 @@ use crate::{
     config::Config, controller::Controller, proto::at_server::AtServer, repository::Repository,
     service::Service,
 };
+use anyhow::Result;
 use tonic::transport::Server as TonicServer;
 use tonic_health::server::HealthReporter;
-// use tracing::Level;
+// use tracing::{Level, Span};
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: AtServer<Controller>,
+}
+
+impl Server {
+    pub fn new() -> Self {
+        Self::default()
+    }
 }
 
 impl Server {
@@ -39,7 +46,7 @@ impl Server {
         }
     }
 
-    pub async fn init(config: Config) -> anyhow::Result<()> {
+    pub async fn init(config: &Config) -> Result<()> {
         let (mut health_reporter, health_server) = tonic_health::server::health_reporter();
         health_reporter.set_serving::<AtServer<Controller>>().await;
         let _ = tokio::spawn(Self::check(health_reporter));
@@ -54,7 +61,7 @@ impl Server {
             //                     header_map.clone(),
             //                 ))
             //             });
-            //             let span = tracing::Span::current();
+            //             let span = Span::current();
             //             span.set_parent(parent_context);
             //             span
             //         },
@@ -64,13 +71,19 @@ impl Server {
             //     )
             // })
             .add_service(health_server)
-            .add_service(Self::new().await.into_inner())
+            .add_service(Self::default().await.into_inner())
             .serve(config.socket_address())
             .await
             .map_err(|err| {
                 tracing::error!("{:?}", err);
                 anyhow::anyhow!(err)
             })
+    }
+}
+
+impl Server {
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 

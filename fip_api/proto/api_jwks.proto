@@ -5,5 +5,5 @@ package fip.api.jwks;
 import "jwks.proto";
 
 service Jwks {
-    rpc FindOne (fip.jwks.JwksFindOneReqDto) returns (fip.jwks.JwksResDto);
+    rpc FindOne (fip.jwks.JwksFindOneReq) returns (fip.jwks.JwksRes);
 }

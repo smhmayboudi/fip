@@ -3,7 +3,7 @@ use crate::{
     user::{
         config::Config,
         proto::{
-            client::{UserFindOneReqDto, UserResDto},
+            client::{UserFindOneReq, UserRes},
             server::user_server::User,
         },
         service::Service,
@@ -11,6 +11,7 @@ use crate::{
 };
 // use fip_common::common_opentelemetry::MetadataMap;
 use tonic::{Request, Response, Status};
+// use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 #[derive(Debug)]
@@ -30,12 +31,12 @@ impl User for Controller {
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find_one(
         &self,
-        request: Request<UserFindOneReqDto>,
-    ) -> Result<Response<UserResDto>, Status> {
+        request: Request<UserFindOneReq>,
+    ) -> Result<Response<UserRes>, Status> {
         // let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
         //     propagator.extract(&MetadataMap(request.metadata()))
         // });
-        // let span = tracing::Span::current();
+        // let span = Span::current();
         // span.set_parent(parent_context);
         let req = request.get_ref();
         let sub = Self::sub(&request)?;
