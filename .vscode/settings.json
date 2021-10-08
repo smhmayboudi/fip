@@ -1,40 +1,65 @@
 {
+    "files.watcherExclude": {
+        "**/target/**": true
+    },
     "editor.defaultFormatter": "rust-lang.rust",
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true,
+    "remote.extensionKind": {
+        "coenraads.bracket-pair-colorizer-2": [
+            "ui"
+        ],
+        "ibm.output-colorizer": [
+            "ui"
+        ],
+        "ms-azuretools.vscode-docker": [
+            "ui"
+        ],
+        "ms-kubernetes-tools.vscode-kubernetes-tools": [
+            "ui"
+        ],
+        "mtxr.sqltools": [
+            "ui"
+        ],
+        "mtxr.sqltools-driver-sqlite": [
+            "ui"
+        ],
+        "pkief.material-icon-theme": [
+            "ui"
+        ]
+    },
     "rust-client.updateOnStartup": true,
     "rust.all_features": true,
     "sqltools.connections": [
         {
-            "previewLimit": 50,
+            "database": "${workspaceFolder:fip}/fip_at/at.db",
             "driver": "SQLite",
+            "group": "fip",
             "name": "at",
-            "group": "fip",
-            "database": "${workspaceFolder:fip}/fip_at/at.db"
+            "previewLimit": 50
         },
         {
-            "previewLimit": 50,
-            "driver": "SQLite",
             "database": "${workspaceFolder:fip}/fip_jwks/jwks.db",
+            "driver": "SQLite",
+            "group": "fip",
             "name": "jwks",
-            "group": "fip"
+            "previewLimit": 50
         },
         {
-            "previewLimit": 50,
+            "database": "${workspaceFolder:fip}/fip_rt/rt.db",
             "driver": "SQLite",
+            "group": "fip",
             "name": "rt",
-            "group": "fip",
-            "database": "${workspaceFolder:fip}/fip_rt/rt.db"
+            "previewLimit": 50
         },
         {
-            "previewLimit": 50,
+            "database": "${workspaceFolder:fip}/fip_user/user.db",
             "driver": "SQLite",
-            "name": "user",
             "group": "fip",
-            "database": "${workspaceFolder:fip}/fip_user/user.db"
+            "name": "user",
+            "previewLimit": 50
         }
     ],
     "sqltools.useNodeRuntime": true,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.startupEditor": "newUntitledFile"
+    "workbench.iconTheme": "material-icon-theme"
 }

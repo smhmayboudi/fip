@@ -1,27 +1,37 @@
 use crate::{config::Config, model::Model};
 use chrono::Utc;
-use fip_common::common_error::CommonError;
+use fip_common::error::Error;
 use sqlx::sqlite::{SqlitePool, SqlitePoolOptions};
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Repository {
     config: Config,
     pool: SqlitePool,
 }
 
+/// TODO: documentation
 impl Repository {
+    /// TODO: documentation
+    ///
+    /// # Panics
+    /// TODO: documentation panics
     pub async fn new(config: Config) -> Self {
         let pool = SqlitePoolOptions::new()
             .connect(&config.clone().database_url())
             .await
-            .unwrap();
+            .unwrap_or_else(|err| {
+                panic!("{:?}", err);
+            });
         Self { config, pool }
     }
 }
 
+/// TODO: documentation
 impl Repository {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn delete(&self, claims_jti: &str) -> Result<u64, CommonError> {
+    pub async fn delete(&self, claims_jti: &str) -> Result<u64, Error> {
         let done = sqlx::query("DELETE FROM rt WHERE claims_jti = ?")
             .bind(claims_jti)
             .execute(&self.pool)
@@ -33,8 +43,9 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn delete_by_claims_sub(&self, claims_sub: &str) -> Result<u64, CommonError> {
+    pub async fn delete_by_claims_sub(&self, claims_sub: &str) -> Result<u64, Error> {
         let done = sqlx::query("DELETE FROM rt WHERE claims_sub = ?")
             .bind(claims_sub)
             .execute(&self.pool)
@@ -46,8 +57,9 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn find(&self) -> Result<Vec<Model>, CommonError> {
+    pub async fn find(&self) -> Result<Vec<Model>, Error> {
         sqlx::query_as(
             "SELECT claims_aud, claims_exp, claims_iat, claims_iss, claims_jti, claims_nbf, claims_sub, token_blocked, token_blocked_description FROM rt",
         )
@@ -59,34 +71,37 @@ impl Repository {
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn find_one(&self, claims_jti: &str) -> Result<Model, CommonError> {
+    pub async fn find_one(&self, claims_jti: &str) -> Result<Model, Error> {
         sqlx::query_as(
             "SELECT claims_aud, claims_exp, claims_iat, claims_iss, claims_jti, claims_nbf, claims_sub, token_blocked, token_blocked_description FROM rt WHERE claims_jti = ?",
         )
         .bind(claims_jti)
         .fetch_one(&self.pool)
         .await.map_err(|err| {
-                tracing::error!("{:?}", err);
-                err.into()
+            tracing::error!("{:?}", err);
+            err.into()
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn find_one_by_claims_sub(&self, claims_sub: &str) -> Result<Model, CommonError> {
+    pub async fn find_one_by_claims_sub(&self, claims_sub: &str) -> Result<Model, Error> {
         sqlx::query_as(
             "SELECT claims_aud, claims_exp, claims_iat, claims_iss, claims_jti, claims_nbf, claims_sub, token_blocked, token_blocked_description FROM rt WHERE claims_sub = ?",
         )
         .bind(claims_sub)
         .fetch_one(&self.pool)
         .await.map_err(|err| {
-                tracing::error!("{:?}", err);
-                err.into()
+            tracing::error!("{:?}", err);
+            err.into()
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn save(&self, model: &Model) -> Result<u64, CommonError> {
+    pub async fn save(&self, model: &Model) -> Result<u64, Error> {
         let done = sqlx::query(
             "INSERT INTO rt (claims_aud, claims_exp, claims_iat, claims_iss, claims_jti, claims_nbf, claims_sub, token_blocked, token_blocked_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
         )
@@ -107,8 +122,9 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn update(&self, model: &Model) -> Result<u64, CommonError> {
+    pub async fn update(&self, model: &Model) -> Result<u64, Error> {
         let done = sqlx::query(
             "UPDATE rt SET claims_aud = ?, claims_exp = ?, claims_iat = ?, claims_iss = ?, claims_nbf = ?, claims_sub = ?, token_blocked = ?, token_blocked_description = ? WHERE claims_jti = ?",
         )
@@ -130,8 +146,9 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn validate(&self, claims_jti: &str) -> Result<Model, CommonError> {
+    pub async fn validate(&self, claims_jti: &str) -> Result<Model, Error> {
         let now = Utc::now().timestamp();
         sqlx::query_as(
             "SELECT claims_aud, claims_exp, claims_iat, claims_iss, claims_jti, claims_nbf, claims_sub, token_blocked, token_blocked_description FROM rt WHERE ? < claims_exp AND claims_jti = ? AND token_blocked = FALSE",
@@ -140,13 +157,14 @@ impl Repository {
         .bind(claims_jti)
         .fetch_one(&self.pool)
         .await.map_err(|err| {
-                tracing::error!("{:?}", err);
-                err.into()
+            tracing::error!("{:?}", err);
+            err.into()
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn validate_by_claims_sub(&self, claims_sub: &str) -> Result<Model, CommonError> {
+    pub async fn validate_by_claims_sub(&self, claims_sub: &str) -> Result<Model, Error> {
         let now = Utc::now().timestamp();
         sqlx::query_as(
             "SELECT claims_aud, claims_exp, claims_iat, claims_iss, claims_jti, claims_nbf, claims_sub, token_blocked, token_blocked_description FROM rt WHERE ? < claims_exp AND token_blocked = FALSE AND claims_sub = ?",
@@ -155,8 +173,8 @@ impl Repository {
         .bind(claims_sub)
         .fetch_one(&self.pool)
         .await.map_err(|err| {
-                tracing::error!("{:?}", err);
-                err.into()
+            tracing::error!("{:?}", err);
+            err.into()
         })
     }
 }

@@ -6,24 +6,34 @@ use crate::{
     },
 };
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: InterceptedServer<JwksServer<Controller>>,
 }
 
+/// TODO: documentation
 impl Server {
+    /// TODO: documentation
+    #[must_use]
     pub fn new() -> Self {
         Self::default()
     }
 }
 
+/// TODO: documentation
 impl Server {
+    /// TODO: documentation
+    #[allow(clippy::missing_const_for_fn)]
+    #[must_use]
     pub fn into_inner(self) -> InterceptedServer<JwksServer<Controller>> {
         self.inner
     }
 }
 
+/// TODO: documentation
 impl Default for Server {
+    /// TODO: documentation
     fn default() -> Self {
         let config = Config::new();
         let service = Service::new(config.clone());

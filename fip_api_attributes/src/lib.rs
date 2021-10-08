@@ -1,4 +1,8 @@
-#[proc_macro_derive(Sub)]
+//! TODO: documentation
+
+/// TODO: documentation
+// #[proc_macro_derive(Sub)]
+#[must_use]
 pub fn derive_sub(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = syn::parse_macro_input!(input as syn::DeriveInput);
     // let input = proc_macro2::TokenStream::from(input);
@@ -9,6 +13,7 @@ pub fn derive_sub(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     proc_macro::TokenStream::from(expanded)
 }
 
+// /// TODO: documentation
 // #[proc_macro_attribute]
 // pub fn attribute_show_streams(
 //     attr: proc_macro::TokenStream,
@@ -19,6 +24,7 @@ pub fn derive_sub(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 //     item
 // }
 
+// /// TODO: documentation
 // #[proc_macro_derive(MyMacro)]
 // pub fn derive_my_macro(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 //     // Parse the input tokens into a syntax tree

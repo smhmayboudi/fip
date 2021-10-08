@@ -1,0 +1,74 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "args": [
+                "build",
+                "PACKAGE=${input:member}"
+            ],
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "label": "Make: build",
+            "type": "shell"
+        },
+        {
+            "args": [
+                "check",
+                "PACKAGE=${input:member}"
+            ],
+            "command": "make",
+            "group": "none",
+            "label": "Make: check",
+            "type": "shell"
+        },
+        {
+            "args": [
+                "clean"
+            ],
+            "command": "make",
+            "group": "none",
+            "label": "Make: clean",
+            "type": "shell"
+        },
+        {
+            "args": [
+                "run",
+                "PACKAGE=${input:member}"
+            ],
+            "command": "make",
+            "group": "none",
+            "label": "Make: run",
+            "type": "shell"
+        },
+        {
+            "args": [
+                "test"
+            ],
+            "command": "make",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "label": "Make: test",
+            "type": "shell"
+        }
+    ],
+    "inputs": [
+        {
+            "default": "api",
+            "description": "What member do you want to apply?",
+            "id": "member",
+            "options": [
+                "fip_api",
+                "fip_at",
+                "fip_jwks",
+                "fip_rt",
+                "fip_user"
+            ],
+            "type": "pickString",
+        }
+    ]
+}

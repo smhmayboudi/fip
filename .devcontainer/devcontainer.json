@@ -1,0 +1,62 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/rust
+{
+	"appPort":[],
+	"build": {
+		"args": {
+			"VARIANT": "bullseye"
+		},
+		"dockerfile": "Dockerfile"
+	},
+	"extensions": [
+		"github.vscode-pull-request-github",
+        "bungcip.better-toml",
+        "coenraads.bracket-pair-colorizer-2",
+        "eamodio.gitlens",
+        "ibm.output-colorizer",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-sqlite",
+        "pkief.material-icon-theme",
+        "redhat.vscode-yaml",
+        "rust-lang.rust",
+        "ryanluker.vscode-coverage-gutters",
+        "serayuzgur.crates",
+        "streetsidesoftware.code-spell-checker",
+        "tyriar.sort-lines",
+        "vadimcn.vscode-lldb"
+	],
+	"features": {
+		"git": "latest",
+		"github-cli": "latest",
+		"sshd": "latest"
+	},
+	"forwardPorts": [
+		50050,
+		50051,
+		50052,
+		50053,
+		50054
+	],
+	"name": "fip",
+	"remoteEnv": {},
+	"runArgs": [
+		"--init",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt",
+		"seccomp=unconfined"
+	],
+	"postCreateCommand": "make git",
+	"remoteUser": "vscode",
+	"settings": {
+		"files.watcherExclude": {
+			"**/target/**": true
+		},
+		"lldb.executable": "/usr/bin/lldb",
+		"remote.SSH.remoteServerListenOnSocket": true
+	},
+	"shutdownAction": "none",
+	"workspaceFolder": "/workspaces/fip"
+}
