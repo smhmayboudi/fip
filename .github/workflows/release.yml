@@ -35,17 +35,17 @@ jobs:
           path: release/*
     strategy:
       matrix:
-        target: [aarch64-unknown-linux-musl, x86_64-unknown-linux-musl, armv7-unknown-linux-musleabihf]
+        target: [aarch64-unknown-linux-musl, armv7-unknown-linux-musleabihf, x86_64-unknown-linux-musl]
         include:
           - 
             strip: aarch64-linux-gnu-strip
             target: aarch64-unknown-linux-musl
-          - 
-            strip: strip
-            target: x86_64-unknown-linux-musl
           -
             strip: arm-linux-gnueabihf-strip
             target: armv7-unknown-linux-musleabihf
+          - 
+            strip: strip
+            target: x86_64-unknown-linux-musl
     timeout-minutes: 40
   release:
     name: GitHub Release

@@ -8,7 +8,7 @@ use crate::{
     },
     service::Service,
 };
-use fip_common::common_opentelemetry::MetadataMap;
+use fip_common::opentelemetry::MetadataMap;
 use futures::Stream;
 use std::pin::Pin;
 use tokio_stream::wrappers::ReceiverStream;
@@ -16,14 +16,18 @@ use tonic::{Request, Response, Status};
 use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Controller {
     config: Config,
     service: Service,
 }
 
+/// TODO: documentation
 impl Controller {
-    pub fn new(config: Config, service: Service) -> Self {
+    /// TODO: documentation
+    #[must_use]
+    pub const fn new(config: Config, service: Service) -> Self {
         Self { config, service }
     }
 }
@@ -32,6 +36,7 @@ impl Controller {
 impl Rt for Controller {
     type FindStream = Pin<Box<dyn Stream<Item = Result<RtRes, Status>> + Send + Sync>>;
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn delete(&self, request: Request<RtDeleteReq>) -> Result<Response<RtRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
@@ -44,6 +49,7 @@ impl Rt for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn delete_by_claims_sub(
         &self,
@@ -59,6 +65,7 @@ impl Rt for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find(
         &self,
@@ -72,10 +79,12 @@ impl Rt for Controller {
         let req = request.get_ref();
         let res = self.service.find(req).await?;
 
-        let (tx, rx) = tokio::sync::mpsc::channel(4);
-        let _ = tokio::spawn(async move {
+        let (tx, rx) = tokio::sync::mpsc::channel(1);
+        let _ok = tokio::spawn(async move {
             for res in &res {
-                tx.send(Ok(res.clone())).await.unwrap();
+                tx.send(Ok(res.clone())).await.unwrap_or_else(|err| {
+                    tracing::error!("receiver dropped, {:?}", err);
+                });
             }
         });
 
@@ -84,6 +93,7 @@ impl Rt for Controller {
         ))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find_one(&self, request: Request<RtFindOneReq>) -> Result<Response<RtRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
@@ -96,6 +106,7 @@ impl Rt for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find_one_by_claims_sub(
         &self,
@@ -111,6 +122,7 @@ impl Rt for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn save(&self, request: Request<RtSaveReq>) -> Result<Response<RtRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
@@ -123,6 +135,7 @@ impl Rt for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn update(&self, request: Request<RtUpdateReq>) -> Result<Response<RtRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
@@ -135,6 +148,7 @@ impl Rt for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn validate(&self, request: Request<RtValidateReq>) -> Result<Response<RtRes>, Status> {
         let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
@@ -147,6 +161,7 @@ impl Rt for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn validate_by_claims_sub(
         &self,

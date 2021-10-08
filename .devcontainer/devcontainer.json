@@ -1,0 +1,91 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/rust
+{
+	"build": {
+		"args": {
+			"VARIANT": "bullseye"
+		},
+		"dockerfile": "Dockerfile"
+	},
+	"extensions": [
+		"github.vscode-pull-request-github",
+        "bungcip.better-toml",
+        "coenraads.bracket-pair-colorizer-2",
+        "eamodio.gitlens",
+        "ibm.output-colorizer",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-vscode-remote.remote-containers",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-sqlite",
+        "pkief.material-icon-theme",
+        "redhat.vscode-yaml",
+        "rust-lang.rust",
+        "ryanluker.vscode-coverage-gutters",
+        "serayuzgur.crates",
+        "streetsidesoftware.code-spell-checker",
+        "tyriar.sort-lines",
+        "vadimcn.vscode-lldb"
+	],
+	"features": {
+		"docker-from-docker": {
+			"moby": true,
+			"version": "latest"
+		},
+		"kubectl-helm-minikube": {
+			"helm": "latest",
+			"minikube": "none",
+			"version": "latest",
+		}	
+	},	
+	"forwardPorts": [
+		50050,
+		50051,
+		50052,
+		50053,
+		50054
+	],
+	"name": "fip",
+	"runArgs": [
+		"--init",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt",
+		"seccomp=unconfined"
+	],
+	"postCreateCommand": "rustc --version",
+	"postStartCommand": "make git",
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	"remoteUser": "vscode",
+	"settings": {
+		"lldb.executable": "/usr/bin/lldb",
+		"remote.extensionKind": {
+			"coenraads.bracket-pair-colorizer-2": [
+				"ui"
+			],
+			"ibm.output-colorizer": [
+				"ui"
+			],
+			"ms-azuretools.vscode-docker": [
+				"ui"
+			],
+			"ms-kubernetes-tools.vscode-kubernetes-tools": [
+				"ui"
+			],
+			"ms-vscode-remote.remote-containers": [
+				"ui"
+			],
+			"mtxr.sqltools": [
+				"ui"
+			],
+			"mtxr.sqltools-driver-sqlite": [
+				"ui"
+			],
+			"pkief.material-icon-theme": [
+				"ui"
+			]
+		},
+	}
+}

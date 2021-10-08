@@ -1,8 +1,16 @@
-use fip_common::common_error::CommonError;
+use fip_common::error::Error;
 use tonic::Request;
 
+/// TODO: documentation
 pub trait Sub {
-    fn sub<T>(request: &Request<T>) -> Result<&str, CommonError> {
+    /// TODO: documentation
+    ///
+    /// # Errors
+    /// TODO: documentation errors
+    ///
+    /// # Panics
+    /// TODO: documentation panics
+    fn sub<T>(request: &Request<T>) -> Result<&str, Error> {
         request
             .metadata()
             .get("sub")

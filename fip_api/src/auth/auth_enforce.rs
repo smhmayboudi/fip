@@ -4,18 +4,26 @@
 
 use casbin::{CoreApi, Enforcer, FileAdapter};
 
-#[derive(Debug)]
+/// TODO: documentation
+#[derive(Copy, Clone, Debug)]
 pub struct AuthEnforce {}
 
+/// TODO: documentation
 impl AuthEnforce {
+    /// TODO: documentation
+    ///
+    /// # Panics
+    /// TODO: documentation panics
     pub async fn enforce(sub: &str, obj: &str, act: &str) -> bool {
-        let adapter = FileAdapter::new("auth_policy.csv");
-        let enforcer = Enforcer::new("auth_model.conf", adapter)
+        let adapter = FileAdapter::new("fip_api/auth_policy.csv");
+        let enforcer = Enforcer::new("fip_api/auth_model.conf", adapter)
             .await
             .map_err(|err| {
                 tracing::error!("{:?}", err);
             })
-            .unwrap();
+            .unwrap_or_else(|err| {
+                panic!("{:?}", err);
+            });
         // Enforcer.set_logger(tracing);
         // Enforcer.enable_log(true);
         // let roles = enforcer.get_roles_for_user("alice");
@@ -24,7 +32,9 @@ impl AuthEnforce {
             .map_err(|err| {
                 tracing::error!("{:?}", err);
             })
-            .unwrap()
+            .unwrap_or_else(|err| {
+                panic!("{:?}", err);
+            })
         // let sub = "alice"; // the user that wants to access a resource.
         // let obj = "data1"; // the resource that is going to be accessed.
         // let act = "read"; // the operation that the user performs on the resource.

@@ -1,3 +1,5 @@
+//! TODO: documentation
+
 // pub static APM_ACTIVE: &str = "APM_ACTIVE";
 // pub static APM_LOG_LEVEL: &str = "APM_LOG_LEVEL";
 // pub static APM_SECRET_TOKEN: &str = "APM_SECRET_TOKEN";
@@ -6,7 +8,7 @@
 
 /// Token for API
 pub static API: &str = "API";
-/// Token for API_DB_SQLITE
+/// Token for `API_DB_SQLITE`
 pub static API_DB_SQLITE: &str = "sqlite:api.db";
 
 // pub static API_CACHE_STORE_NONE: &str = "none";
@@ -15,7 +17,7 @@ pub static API_DB_SQLITE: &str = "sqlite:api.db";
 
 /// Token for AT
 pub static AT: &str = "AT";
-/// Token for AT_DB_SQLITE
+/// Token for `AT_DB_SQLITE`
 pub static AT_DB_SQLITE: &str = "sqlite:at.db";
 
 // pub static AT_DELETE: &str = "AT_DELETE";
@@ -52,7 +54,7 @@ pub static GROUP: &str = "GROUP";
 
 /// Token for JWKS
 pub static JWKS: &str = "JWKS";
-/// Token for AT_DB_SQLITE
+/// Token for `AT_DB_SQLITE`
 pub static JWKS_DB_SQLITE: &str = "sqlite:jwks.db";
 
 // pub static JWKS_FIND_ONE: &str = "JWKS_FIND_ONE";
@@ -60,7 +62,7 @@ pub static JWKS_DB_SQLITE: &str = "sqlite:jwks.db";
 // pub static JWT_ACCESS_TOKEN_EXPIRES_COUNT: &str = "JWT_ACCESS_TOKEN_EXPIRES_COUNT";
 // pub static JWT_ACCESS_TOKEN_EXPIRES_IN: &str = "JWT_ACCESS_TOKEN_EXPIRES_IN";
 // pub static JWT_AUTH_SCHEMA: &str = "JWT_AUTH_SCHEMA";
-// pub static JWT_REFRESH_TOKEN_EXPIRES_IN: &str = "JWT_REFRESH_TOKEN_EXPIRES_IN";
+// pub static JWT_REFERENCE_TOKEN_EXPIRES_IN: &str = "JWT_REFERENCE_TOKEN_EXPIRES_IN";
 
 /// Token for PRODUCER
 pub static PRODUCER: &str = "PRODUCER";
@@ -80,7 +82,7 @@ pub static RES: &str = "RES";
 
 /// Token for RT
 pub static RT: &str = "RT";
-/// Token for RT_DB_SQLITE
+/// Token for `RT_DB_SQLITE`
 pub static RT_DB_SQLITE: &str = "sqlite:rt.db";
 
 // pub static RT_BLOCK: &str = "RT_BLOCK";
@@ -118,7 +120,7 @@ pub static RT_DB_SQLITE: &str = "sqlite:rt.db";
 
 /// Token for USER
 pub static USER: &str = "USER";
-/// Token for USER_DB_SQLITE
+/// Token for `USER_DB_SQLITE`
 pub static USER_DB_SQLITE: &str = "sqlite:user.db";
 
 // pub static USER_FIND: &str = "USER_FIND";
