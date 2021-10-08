@@ -5,208 +5,272 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'fip_api'",
+            "args": [],
             "cargo": {
                 "args": [
                     "build",
-                    "--bin fip_api",
-                    "--package fip_api"
+                    "--bin",
+                    "fip_api",
+                    "--manifest-path",
+                    "fip_api/Cargo.toml",
+                    "--package",
+                    "fip_api"
                 ],
                 "filter": {
                     "name": "fip_api",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug fip_api",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'fip_api'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin fip_api",
-                    "--package fip_api"
+                    "--bin",
+                    "fip_api",
+                    "--manifest-path",
+                    "fip_api/Cargo.toml",
+                    "--package",
+                    "fip_api"
                 ],
                 "filter": {
                     "name": "fip_api",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Test fip_api",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'fip_common'",
+            "args": [],
             "cargo": {
                 "args": [
-                    "test",
-                    "--no-run",
+                    "build",
                     "--lib",
-                    "--package fip_common"
+                    "--manifest-path",
+                    "fip_common/Cargo.toml",
+                    "--package",
+                    "fip_common"
                 ],
                 "filter": {
                     "name": "fip_common",
                     "kind": "lib"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug fip_common",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
+            "args": [],
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--manifest-path",
+                    "fip_common/Cargo.toml",
+                    "--package",
+                    "fip_common"
+                ],
+                "filter": {
+                    "name": "fip_common",
+                    "kind": "lib"
+                }
+            },
+            "cwd": "${workspaceFolder}",
+            "name": "Test fip_common",
             "request": "launch",
-            "name": "Debug executable 'fip_at'",
+            "type": "lldb",
+        },
+        {
+            "args": [],
             "cargo": {
                 "args": [
                     "build",
-                    "--bin fip_at",
-                    "--package fip_at"
+                    "--bin",
+                    "fip_at",
+                    "--manifest-path",
+                    "fip_at/Cargo.toml",
+                    "--package",
+                    "fip_at"
                 ],
                 "filter": {
                     "name": "fip_at",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug fip_at",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'fip_at'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin fip_at",
-                    "--package fip_at"
+                    "--bin",
+                    "fip_at",
+                    "--manifest-path",
+                    "fip_at/Cargo.toml",
+                    "--package",
+                    "fip_at"
                 ],
                 "filter": {
                     "name": "fip_at",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Test fip_at",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'fip_jwks'",
+            "args": [],
             "cargo": {
                 "args": [
                     "build",
-                    "--bin fip_jwks",
-                    "--package fip_jwks"
+                    "--bin",
+                    "fip_jwks",
+                    "--manifest-path",
+                    "fip_jwks/Cargo.toml",
+                    "--package",
+                    "fip_jwks"
                 ],
                 "filter": {
                     "name": "fip_jwks",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug fip_jwks",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'fip_jwks'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin fip_jwks",
-                    "--package fip_jwks"
+                    "--bin",
+                    "fip_jwks",
+                    "--manifest-path",
+                    "fip_jwks/Cargo.toml",
+                    "--package",
+                    "fip_jwks"
                 ],
                 "filter": {
                     "name": "fip_jwks",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Test fip_jwks",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'fip_rt'",
+            "args": [],
             "cargo": {
                 "args": [
                     "build",
-                    "--bin fip_rt",
-                    "--package fip_rt"
+                    "--bin",
+                    "fip_rt",
+                    "--manifest-path",
+                    "fip_rt/Cargo.toml",
+                    "--package",
+                    "fip_rt"
                 ],
                 "filter": {
                     "name": "fip_rt",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug fip_rt",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'fip_rt'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin fip_rt",
-                    "--package fip_rt"
+                    "--bin",
+                    "fip_rt",
+                    "--manifest-path",
+                    "fip_rt/Cargo.toml",
+                    "--package",
+                    "fip_rt"
                 ],
                 "filter": {
                     "name": "fip_rt",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Test fip_rt",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'fip_user'",
+            "args": [],
             "cargo": {
                 "args": [
                     "build",
-                    "--bin fip_user",
-                    "--package fip_user"
+                    "--bin",
+                    "fip_user",
+                    "--manifest-path",
+                    "fip_user/Cargo.toml",
+                    "--package",
+                    "fip_user"
                 ],
                 "filter": {
                     "name": "fip_user",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Debug fip_user",
+            "request": "launch",
+            "type": "lldb"
         },
         {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'fip_user'",
+            "args": [],
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin fip_user",
-                    "--package fip_user"
+                    "--bin",
+                    "fip_user",
+                    "--manifest-path",
+                    "fip_user/Cargo.toml",
+                    "--package",
+                    "fip_user"
                 ],
                 "filter": {
                     "name": "fip_user",
                     "kind": "bin"
                 }
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "name": "Test fip_user",
+            "request": "launch",
+            "type": "lldb"
         }
     ]
 }

@@ -10,39 +10,49 @@ use crate::{
     user::{config::Config as UserConfig, service::Service as UserService},
 };
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: InterceptedServer<AuthServer<Controller>>,
 }
 
+/// TODO: documentation
 impl Server {
+    /// TODO: documentation
+    #[must_use]
     pub fn new() -> Self {
         Self::default()
     }
 }
 
+/// TODO: documentation
 impl Server {
+    /// TODO: documentation
+    #[allow(clippy::missing_const_for_fn)]
+    #[must_use]
     pub fn into_inner(self) -> InterceptedServer<AuthServer<Controller>> {
         self.inner
     }
 }
 
+/// TODO: documentation
 impl Default for Server {
+    /// TODO: documentation
     fn default() -> Self {
-        let at_config = AtConfig::new();
-        let at_service = AtService::new(at_config);
+        let access_token_config = AtConfig::new();
+        let access_token_service = AtService::new(access_token_config);
         let jwks_config = JwksConfig::new();
         let jwks_service = JwksService::new(jwks_config);
-        let rt_config = RtConfig::new();
-        let rt_service = RtService::new(rt_config);
+        let reference_token_config = RtConfig::new();
+        let reference_token_service = RtService::new(reference_token_config);
         let user_config = UserConfig::new();
         let user_service = UserService::new(user_config);
         let config = Config::new();
         let service = Service::new(
             config.clone(),
-            at_service,
+            access_token_service,
             jwks_service,
-            rt_service,
+            reference_token_service,
             user_service,
         );
         let controller = Controller::new(config, service);

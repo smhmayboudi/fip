@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+
+set -eux
+set -o errexit
+set -o pipefail
+set -o nounset
 
 # STEP 0: Make sure there is no left-over profiling data from previous runs
 rm -fr /tmp/pgo-data

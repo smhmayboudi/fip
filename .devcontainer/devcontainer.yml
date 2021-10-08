@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vsc-fip
+  name: vsc-fip
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vsc-fip
+  # strategy:
+  #   type: RollingUpdate
+  template:
+    metadata:
+      # creationTimestamp: null
+      labels:
+        app: vsc-fip
+    spec:
+      containers:
+        -
+          image: localhost:5000/vsc-fip-b565192a7e7b15dd011e738f1a356bc4
+          imagePullPolicy: Always
+          name: vsc-fip
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+      hostname: vsc-fip
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: vsc-fip
+  name: vsc-fip
+  namespace: default
+spec:
+  ports:
+    - 
+      name: ssh
+      nodePort: 30030
+      port: 2222
+      protocol: TCP
+  selector:
+    app: vsc-fip
+  type: NodePort
+status:
+  loadBalancer: {}

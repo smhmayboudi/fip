@@ -1,11 +1,11 @@
 jobs:
   check:
     container:
-      image: docker://rust:1.55.0-buster
+      image: docker://rust:1.56.0-bullseye
     runs-on: ubuntu-latest
     steps:
       -
-        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
         run: make check fmt-check
     timeout-minutes: 5
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
         uses: EmbarkStudios/cargo-deny-action@0ca727bbae7b7b578b9a5f98186caac35aa2a00d
         with:
@@ -27,11 +27,11 @@ jobs:
     timeout-minutes: 5
   clippy:
     container:
-      image: docker://rust:1.55.0-buster
+      image: docker://rust:1.56.0-bullseye
     runs-on: ubuntu-latest
     steps:
       -
-        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
         run: make clippy
     timeout-minutes: 5

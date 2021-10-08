@@ -9,25 +9,30 @@ use crate::{
     },
     common::sub::Sub,
 };
-// use fip_common::common_opentelemetry::MetadataMap;
+// use fip_common::opentelemetry::MetadataMap;
 use tonic::{Request, Response, Status};
 // use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Controller {
     config: Config,
     service: Service,
 }
 
+/// TODO: documentation
 impl Controller {
-    pub fn new(config: Config, service: Service) -> Self {
+    /// TODO: documentation
+    #[must_use]
+    pub const fn new(config: Config, service: Service) -> Self {
         Self { config, service }
     }
 }
 
 #[tonic::async_trait]
 impl Auth for Controller {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn login(
         &self,
@@ -43,6 +48,7 @@ impl Auth for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn logout(
         &self,
@@ -59,6 +65,7 @@ impl Auth for Controller {
         Ok(Response::new(res))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn token(
         &self,
@@ -76,4 +83,5 @@ impl Auth for Controller {
     }
 }
 
+/// TODO: documentation
 impl Sub for Controller {}

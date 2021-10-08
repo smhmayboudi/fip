@@ -5,6 +5,7 @@ use argonautica::{Hasher, Verifier};
 
 pub struct Argon2id;
 
+/// TODO: documentation
 impl Argon2id {
     /// Hashes a password using the Argon2id hashing algorithm.AuthError
     ///
