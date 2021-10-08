@@ -8,12 +8,14 @@ use tonic_health::server::HealthReporter;
 // use tracing::{Level, Span};
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: JwksServer<Controller>,
 }
 
 impl Server {
+    /// TODO: documentation
     pub async fn new() -> Self {
         let config = Config::new();
         let repository = Repository::new(config.clone()).await;
@@ -21,7 +23,7 @@ impl Server {
         let controller = Controller::new(config, service);
 
         let server = JwksServer::new(controller);
-        Self { inner: serve }
+        Self { inner: server }
     }
 }
 
@@ -41,6 +43,7 @@ impl Server {
         }
     }
 
+    /// TODO: documentation
     pub async fn init(config: &Config) -> Result<()> {
         let (mut health_reporter, health_server) = tonic_health::server::health_reporter();
         health_reporter
@@ -79,6 +82,7 @@ impl Server {
 }
 
 impl Server {
+    /// TODO: documentation
     pub fn into_inner(self) -> JwksServer<Controller> {
         self.inner
     }

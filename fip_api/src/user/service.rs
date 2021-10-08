@@ -14,18 +14,21 @@ use tonic::{transport::Channel, Request, Status};
 use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Service {
     config: Config,
 }
 
 impl Service {
+    /// TODO: documentation
     pub fn new(config: Config) -> Self {
         Service { config }
     }
 }
 
 impl Service {
+    /// TODO: documentation
     pub async fn user_client_connect(&self) -> Result<UserClient<InterceptedClient>, CommonError> {
         let channel = Channel::from_shared(self.config.endpoint())
             .map_err(|err| {
@@ -42,6 +45,7 @@ impl Service {
         Ok(UserClient::new(intercepted_client))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete(&self, req: &UserDeleteReq, _sub: &str) -> Result<UserRes, Status> {
         let mut client = self.user_client_connect().await?;
@@ -58,6 +62,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete_by_cellphone(
         &self,
@@ -78,6 +83,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete_by_username(
         &self,
@@ -98,6 +104,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find(&self, req: &UserFindReq, _sub: &str) -> Result<Vec<UserRes>, Status> {
         let mut client = self.user_client_connect().await?;
@@ -123,6 +130,7 @@ impl Service {
         Ok(res)
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one(&self, req: &UserFindOneReq, _sub: &str) -> Result<UserRes, Status> {
         let mut client = self.user_client_connect().await?;
@@ -139,6 +147,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one_by_cellphone(
         &self,
@@ -159,6 +168,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one_by_username(
         &self,
@@ -179,6 +189,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn save(&self, req: &UserSaveReq, _sub: &str) -> Result<UserRes, Status> {
         let mut client = self.user_client_connect().await?;
@@ -195,6 +206,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn update(&self, req: &UserUpdateReq, _sub: &str) -> Result<UserRes, Status> {
         let mut client = self.user_client_connect().await?;

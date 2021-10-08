@@ -1,27 +1,46 @@
 use crate::proto::{AtRes, AtSaveReq, AtUpdateReq};
 use sqlx::FromRow;
 
+/// TODO: documentation
 #[derive(Debug, FromRow)]
 pub struct Model {
+    /// TODO: documentation
     pub claims_aud: String,
+    /// TODO: documentation
     pub claims_exp: i64,
+    /// TODO: documentation
     pub claims_iat: i64,
+    /// TODO: documentation
     pub claims_iss: String,
+    /// TODO: documentation
     pub claims_jti: String,
+    /// TODO: documentation
     pub claims_nbf: i64,
+    /// TODO: documentation
     pub claims_sub: String,
+    /// TODO: documentation
     pub header_typ: String,
+    /// TODO: documentation
     pub header_alg: String,
+    /// TODO: documentation
     pub header_cty: String,
+    /// TODO: documentation
     pub header_jku: String,
+    /// TODO: documentation
     pub header_kid: String,
+    /// TODO: documentation
     pub header_x5u: String,
+    /// TODO: documentation
     pub header_x5t: String,
+    /// TODO: documentation
     pub token_blocked: bool,
+    /// TODO: documentation
     pub token_blocked_description: String,
 }
 
+/// TODO: documentation
 impl From<&AtSaveReq> for Model {
+    /// TODO: documentation
     fn from(req: &AtSaveReq) -> Self {
         Self {
             claims_aud: req.claims_aud.clone(),
@@ -44,7 +63,9 @@ impl From<&AtSaveReq> for Model {
     }
 }
 
+/// TODO: documentation
 impl From<&AtUpdateReq> for Model {
+    /// TODO: documentation
     fn from(req: &AtUpdateReq) -> Self {
         Self {
             claims_aud: req.claims_aud.clone(),
@@ -67,7 +88,9 @@ impl From<&AtUpdateReq> for Model {
     }
 }
 
+/// TODO: documentation
 impl Into<AtRes> for Model {
+    /// TODO: documentation
     fn into(self) -> AtRes {
         AtRes {
             claims_aud: self.claims_aud,

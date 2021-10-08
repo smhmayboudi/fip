@@ -8,12 +8,14 @@ use tonic_health::server::HealthReporter;
 // use tracing::{Level, Span};
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: RtServer<Controller>,
 }
 
 impl Server {
+    /// TODO: documentation
     pub async fn new() -> Self {
         let config = Config::new();
         let repository = Repository::new(config.clone()).await;
@@ -41,6 +43,7 @@ impl Server {
         }
     }
 
+    /// TODO: documentation
     pub async fn init(config: &Config) -> Result<()> {
         let (mut health_reporter, health_server) = tonic_health::server::health_reporter();
         health_reporter.set_serving::<RtServer<Controller>>().await;
@@ -77,6 +80,7 @@ impl Server {
 }
 
 impl Server {
+    /// TODO: documentation
     pub fn into_inner(self) -> RtServer<Controller> {
         self.inner
     }

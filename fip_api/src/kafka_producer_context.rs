@@ -5,6 +5,7 @@ use rdkafka::{
 // A context can be used to change the behavior of producers and producers by adding callbacks
 // that will be executed by librdkafka.
 // This particular context sets up custom callbacks to log rebalancing events.
+/// TODO: documentation
 #[derive(Debug)]
 pub struct KafkaProducerContext;
 

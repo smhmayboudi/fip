@@ -4,10 +4,12 @@
 
 use casbin::{CoreApi, Enforcer, FileAdapter};
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct AuthEnforce {}
 
 impl AuthEnforce {
+    /// TODO: documentation
     pub async fn enforce(sub: &str, obj: &str, act: &str) -> bool {
         let adapter = FileAdapter::new("auth_policy.csv");
         let enforcer = Enforcer::new("auth_model.conf", adapter)

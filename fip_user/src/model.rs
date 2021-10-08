@@ -1,24 +1,40 @@
 use crate::proto::{UserRes, UserSaveReq, UserUpdateReq};
 use sqlx::FromRow;
 
+/// TODO: documentation
 #[derive(Debug, FromRow)]
 pub struct Model {
+    /// TODO: documentation
     pub avatar: String,
+    /// TODO: documentation
     pub biography: String,
+    /// TODO: documentation
     pub birth_date: i64,
+    /// TODO: documentation
     pub cellphone: String,
+    /// TODO: documentation
     pub email: String,
+    /// TODO: documentation
     pub first_name: String,
+    /// TODO: documentation
     pub gender: String,
+    /// TODO: documentation
     pub id: String,
+    /// TODO: documentation
     pub language_code: String,
+    /// TODO: documentation
     pub last_name: String,
+    /// TODO: documentation
     pub password: String,
+    /// TODO: documentation
     pub registered_at: i64,
+    /// TODO: documentation
     pub username: String,
 }
 
+/// TODO: documentation
 impl From<&UserSaveReq> for Model {
+    /// TODO: documentation
     fn from(req: &UserSaveReq) -> Self {
         Self {
             avatar: req.avatar.clone(),
@@ -38,7 +54,9 @@ impl From<&UserSaveReq> for Model {
     }
 }
 
+/// TODO: documentation
 impl From<&UserUpdateReq> for Model {
+    /// TODO: documentation
     fn from(req: &UserUpdateReq) -> Self {
         Self {
             avatar: req.avatar.clone(),
@@ -58,7 +76,9 @@ impl From<&UserUpdateReq> for Model {
     }
 }
 
+/// TODO: documentation
 impl Into<UserRes> for Model {
+    /// TODO: documentation
     fn into(self) -> UserRes {
         UserRes {
             avatar: self.avatar,

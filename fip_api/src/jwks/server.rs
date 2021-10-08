@@ -6,18 +6,21 @@ use crate::{
     },
 };
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: InterceptedServer<JwksServer<Controller>>,
 }
 
 impl Server {
+    /// TODO: documentation
     pub fn new() -> Self {
         Self::default()
     }
 }
 
 impl Server {
+    /// TODO: documentation
     pub fn into_inner(self) -> InterceptedServer<JwksServer<Controller>> {
         self.inner
     }

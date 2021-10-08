@@ -21,6 +21,7 @@ pub struct Kafka {
 }
 
 impl Kafka {
+    /// TODO: documentation
     pub fn new(config: Config) -> Self {
         let context = KafkaConsumerContext;
         let consumer = ClientConfig::default()
@@ -82,11 +83,15 @@ impl Kafka {
 }
 
 impl Kafka {
+    /// TODO: documentation
     pub fn process() {}
 
+    /// TODO: documentation
     pub fn handle() {}
 
+    /// TODO: documentation
     // pub fn receive(&self, topic: &str) {
+    /// TODO: documentation
     pub async fn receive(&self) {
         let topic = "TEST_REQ";
 
@@ -138,6 +143,7 @@ impl Kafka {
     }
 
     // pub fn send(&self, topic: &str, key: &str, payload: &str) -> DeliveryFuture {
+    /// TODO: documentation
     pub async fn send(&self) {
         let topic = "TEST_REQ";
         let key = "user_id";

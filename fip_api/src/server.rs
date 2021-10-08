@@ -11,6 +11,7 @@ use tracing::Level;
 // use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Server {}
 
@@ -32,6 +33,7 @@ impl Server {
         }
     }
 
+    /// TODO: documentation
     pub async fn init(config: &Config) -> Result<()> {
         let (mut health_reporter, health_server) = tonic_health::server::health_reporter();
         health_reporter

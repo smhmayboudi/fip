@@ -16,10 +16,12 @@ use tracing_subscriber::{
     {EnvFilter, Registry},
 };
 s
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Trace {}
 
 impl Trace {
+/// TODO: documentation
     pub fn init(config: &Config) -> Result<()> {
         opentelemetry::global::set_text_map_propagator(Propagator::new());
         let tracer = opentelemetry_zipkin::new_pipeline()

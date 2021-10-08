@@ -14,6 +14,7 @@ impl Argon2id {
     /// # Return Values
     /// Upon success, the hashed result will be returned, this is safe to store in a database and
     /// use for password verification at a later stage.
+    /// TODO: documentation
     pub fn hash_password(password: &str) -> Result<String, AuthError> {
         let result = Hasher::default()
             .opt_out_of_secret_key(true)
@@ -33,6 +34,7 @@ impl Argon2id {
     ///
     /// # Return Values
     /// `true` if the password matched the hash, `false` otherwise.
+    /// TODO: documentation
     pub fn verify_password(password: &str, hash: &str) -> Result<bool, AuthError> {
         let result = Verifier::default()
             .with_password(password)

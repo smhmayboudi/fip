@@ -10,18 +10,21 @@ use crate::{
     user::{config::Config as UserConfig, service::Service as UserService},
 };
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: InterceptedServer<AuthServer<Controller>>,
 }
 
 impl Server {
+    /// TODO: documentation
     pub fn new() -> Self {
         Self::default()
     }
 }
 
 impl Server {
+    /// TODO: documentation
     pub fn into_inner(self) -> InterceptedServer<AuthServer<Controller>> {
         self.inner
     }

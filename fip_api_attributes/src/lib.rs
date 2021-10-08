@@ -1,4 +1,7 @@
-#[proc_macro_derive(Sub)]
+//! TODO: documentation
+
+/// TODO: documentation
+// #[proc_macro_derive(Sub)]
 pub fn derive_sub(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = syn::parse_macro_input!(input as syn::DeriveInput);
     // let input = proc_macro2::TokenStream::from(input);

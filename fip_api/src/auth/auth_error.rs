@@ -33,6 +33,7 @@ pub enum AuthError {
     UserAlreadyExists(String),
 }
 
+/// TODO: documentation
 impl From<AuthError> for tonic::Status {
     fn from(auth_error: AuthError) -> tonic::Status {
         match auth_error {

@@ -42,6 +42,7 @@ fn default_token() -> String {
     USER.into()
 }
 
+/// TODO: documentation
 #[derive(Clone, Debug, Deserialize)]
 pub struct Config {
     #[serde(default = "default_app_name")]
@@ -67,48 +68,59 @@ pub struct Config {
 }
 
 impl Config {
+    /// TODO: documentation
     pub fn new() -> Self {
         Self::default()
     }
 }
 
 impl Config {
+    /// TODO: documentation
     pub fn app_name(&self) -> String {
         self.app_name.clone()
     }
 
+    /// TODO: documentation
     pub fn app_version(&self) -> String {
         self.app_version.clone()
     }
 
+    /// TODO: documentation
     pub fn database_url(&self) -> String {
         self.database_url.clone()
     }
 
+    /// TODO: documentation
     pub fn endpoint(&self) -> String {
         self.endpoint.clone()
     }
 
+    /// TODO: documentation
     pub fn kafka_broker(&self) -> String {
         self.kafka_broker.clone()
     }
 
+    /// TODO: documentation
     pub fn kafka_consumer_group(&self) -> String {
         self.kafka_consumer_group.clone()
     }
 
+    /// TODO: documentation
     pub fn kafka_topic_req(&self) -> String {
         self.kafka_topic_req.clone()
     }
 
+    /// TODO: documentation
     pub fn kafka_topic_res(&self) -> String {
         self.kafka_topic_res.clone()
     }
 
+    /// TODO: documentation
     pub fn socket_address(&self) -> SocketAddr {
         self.socket_address
     }
 
+    /// TODO: documentation
     pub fn token(&self) -> String {
         self.token.clone()
     }

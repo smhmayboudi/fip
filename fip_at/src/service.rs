@@ -10,6 +10,7 @@ use crate::{
 use fip_common::common_error::CommonError;
 use uuid::Uuid;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Service {
     config: Config,
@@ -17,12 +18,14 @@ pub struct Service {
 }
 
 impl Service {
+    /// TODO: documentation
     pub fn new(config: Config, repository: Repository) -> Self {
         Self { config, repository }
     }
 }
 
 impl Service {
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn delete(&self, req: &AtDeleteReq) -> Result<AtRes, CommonError> {
         let res = self.repository.find_one(&req.claims_jti).await?;
@@ -30,6 +33,7 @@ impl Service {
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn delete_by_claims_sub(
         &self,
@@ -46,18 +50,21 @@ impl Service {
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn find(&self, _req: &AtFindReq) -> Result<Vec<AtRes>, CommonError> {
         let res = self.repository.find().await?;
         Ok(res.into_iter().map(|model| model.into()).collect())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn find_one(&self, req: &AtFindOneReq) -> Result<AtRes, CommonError> {
         let res = self.repository.find_one(&req.claims_jti).await?;
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn find_one_by_claims_sub(
         &self,
@@ -70,6 +77,7 @@ impl Service {
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn save(&self, req: &AtSaveReq) -> Result<AtRes, CommonError> {
         let mut model: Model = req.into();
@@ -78,6 +86,7 @@ impl Service {
         Ok(model.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn update(&self, req: &AtUpdateReq) -> Result<AtRes, CommonError> {
         let model = req.into();
@@ -85,12 +94,14 @@ impl Service {
         Ok(model.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn validate(&self, req: &AtValidateReq) -> Result<AtRes, CommonError> {
         let res = self.repository.validate(&req.claims_jti).await?;
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn validate_by_claims_sub(
         &self,

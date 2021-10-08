@@ -2,6 +2,7 @@ use crate::{config::Config, model::Model};
 use fip_common::common_error::CommonError;
 use sqlx::sqlite::{SqlitePool, SqlitePoolOptions};
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Repository {
     config: Config,
@@ -9,6 +10,7 @@ pub struct Repository {
 }
 
 impl Repository {
+    /// TODO: documentation
     pub async fn new(config: Config) -> Self {
         let pool = SqlitePoolOptions::new()
             .connect(&config.clone().database_url())
@@ -19,6 +21,7 @@ impl Repository {
 }
 
 impl Repository {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete(&self, id: &str) -> Result<u64, CommonError> {
         let done = sqlx::query("DELETE FROM jwks WHERE id = ?")
@@ -32,6 +35,7 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find(&self) -> Result<Vec<Model>, CommonError> {
         sqlx::query_as("SELECT id, private_key, public_key FROM jwks")
@@ -43,6 +47,7 @@ impl Repository {
             })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one(&self, id: &str) -> Result<Model, CommonError> {
         sqlx::query_as("SELECT id, private_key, public_key FROM jwks WHERE id = ?")
@@ -55,6 +60,7 @@ impl Repository {
             })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one_random(&self) -> Result<Model, CommonError> {
         sqlx::query_as("SELECT id, private_key, public_key FROM jwks ORDER BY Random() LIMIT 1")
@@ -66,6 +72,7 @@ impl Repository {
             })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn save(&self, model: &Model) -> Result<u64, CommonError> {
         let done =
@@ -82,6 +89,7 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn update(&self, model: &Model) -> Result<u64, CommonError> {
         let done = sqlx::query("UPDATE jwks SET private_key = ?, public_key = ? WHERE id = ?")

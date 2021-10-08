@@ -10,6 +10,7 @@ use crate::{
 use fip_common::common_error::CommonError;
 use uuid::Uuid;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Service {
     config: Config,
@@ -17,12 +18,14 @@ pub struct Service {
 }
 
 impl Service {
+    /// TODO: documentation
     pub fn new(config: Config, repository: Repository) -> Self {
         Self { config, repository }
     }
 }
 
 impl Service {
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn delete(&self, req: &JwksDeleteReq) -> Result<JwksRes, CommonError> {
         let res = self.repository.find_one(&req.id).await?;
@@ -30,18 +33,21 @@ impl Service {
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn find(&self, _req: &JwksFindReq) -> Result<Vec<JwksRes>, CommonError> {
         let res = self.repository.find().await?;
         Ok(res.into_iter().map(|model| model.into()).collect())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn find_one(&self, req: &JwksFindOneReq) -> Result<JwksRes, CommonError> {
         let res = self.repository.find_one(&req.id).await?;
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn find_one_random(
         &self,
@@ -51,6 +57,7 @@ impl Service {
         Ok(res.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn save(&self, req: &JwksSaveReq) -> Result<JwksRes, CommonError> {
         let mut model: Model = req.into();
@@ -59,6 +66,7 @@ impl Service {
         Ok(model.into())
     }
 
+    /// TODO: documentation
     #[tracing::instrument]
     pub async fn update(&self, req: &JwksUpdateReq) -> Result<JwksRes, CommonError> {
         let model = req.into();

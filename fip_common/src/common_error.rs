@@ -1,3 +1,6 @@
+//! TODO: documentation
+
+/// TODO: documentation
 #[derive(Debug)]
 #[non_exhaustive]
 pub struct CommonError {
@@ -5,28 +8,36 @@ pub struct CommonError {
     span_trace: tracing_error::SpanTrace,
 }
 
+/// TODO: documentation
 #[derive(Debug, thiserror::Error)]
 #[non_exhaustive]
 pub enum CommonErrorKind {
+    /// TODO: documentation
     #[error(transparent)]
     KafkaError(#[from] rdkafka::error::KafkaError),
 
+    /// TODO: documentation
     #[error(transparent)]
     HttpInvalidUri(#[from] http::uri::InvalidUri),
 
+    /// TODO: documentation
     #[error(transparent)]
     JsonWebTokenError(#[from] jsonwebtoken::errors::Error),
 
+    /// TODO: documentation
     #[error(transparent)]
     SqlxError(#[from] sqlx::Error),
 
+    /// TODO: documentation
     #[error(transparent)]
     TonicMetadataToStrError(#[from] tonic::metadata::errors::ToStrError),
 
+    /// TODO: documentation
     #[error(transparent)]
     TonicTransportError(#[from] tonic::transport::Error),
 }
 
+/// TODO: documentation
 impl From<CommonError> for tonic::Status {
     fn from(common_error: CommonError) -> tonic::Status {
         match common_error.common_error_kind {

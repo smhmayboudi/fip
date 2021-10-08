@@ -13,18 +13,21 @@ use tonic::{transport::Channel, Request, Status};
 use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Service {
     config: Config,
 }
 
 impl Service {
+    /// TODO: documentation
     pub fn new(config: Config) -> Self {
         Service { config }
     }
 }
 
 impl Service {
+    /// TODO: documentation
     pub async fn jwks_client_connect(&self) -> Result<JwksClient<InterceptedClient>, CommonError> {
         let channel = Channel::from_shared(self.config.endpoint())
             .map_err(|err| {
@@ -41,6 +44,7 @@ impl Service {
         Ok(JwksClient::new(intercepted_client))
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete(&self, req: &JwksDeleteReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
@@ -57,6 +61,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find(&self, req: &JwksFindReq, _sub: &str) -> Result<Vec<JwksRes>, Status> {
         let mut client = self.jwks_client_connect().await?;
@@ -82,6 +87,7 @@ impl Service {
         Ok(res)
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one(&self, req: &JwksFindOneReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
@@ -98,6 +104,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one_random(
         &self,
@@ -118,6 +125,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn save(&self, req: &JwksSaveReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;
@@ -134,6 +142,7 @@ impl Service {
         Ok(res.into_inner())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn update(&self, req: &JwksUpdateReq, _sub: &str) -> Result<JwksRes, Status> {
         let mut client = self.jwks_client_connect().await?;

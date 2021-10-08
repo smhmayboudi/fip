@@ -3,6 +3,7 @@ use chrono::Utc;
 use fip_common::common_error::CommonError;
 use sqlx::sqlite::{SqlitePool, SqlitePoolOptions};
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Repository {
     config: Config,
@@ -10,6 +11,7 @@ pub struct Repository {
 }
 
 impl Repository {
+    /// TODO: documentation
     pub async fn new(config: Config) -> Self {
         let pool = SqlitePoolOptions::new()
             .connect(&config.clone().database_url())
@@ -20,6 +22,7 @@ impl Repository {
 }
 
 impl Repository {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete(&self, claims_jti: &str) -> Result<u64, CommonError> {
         let done = sqlx::query("DELETE FROM at WHERE claims_jti = ?")
@@ -33,6 +36,7 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn delete_by_claims_sub(&self, claims_sub: &str) -> Result<u64, CommonError> {
         let done = sqlx::query("DELETE FROM at WHERE claims_sub = ?")
@@ -46,6 +50,7 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find(&self) -> Result<Vec<Model>, CommonError> {
         sqlx::query_as(
@@ -59,6 +64,7 @@ impl Repository {
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one(&self, claims_jti: &str) -> Result<Model, CommonError> {
         sqlx::query_as(
@@ -73,6 +79,7 @@ impl Repository {
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn find_one_by_claims_sub(&self, claims_sub: &str) -> Result<Model, CommonError> {
         sqlx::query_as(
@@ -87,6 +94,7 @@ impl Repository {
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn save(&self, model: &Model) -> Result<u64, CommonError> {
         let done = sqlx::query(
@@ -117,6 +125,7 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn update(&self, model: &Model) -> Result<u64, CommonError> {
         let done = sqlx::query(
@@ -147,6 +156,7 @@ impl Repository {
         Ok(done.rows_affected())
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn validate(&self, claims_jti: &str) -> Result<Model, CommonError> {
         let now = Utc::now().timestamp();
@@ -163,6 +173,7 @@ impl Repository {
         })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn validate_by_claims_sub(&self, claims_sub: &str) -> Result<Model, CommonError> {
         let now = Utc::now().timestamp();

@@ -37,7 +37,7 @@ CARGO_RUN = $(CARGO) run --all-features --frozen --no-default-features --package
 CARGO_TEST = $(CARGO) test --all-features --all-targets --frozen --no-default-features --package $(PACKAGE) $(RELEASE) --target $(TARGET)
 
 CARGO_AUDIT = $(CARGO) audit
-CARGO_CLIPPY = $(CARGO) clippy --all-features --all-targets --frozen --no-default-features --workspace -- --deny warnings
+CARGO_CLIPPY = $(CARGO) clippy --all-features --all-targets --frozen --no-default-features --workspace --  --deny clippy::all --deny warnings
 CARGO_DENY = $(CARGO) deny --all-features --no-default-features --workspace
 CARGO_FMT = $(CARGO) fmt --package $(PACKAGE)
 

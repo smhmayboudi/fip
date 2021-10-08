@@ -21,12 +21,14 @@ use tonic::{body::BoxBody, transport::NamedService};
 use tower_service::Service;
 use uuid::Uuid;
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct InterceptedServer<S> {
     inner: S,
 }
 
 impl<S> InterceptedServer<S> {
+    /// TODO: documentation
     pub fn new(inner: S) -> Self {
         Self { inner }
     }

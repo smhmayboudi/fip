@@ -20,6 +20,7 @@ use jsonwebtoken::{Algorithm, EncodingKey, Header};
 use tonic::Status;
 use uuid::Uuid;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Service {
     config: Config,
@@ -30,6 +31,7 @@ pub struct Service {
 }
 
 impl Service {
+    /// TODO: documentation
     pub fn new(
         config: Config,
         at_service: AtService,
@@ -48,6 +50,7 @@ impl Service {
 }
 
 impl Service {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn login(&self, req: &AuthLoginReq) -> Result<AuthLoginRes, Status> {
         let user = self
@@ -67,11 +70,13 @@ impl Service {
         Ok(AuthLoginRes { at, rt })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn logout(&self, _req: &AuthLogoutReq, sub: &str) -> Result<AuthLogoutRes, Status> {
         self.logout_all(sub).await
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn token(&self, req: &AuthTokenReq, sub: &str) -> Result<AuthTokenRes, Status> {
         let _ = self
@@ -88,11 +93,13 @@ impl Service {
 }
 
 impl Service {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     fn hash(&self, msg: String) -> String {
         msg
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     async fn access_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
         let iat = Utc::now().timestamp();
@@ -151,6 +158,7 @@ impl Service {
         Ok(AuthTokenRes { token })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     async fn logout_all(&self, _sub: &str) -> Result<AuthLogoutRes, Status> {
         // self.at_service.update(&AtUpdateReq {}, sub).await?;
@@ -158,6 +166,7 @@ impl Service {
         Ok(AuthLogoutRes {})
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     async fn refresh_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
         let iat = Utc::now().timestamp();

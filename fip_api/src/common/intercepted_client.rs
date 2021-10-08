@@ -12,12 +12,14 @@ use tonic::{body::BoxBody, transport::Body, transport::Channel};
 use tower_service::Service;
 // use uuid::Uuid;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct InterceptedClient {
     inner: Channel,
 }
 
 impl InterceptedClient {
+    /// TODO: documentation
     pub fn new(inner: Channel) -> Self {
         Self { inner }
     }

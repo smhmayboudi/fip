@@ -1,5 +1,8 @@
+//! TODO: documentation
+
 #![allow(single_use_lifetimes)]
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct MetadataMapMut<'a>(pub &'a mut tonic::metadata::MetadataMap);
 
@@ -14,6 +17,7 @@ impl<'a> opentelemetry::propagation::Injector for MetadataMapMut<'a> {
     }
 }
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct MetadataMap<'a>(pub &'a tonic::metadata::MetadataMap);
 

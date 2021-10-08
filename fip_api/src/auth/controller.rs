@@ -14,6 +14,7 @@ use tonic::{Request, Response, Status};
 // use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Controller {
     config: Config,
@@ -21,6 +22,7 @@ pub struct Controller {
 }
 
 impl Controller {
+    /// TODO: documentation
     pub fn new(config: Config, service: Service) -> Self {
         Self { config, service }
     }
