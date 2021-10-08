@@ -1,11 +1,17 @@
-ARG BASE_IMAGE=rust:1.53.0-buster
-FROM $BASE_IMAGE
-WORKDIR /linkerd
-
+FROM rust:1.55.0-buster
 RUN apt-get update && \
-    apt-get install -y jq && \
-    apt-get install -y musl-tools docker.io && \
-    apt-get install -y binutils-x86-64-linux-gnu binutils-aarch64-linux-gnu binutils-arm-linux-gnueabihf && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
-
-RUN cargo install cross
+    apt-get install -y \
+        binutils-aarch64-linux-gnu \
+        binutils-arm-linux-gnueabihf \
+        binutils-x86-64-linux-gnu \
+        docker.io \
+        jq \
+        musl-tools \
+        && \
+    apt-get clean && \
+    rm -fr \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/
+ENV CROSS_DOCKER_IN_DOCKER=true
+RUN cargo install --locked cross

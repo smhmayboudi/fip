@@ -20,8 +20,8 @@ s
 pub struct Trace {}
 
 impl Trace {
-    pub fn init(config: &Config, stdout: std::io::Stdout) -> Result<()> {
-        opentelemetry::global::set_text_map_propagator(Propagator::default());
+    pub fn init(config: &Config) -> Result<()> {
+        opentelemetry::global::set_text_map_propagator(Propagator::new());
         let tracer = opentelemetry_zipkin::new_pipeline()
             // .from_env()
             .with_service_name(config.app_name())

@@ -10,7 +10,7 @@ pub struct Repository {
 
 impl Repository {
     pub async fn new(config: Config) -> Self {
-        let pool = SqlitePoolOptions::default()
+        let pool = SqlitePoolOptions::new()
             .connect(&config.clone().database_url())
             .await
             .unwrap();

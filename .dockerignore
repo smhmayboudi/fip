@@ -1,2 +1,8 @@
+*.profdata
+*.profraw
 .git/
+coverage/
+documentation/
+release/
 target/
+test/

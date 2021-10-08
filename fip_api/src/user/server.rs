@@ -25,7 +25,7 @@ impl Server {
 
 impl Default for Server {
     fn default() -> Self {
-        let config = Config::default();
+        let config = Config::new();
         let service = Service::new(config.clone());
         let controller = Controller::new(config, service);
 

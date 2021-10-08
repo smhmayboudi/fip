@@ -85,7 +85,7 @@ where
                         .unwrap();
                     let kid = header.kid.unwrap();
 
-                    let jwks_service = JwksService::new(JwksConfig::default());
+                    let jwks_service = JwksService::new(JwksConfig::new());
                     let jwks = jwks_service
                         .find_one(
                             &JwksFindOneReq { id: kid },
@@ -109,7 +109,7 @@ where
                                 })
                                 .unwrap();
 
-                        let at_service = AtService::new(AtConfig::default());
+                        let at_service = AtService::new(AtConfig::new());
                         let at = at_service
                             .validate(
                                 &AtValidateReq {

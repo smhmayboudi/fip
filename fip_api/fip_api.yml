@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fip-api-namespace
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fip-api-service-account
+  namespace: fip-api-namespace
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fip-api-service
+  namespace: fip-api-namespace
+spec:
+  ports:
+    - 
+      name: grpc
+      port: 8080
+      targetPort: 8080
+    -
+      name: prom
+      port: 8801
+      targetPort: 8801
+  selector:
+    app: fip-api-service
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: fip-api-deployment
+    app.kubernetes.io/part-of: fip-api-namespace
+    app.kubernetes.io/version: v0.1.0
+  name: fip-api-deployment
+  namespace: fip-api-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fip-api-service
+      version: v0.1.0
+  template:
+    metadata:
+      labels:
+        app: fip-api-service
+        version: v0.1.0
+    spec:
+      containers:
+        - env:
+            -
+              name: GRPC_PORT
+              value: "8080"
+            -
+              name: PROM_PORT
+              value: "8801"
+          image: localhost:5000/fip_api:0.1.0
+          name: fip-api-service
+          ports:
+            -
+              containerPort: 8080
+              name: grpc
+            -
+              containerPort: 8801
+              name: prom
+          resources:
+            requests:
+              cpu: 100m
+      serviceAccountName: fip-api-service-account

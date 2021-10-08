@@ -97,7 +97,7 @@ impl Config {
     }
 }
 
-impl Server {
+impl Config {
     pub fn jwt_at_exp_in(&self) -> i64 {
         self.jwt_at_exp_in
     }

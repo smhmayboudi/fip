@@ -25,12 +25,14 @@ impl Server {
 
 impl Default for Server {
     fn default() -> Self {
-        let config = Config::default();
+        let config = Config::new();
         let service = Service::new(config.clone());
         let controller = Controller::new(config, service);
 
+        let server = AtServer::new(controller);
+        let intercepted_server = InterceptedServer::new(server);
         Self {
-            inner: InterceptedServer::new(AtServer::new(controller)),
+            inner: intercepted_server,
         }
     }
 }
