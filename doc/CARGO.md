@@ -28,14 +28,16 @@ $ cargo fmt
 $ cargo miri
 
 $ cargo install --list
-$ cargo install --locked \
+$ cargo install --force --locked \
     bunyan \
     cargo-audit \
     cargo-cache \
     cargo-deny \
     cargo2junit \
     conventional_commits_linter \
-    grcov
+    cross \
+    grcov \
+    sqlx-cli
 $ cargo uninstall
 
 $ cargo audit

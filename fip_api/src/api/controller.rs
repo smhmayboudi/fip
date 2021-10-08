@@ -3,31 +3,32 @@ use crate::api::{
     proto::server::{api_server::Api, ApiFindOneReq, ApiRes},
     service::Service,
 };
-// use fip_common::common_opentelemetry::MetadataMap;
+// use fip_common::opentelemetry::MetadataMap;
 use tonic::{Request, Response, Status};
 // use tracing::Spantracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Controller {
     config: Config,
     service: Service,
 }
 
+/// TODO: documentation
 impl Controller {
-    pub fn new(config: Config, service: Service) -> Self {
+    /// TODO: documentation
+    #[must_use]
+    pub const fn new(config: Config, service: Service) -> Self {
         Self { config, service }
     }
 }
 
 #[tonic::async_trait]
 impl Api for Controller {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
     async fn find_one(&self, request: Request<ApiFindOneReq>) -> Result<Response<ApiRes>, Status> {
-        // TODO: test features for fip_api
-        // #[cfg(feature = "attributes")]
-        // tracing::error!("features = [\"attributes\"]");
-
         // let parent_context = opentelemetry::global::get_text_map_propagator(|propagator| {
         //     propagator.extract(&MetadataMap(request.metadata()))
         // });

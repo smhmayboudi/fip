@@ -1,6 +1,9 @@
 #!/bin/sh
 
-set -eu
+set -eux
+set -o errexit
+set -o pipefail
+set -o nounset
 
 ref="$1"
 tag=$(echo "$ref" | sed s,^refs/tags/,,)
