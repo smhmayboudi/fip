@@ -1,4 +1,4 @@
-FROM docker.io/rust:1.53.0-buster as builder
+FROM docker.io/rust:1.55.0-buster as builder
 WORKDIR /fip
 ADD . .
 RUN rustup component add rustfmt

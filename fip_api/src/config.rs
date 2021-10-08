@@ -72,7 +72,7 @@ impl Config {
     }
 }
 
-impl Server {
+impl Config {
     pub fn app_name(&self) -> String {
         self.app_name.clone()
     }

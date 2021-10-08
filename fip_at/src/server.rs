@@ -14,12 +14,6 @@ pub struct Server {
 }
 
 impl Server {
-    pub fn new() -> Self {
-        Self::default()
-    }
-}
-
-impl Server {
     /// This function (somewhat improbably) flips the status of a service every second, in order
     /// that the effect of `tonic_health::HealthReporter::watch` can be easily observed.
     pub async fn check(mut reporter: HealthReporter) {
@@ -36,14 +30,13 @@ impl Server {
     }
 
     pub async fn new() -> Self {
-        let config = Config::default();
+        let config = Config::new();
         let repository = Repository::new(config.clone()).await;
         let service = Service::new(config.clone(), repository);
         let controller = Controller::new(config, service);
 
-        Self {
-            inner: AtServer::new(controller),
-        }
+        let server = AtServer::new(controller);
+        Self { inner: server }
     }
 
     pub async fn init(config: &Config) -> Result<()> {
@@ -71,19 +64,13 @@ impl Server {
             //     )
             // })
             .add_service(health_server)
-            .add_service(Self::default().await.into_inner())
+            .add_service(Self::new().await.into_inner())
             .serve(config.socket_address())
             .await
             .map_err(|err| {
                 tracing::error!("{:?}", err);
                 anyhow::anyhow!(err)
             })
-    }
-}
-
-impl Server {
-    pub fn new() -> Self {
-        Self::default()
     }
 }
 

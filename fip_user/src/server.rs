@@ -14,8 +14,14 @@ pub struct Server {
 }
 
 impl Server {
-    pub fn new() -> Self {
-        Self::default()
+    pub async fn new() -> Self {
+        let config = Config::new();
+        let repository = Repository::new(config.clone()).await;
+        let service = Service::new(config.clone(), repository);
+        let controller = Controller::new(config, service);
+
+        let server = UserServer::new(controller);
+        Self { inner: server }
     }
 }
 
@@ -32,17 +38,6 @@ impl Server {
             } else {
                 reporter.set_not_serving::<UserServer<Controller>>().await;
             };
-        }
-    }
-
-    pub async fn new() -> Self {
-        let config = Config::default();
-        let repository = Repository::new(config.clone()).await;
-        let service = Service::new(config.clone(), repository);
-        let controller = Controller::new(config, service);
-
-        Self {
-            inner: UserServer::new(controller),
         }
     }
 
@@ -73,19 +68,13 @@ impl Server {
             //     )
             // })
             .add_service(health_server)
-            .add_service(Self::default().await.into_inner())
+            .add_service(Self::new().await.into_inner())
             .serve(config.socket_address())
             .await
             .map_err(|err| {
                 tracing::error!("{:?}", err);
                 anyhow::anyhow!(err)
             })
-    }
-}
-
-impl Server {
-    pub fn new() -> Self {
-        Self::default()
     }
 }
 

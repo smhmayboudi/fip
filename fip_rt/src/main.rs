@@ -12,9 +12,9 @@ use anyhow::Result;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let config = Config::default();
+    let config = Config::new();
 
     Trace::init(&config)?;
 
-    Server::init(config.clone()).await
+    Server::init(&config).await
 }

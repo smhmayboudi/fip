@@ -29,15 +29,15 @@ impl Server {
 
 impl Default for Server {
     fn default() -> Self {
-        let at_config = AtConfig::default();
+        let at_config = AtConfig::new();
         let at_service = AtService::new(at_config);
-        let jwks_config = JwksConfig::default();
+        let jwks_config = JwksConfig::new();
         let jwks_service = JwksService::new(jwks_config);
-        let rt_config = RtConfig::default();
+        let rt_config = RtConfig::new();
         let rt_service = RtService::new(rt_config);
-        let user_config = UserConfig::default();
+        let user_config = UserConfig::new();
         let user_service = UserService::new(user_config);
-        let config = Config::default();
+        let config = Config::new();
         let service = Service::new(
             config.clone(),
             at_service,
@@ -47,8 +47,10 @@ impl Default for Server {
         );
         let controller = Controller::new(config, service);
 
+        let server = AuthServer::new(controller);
+        let intercepted_server = InterceptedServer::new(server);
         Self {
-            inner: InterceptedServer::new(AuthServer::new(controller)),
+            inner: intercepted_server,
         }
     }
 }

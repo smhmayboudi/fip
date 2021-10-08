@@ -1,87 +1,85 @@
-name: Release
-
-on:
-  push:
-    tags:
-      - release/*
-
 jobs:
   package:
-    strategy:
-      matrix:
-        architecture: [amd64, arm64, arm]
-        include:
-          - architecture: amd64
-            target: x86_64-unknown-linux-musl
-            strip: strip
-          - architecture: arm64
-            target: aarch64-unknown-linux-musl
-            strip: aarch64-linux-gnu-strip
-          - architecture: arm
-            target: armv7-unknown-linux-musleabihf
-            strip: arm-linux-gnueabihf-strip
-    name: Package (${{ matrix.architecture }})
+    name: Package (${{ matrix.target }})
     runs-on: ubuntu-latest
-    timeout-minutes: 40
     steps:
-      - name: git co
+      - 
+        name: git co
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
-
-      - name: meta
+      - 
         id: release-tag-meta
+        name: meta
         uses: ./.github/actions/release-tag-meta
         with:
           git-ref: ${{ github.ref }}
-      #- run: echo "${{ toJSON(steps.release-tag-meta) }}"
-
-      - name: package
+      # -
+      #   run: echo "${{ toJSON(steps.release-tag-meta) }}"
+      - 
         env:
           CARGO: cross
-          CARGO_RELEASE: "1"
-          CROSS_DOCKER_IN_DOCKER: true
-          PACKAGE_VERSION: ${{ steps.release-tag-meta.outputs.name }}
-          CARGO_TARGET: ${{ matrix.target }}
+          PACKAGE: fip_api
+          RELEASE: --release
           STRIP: ${{ matrix.strip }}
-          ARCH: ${{ matrix.architecture }}
-          RUST_BACKTRACE: 1
+          TARGET: ${{ matrix.target }}
+          VERSION: ${{ steps.release-tag-meta.outputs.name }}
+        name: package
         uses: ./.github/actions/package
         with:
           entrypoint: make
           args: release
-
-      - name: upload artifacts
+      -
+        name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.architecture }}-artifacts
+          name: ${{ matrix.target }}-artifacts
           path: release/*
-
+    strategy:
+      matrix:
+        target: [aarch64-unknown-linux-musl, x86_64-unknown-linux-musl, armv7-unknown-linux-musleabihf]
+        include:
+          - 
+            strip: aarch64-linux-gnu-strip
+            target: aarch64-unknown-linux-musl
+          - 
+            strip: strip
+            target: x86_64-unknown-linux-musl
+          -
+            strip: arm-linux-gnueabihf-strip
+            target: armv7-unknown-linux-musleabihf
+    timeout-minutes: 40
   release:
-    needs: [package]
     name: GitHub Release
+    needs: [package]
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
-      - name: git co
+      -
+        name: git co
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
-
-      - name: meta
+      -
         id: release-tag-meta
+        name: meta
         uses: ./.github/actions/release-tag-meta
         with:
           git-ref: ${{ github.ref }}
-
-      - name: download artifacts
+      -
+        name: download artifacts
         uses: actions/download-artifact@3be87be14a055c47b01d3bd88f8fe02320a9bb60
         with:
           path: artifacts
-
-      - name: list artifacts
+      -
+        name: list artifacts
         run: find artifacts -type f -ls
-
-      - name: release
-        uses: softprops/action-gh-release@91409e712cf565ce9eff10c87a8d1b11b81757ae
+      -
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: release
+        uses: softprops/action-gh-release@fb0163a75bee697a9cfec2c931801de7c7f10042
         with:
-          name: ${{ steps.release-tag-meta.outputs.name }}
           files: artifacts/**/*
+          name: ${{ steps.release-tag-meta.outputs.name }}
+    timeout-minutes: 5
+name: Release
+on:
+  push:
+    tags:
+      - release/*

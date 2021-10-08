@@ -92,7 +92,7 @@ impl Service {
             err
         })?;
         let mut stream = res.into_inner();
-        let mut res = Vec::default();
+        let mut res = Vec::new();
         while let Some(r) = stream.message().await.map_err(|err| {
             tracing::error!("{:?}", err);
             let _ = tracing_error::SpanTrace::capture();

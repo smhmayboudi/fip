@@ -1,89 +1,9 @@
+# fip
+
 [![Build Status](__badge_image__)](__badge_url__)
 
-# rustup
+## Help
 
-```shell
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-$ rustup toolchain install nightly
-$ rustup component add \
-    cargo \
-    clippy \
-    llvm-tools-preview \
-    rls \
-    rust-analysis \
-    rust-docs \
-    rust-src \
-    rust-std \
-    rustc \
-    rustfmt
-$ rustup +nightly component add miri
-$ rustup update && rustup self update
-```
-
-# Cargo
-
-## Sub Commands
-
-### Install
-
-```shell
-$ cargo install cargo-audit
-$ cargo install cargo-cache
-$ cargo install cargo-deny
-$ cargo install cargo-diet
-$ cargo install cargo-edit
-$ cargo install cargo-expand
-$ cargo install cargo-inspect
-$ cargo install cargo-make
-$ cargo install cargo-modules
-$ cargo install cargo-outdated
-$ cargo install cargo-readme
-$ cargo install cargo-spellcheck
-$ cargo install cargo-watch
-```
-
-### Run
-
-```shell
-$ cargo bench
-$ cargo cache --autoclean
-$ cargo check
-$ cargo doc
-$ cargo fix
-$ cargo inspect
-$ cargo package
-$ cargo publish
-$ cargo readme > README.md
-$ cargo run
-$ cargo rustc
-$ cargo spellcheck check
-$ cargo spellcheck fix
-$ cargo test
-$ cargo update
-$ cargo upgrade --workspace
-$ cargo vendor
-```
-
-## Tools
-
-```shell
-$ cargo install bunyan
-$ cargo install critcmp
-$ cargo install flamegraph
-$ cargo install grcov
-$ cargo install mdbook
-$ cargo install ripgrep
-$ cargo install rustscan
-$ cargo install sqlx-cli
-```
-
-```shell
-$ cargo bench -- --save-baseline before
-$ cargo bench -- --save-baseline change
-$ critcmp before change
-```
-
-# HELP
 
 ```shell
 $ cargo watch -x "run | bunyan"
@@ -134,35 +54,4 @@ $ grpcurl \
     -plaintext \
     -proto api_api.proto \
     127.0.0.1:50050 fip.api.api.Api/FindOne
-```
-
-# HUSKY
-
-```shell
-$ CARGO_HUSKY_DONT_INSTALL_HOOKS=true cargo test
-```
-
-# TLS
-
-https://dev.to/anshulgoyal15/a-beginners-guide-to-grpc-with-rust-3c7o
-
-```shell
-$ openssl genrsa -des3 -out my_ca.key 2048
-$ openssl req -x509 -new -nodes -key my_ca.key -sha256 -days 1825 -out my_ca.pem
-$ openssL genrsa -out server.key 2048
-$ openssl req -new -sha256 -key server.key -out server.csr
-# authorityKeyIdentifier=keyid,issuer
-# basicConstraints=CA:FALSE
-# keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-# subjectAltName = @alt_names
-# 
-# [alt_names]
-# DNS.1 = localhost
-$ openssl x509 -req -in server.csr -CA my_ca.pem -CAkey my_ca.key -CAcreateserial -out server.pem -days 1825 -sha256 -extfile server.ext
-```
-
-# Jaeger Tracing
-
-```shell
-$ docker run -d -p6831:6831/udp -p6832:6832/udp -p16686:16686 jaegertracing/all-in-one:1.23.0
 ```
