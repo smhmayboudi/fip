@@ -29,9 +29,7 @@ $ rustup +nightly component add \
     rustc-dev \
     rustfmt
 
-$ rustup self update && \
-  rustup update && \
-  rustup update nightly
+$ rustup self update && rustup update && rustup update nightly
 
 $ rustup doc
 $ rustup man

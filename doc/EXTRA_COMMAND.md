@@ -5,7 +5,7 @@ $ rustup target add \
     aarch64-unknown-linux-musl \
     armv7-unknown-linux-musleabihf \
     x86_64-unknown-linux-musl
-$ cargo build --package fip_api --release --target x86_64-unknown-linux-musl
+$ cargo build --package fip_api --release --target aarch64-unknown-linux-musl
 
 $ docker build . -f ./fip_api/Dockerfile -t fip-api:0.1.0-nonroot
 $ docker run -e LINKERD_AWAIT_DISABLED=TRUE -i -p 8080:8080 --rm fip-api:0.1.0-nonroot
@@ -13,7 +13,7 @@ $ docker run -e LINKERD_AWAIT_DISABLED=TRUE -i -p 8080:8080 --rm fip-api:0.1.0-n
 $ shasum -a 256 target/release/fip_api
 
 $ brew install upx
-$ upx --ultra-brute ./target/x86_64-unknown-linux-musl/release/fip_api
+$ upx --ultra-brute ./target/aarch64-unknown-linux-musl/release/fip_api
 ```
 
 ```shell

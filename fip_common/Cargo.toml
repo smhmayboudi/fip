@@ -14,11 +14,11 @@
 http = { default-features = false, version = "0.2.5" }
 jsonwebtoken = { default-features = false, version = "7.2.0" }
 opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
-rdkafka = { default-features = false, features = ["cmake-build"], version = "0.26.0" }
+rdkafka = { default-features = false, features = ["cmake-build"], version = "0.27.0" }
 sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
-thiserror = { default-features = false, version = "1.0.29" }
-tonic = { default-features = false, features = ["transport"], version = "0.5.2" }
-tracing-error = { default-features = false, version = "0.1.2" }
+thiserror = { default-features = false, version = "1.0.30" }
+tonic = { default-features = false, features = ["transport"], version = "0.6.1" }
+tracing-error = { default-features = false, version = "0.2.0" }
 
 # [dev-dependencies]
 

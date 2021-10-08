@@ -3,17 +3,21 @@ use crate::{
     service::Service,
 };
 use anyhow::Result;
+use tokio::time::Duration;
 use tonic::transport::Server as TonicServer;
 use tonic_health::server::HealthReporter;
 // use tracing::{Level, Span};
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
+/// TODO: documentation
 #[derive(Clone, Debug)]
 pub struct Server {
     inner: RtServer<Controller>,
 }
 
+/// TODO: documentation
 impl Server {
+    /// TODO: documentation
     pub async fn new() -> Self {
         let config = Config::new();
         let repository = Repository::new(config.clone()).await;
@@ -25,14 +29,15 @@ impl Server {
     }
 }
 
+/// TODO: documentation
 impl Server {
     /// This function (somewhat improbably) flips the status of a service every second, in order
     /// that the effect of `tonic_health::HealthReporter::watch` can be easily observed.
     pub async fn check(mut reporter: HealthReporter) {
-        let mut iter = 0u64;
+        let mut iter = 0_u64;
         loop {
             iter += 1;
-            tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+            tokio::time::sleep(Duration::from_secs(1)).await;
             if iter % 2 == 0 {
                 reporter.set_serving::<RtServer<Controller>>().await;
             } else {
@@ -41,10 +46,15 @@ impl Server {
         }
     }
 
+    /// TODO: documentation
+    ///
+    /// # Errors
+    ///
+    /// TODO: documentation errors
     pub async fn init(config: &Config) -> Result<()> {
         let (mut health_reporter, health_server) = tonic_health::server::health_reporter();
         health_reporter.set_serving::<RtServer<Controller>>().await;
-        let _ = tokio::spawn(Self::check(health_reporter));
+        let _ok = tokio::spawn(Self::check(health_reporter));
 
         TonicServer::builder()
             // .trace_fn(|header_map| {
@@ -76,7 +86,11 @@ impl Server {
     }
 }
 
+/// TODO: documentation
 impl Server {
+    /// TODO: documentation
+    #[allow(clippy::missing_const_for_fn)]
+    #[must_use]
     pub fn into_inner(self) -> RtServer<Controller> {
         self.inner
     }

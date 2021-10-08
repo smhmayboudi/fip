@@ -1,3 +1,8 @@
-pub mod common_const;
-pub mod common_error;
-pub mod common_opentelemetry;
+//! TODO: documentation
+
+/// TODO: documentation
+pub mod constant;
+/// TODO: documentation
+pub mod error;
+/// TODO: documentation
+pub mod opentelemetry;

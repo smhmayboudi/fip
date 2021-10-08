@@ -1,40 +1,50 @@
 {
+    "files.watcherExclude": {
+        "**/*.prof*": true,
+        "**/.git/**": true,
+        "**/coverage/**": true,
+        "**/documentation/**": true,
+        "**/release/**": true,
+        "**/target/**": true,
+        "**/test/**": true
+    },
     "editor.defaultFormatter": "rust-lang.rust",
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true,
+    "redhat.telemetry.enabled": true,
     "rust-client.updateOnStartup": true,
     "rust.all_features": true,
     "sqltools.connections": [
         {
-            "previewLimit": 50,
+            "database": "${workspaceFolder:fip}/fip_at/at.db",
             "driver": "SQLite",
+            "group": "fip",
             "name": "at",
-            "group": "fip",
-            "database": "${workspaceFolder:fip}/fip_at/at.db"
+            "previewLimit": 50
         },
         {
-            "previewLimit": 50,
-            "driver": "SQLite",
             "database": "${workspaceFolder:fip}/fip_jwks/jwks.db",
+            "driver": "SQLite",
+            "group": "fip",
             "name": "jwks",
-            "group": "fip"
+            "previewLimit": 50
         },
         {
-            "previewLimit": 50,
+            "database": "${workspaceFolder:fip}/fip_rt/rt.db",
             "driver": "SQLite",
+            "group": "fip",
             "name": "rt",
-            "group": "fip",
-            "database": "${workspaceFolder:fip}/fip_rt/rt.db"
+            "previewLimit": 50
         },
         {
-            "previewLimit": 50,
+            "database": "${workspaceFolder:fip}/fip_user/user.db",
             "driver": "SQLite",
-            "name": "user",
             "group": "fip",
-            "database": "${workspaceFolder:fip}/fip_user/user.db"
+            "name": "user",
+            "previewLimit": 50
         }
     ],
     "sqltools.useNodeRuntime": true,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.startupEditor": "newUntitledFile"
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "workbench.iconTheme": "material-icon-theme"
 }

@@ -15,39 +15,45 @@ use crate::{
     user::{proto::client::UserFindOneByUsernameReq, service::Service as UserService},
 };
 use chrono::Utc;
-use fip_common::common_error::CommonError;
+use fip_common::error::Error;
 use jsonwebtoken::{Algorithm, EncodingKey, Header};
 use tonic::Status;
 use uuid::Uuid;
 
+/// TODO: documentation
 #[derive(Debug)]
 pub struct Service {
     config: Config,
-    at_service: AtService,
+    access_token_service: AtService,
     jwks_service: JwksService,
-    rt_service: RtService,
+    reference_token_service: RtService,
     user_service: UserService,
 }
 
+/// TODO: documentation
 impl Service {
-    pub fn new(
+    /// TODO: documentation
+    #[must_use]
+    pub const fn new(
         config: Config,
-        at_service: AtService,
+        access_token_service: AtService,
         jwks_service: JwksService,
-        rt_service: RtService,
+        reference_token_service: RtService,
         user_service: UserService,
     ) -> Self {
         Self {
             config,
-            at_service,
+            access_token_service,
             jwks_service,
-            rt_service,
+            reference_token_service,
             user_service,
         }
     }
 }
 
+/// TODO: documentation
 impl Service {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn login(&self, req: &AuthLoginReq) -> Result<AuthLoginRes, Status> {
         let user = self
@@ -60,22 +66,24 @@ impl Service {
             )
             .await?;
         if self.hash(req.password.clone()) != user.password {
-            panic!("password incorrect.")
+            panic!("password incorrect.");
         }
         let at = self.access_token(&user.id).await?.token;
-        let rt = self.refresh_token(&user.id).await?.token;
+        let rt = self.reference_token(&user.id).await?.token;
         Ok(AuthLoginRes { at, rt })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    pub async fn logout(&self, _req: &AuthLogoutReq, sub: &str) -> Result<AuthLogoutRes, Status> {
+    pub async fn logout(&self, req: &AuthLogoutReq, sub: &str) -> Result<AuthLogoutRes, Status> {
         self.logout_all(sub).await
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn token(&self, req: &AuthTokenReq, sub: &str) -> Result<AuthTokenRes, Status> {
-        let _ = self
-            .rt_service
+        let _rt = self
+            .reference_token_service
             .validate(
                 &RtValidateReq {
                     claims_jti: req.token.clone(),
@@ -87,12 +95,15 @@ impl Service {
     }
 }
 
+/// TODO: documentation
 impl Service {
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     fn hash(&self, msg: String) -> String {
         msg
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
     async fn access_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
         let iat = Utc::now().timestamp();
@@ -114,23 +125,23 @@ impl Service {
         };
         let claims = AuthClaims {
             aud: self.config.app_name(),
-            exp: exp as usize,
-            iat: iat as usize,
+            exp,
+            iat,
             iss: self.config.app_name(),
-            jti: jti.clone(),
-            nbf: nbf as usize,
+            jti,
+            nbf,
             sub: sub.into(),
         };
         let key = EncodingKey::from_rsa_pem(jwks.private_key.as_bytes()).map_err(|err| {
             tracing::error!("{:?}", err);
-            CommonError::from(err)
+            Error::from(err)
         })?;
         let token = jsonwebtoken::encode(&header, &claims, &key).map_err(|err| {
             tracing::error!("{:?}", err);
-            CommonError::from(err)
+            Error::from(err)
         })?;
         let at = AtSaveReq {
-            header_typ: header.typ.unwrap(),
+            header_typ: header.typ.unwrap_or_default(),
             header_alg: "RS256".into(),
             header_cty: header.cty.unwrap_or_default(),
             header_jku: header.jku.unwrap_or_default(),
@@ -138,28 +149,30 @@ impl Service {
             header_x5u: header.x5u.unwrap_or_default(),
             header_x5t: header.x5t.unwrap_or_default(),
             claims_aud: claims.aud,
-            claims_exp: claims.exp as i64,
-            claims_iat: claims.iat as i64,
+            claims_exp: claims.exp,
+            claims_iat: claims.iat,
             claims_iss: claims.iss,
             claims_jti: claims.jti,
-            claims_nbf: claims.nbf as i64,
+            claims_nbf: claims.nbf,
             claims_sub: claims.sub,
             token_blocked: false,
             token_blocked_description: "".into(),
         };
-        let _ = self.at_service.save(&at, sub).await?;
+        let _rows_affected = self.access_token_service.save(&at, sub).await?;
         Ok(AuthTokenRes { token })
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    async fn logout_all(&self, _sub: &str) -> Result<AuthLogoutRes, Status> {
+    async fn logout_all(&self, sub: &str) -> Result<AuthLogoutRes, Status> {
         // self.at_service.update(&AtUpdateReq {}, sub).await?;
         // self.rt_service.update(&RtUpdateReq {}, sub).await?;
         Ok(AuthLogoutRes {})
     }
 
+    /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    async fn refresh_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
+    async fn reference_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
         let iat = Utc::now().timestamp();
         let exp = iat + self.config.jwt_rt_exp_in();
         let jti = Uuid::new_v4().to_string().to_uppercase();
@@ -175,7 +188,7 @@ impl Service {
             token_blocked: false,
             token_blocked_description: "".into(),
         };
-        let _ = self.rt_service.save(&rt, sub).await?;
+        let _rows_affected = self.reference_token_service.save(&rt, sub).await?;
         Ok(AuthTokenRes { token: jti })
     }
 }

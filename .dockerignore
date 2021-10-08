@@ -1,5 +1,4 @@
-*.profdata
-*.profraw
+*.prof*
 .git/
 coverage/
 documentation/

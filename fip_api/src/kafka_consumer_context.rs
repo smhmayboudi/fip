@@ -15,7 +15,9 @@ use std::time::Duration;
 #[derive(Debug)]
 pub struct KafkaConsumerContext;
 
+/// TODO: documentation
 impl ClientContext for KafkaConsumerContext {
+    /// TODO: documentation
     fn log(&self, level: RDKafkaLogLevel, fac: &str, log_message: &str) {
         match level {
             RDKafkaLogLevel::Emerg
@@ -39,16 +41,20 @@ impl ClientContext for KafkaConsumerContext {
         }
     }
 
+    /// TODO: documentation
     fn stats(&self, statistics: Statistics) {
         tracing::info!("Client stats: {:?}", statistics);
     }
 
-    fn error(&self, error: KafkaError, reason: &str) {
-        tracing::error!("librdkafka: {}: {}", error, reason);
+    /// TODO: documentation
+    fn error(&self, err: KafkaError, reason: &str) {
+        tracing::error!("librdkafka: {}: {}", err, reason);
     }
 }
 
+/// TODO: documentation
 impl ConsumerContext for KafkaConsumerContext {
+    // /// TODO: documentation
     // fn rebalance(
     //     &self,
     //     native_client: &NativeClient,
@@ -58,23 +64,28 @@ impl ConsumerContext for KafkaConsumerContext {
     //     tracing::info!("rebalance");
     // }
 
+    /// TODO: documentation
     fn pre_rebalance(&self, rebalance: &Rebalance) {
         tracing::info!("pre_rebalance, {:?}", rebalance);
     }
 
+    /// TODO: documentation
     fn post_rebalance(&self, rebalance: &Rebalance) {
         tracing::info!("post_rebalance, {:?}", rebalance);
     }
 
+    /// TODO: documentation
     fn commit_callback(&self, result: KafkaResult<()>, _offsets: &TopicPartitionList) {
         tracing::info!("commit_callback, {:?}", result);
     }
 
+    /// TODO: documentation
     fn main_queue_min_poll_interval(&self) -> Timeout {
         tracing::info!("main_queue_min_poll_interval");
         Timeout::After(Duration::from_secs(1))
     }
 
+    /// TODO: documentation
     fn message_queue_nonempty_callback(&self) {
         tracing::info!("message_queue_nonempty_callback");
     }

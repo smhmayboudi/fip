@@ -1,7 +1,7 @@
 jobs:
   check:
     container:
-      image: docker://rust:1.55.0-buster
+      image: docker://rust:1.56.0-bullseye
     runs-on: ubuntu-latest
     steps:
       -
@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 5
   clippy:
     container:
-      image: docker://rust:1.55.0-buster
+      image: docker://rust:1.56.0-bullseye
     runs-on: ubuntu-latest
     steps:
       -
