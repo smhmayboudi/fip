@@ -11,14 +11,16 @@ use tracing::Level;
 // use tracing::Span;
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
-#[derive(Debug)]
+/// TODO: documentation
+#[derive(Copy, Clone, Debug)]
 pub struct Server {}
 
+/// TODO: documentation
 impl Server {
     /// This function (somewhat improbably) flips the status of a service every second, in order
     /// that the effect of `tonic_health::HealthReporter::watch` can be easily observed.
     pub async fn check(mut reporter: HealthReporter) {
-        let mut iter = 0u64;
+        let mut iter = 0_u64;
         loop {
             iter += 1;
             tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
@@ -32,12 +34,17 @@ impl Server {
         }
     }
 
+    /// TODO: documentation
+    ///
+    /// # Errors
+    ///
+    /// TODO: documentation errors
     pub async fn init(config: &Config) -> Result<()> {
         let (mut health_reporter, health_server) = tonic_health::server::health_reporter();
         health_reporter
             .set_serving::<ProtoApiServer<Controller>>()
             .await;
-        let _ = tokio::spawn(Self::check(health_reporter));
+        let _ok = tokio::spawn(Self::check(health_reporter));
 
         TonicServer::builder()
             // .trace_fn(|header_map| {

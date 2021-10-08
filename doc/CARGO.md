@@ -35,7 +35,9 @@ $ cargo install --locked \
     cargo-deny \
     cargo2junit \
     conventional_commits_linter \
-    grcov
+    cross \
+    grcov \
+    sqlx-cli
 $ cargo uninstall
 
 $ cargo audit

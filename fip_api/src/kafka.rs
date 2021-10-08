@@ -14,13 +14,19 @@ use rdkafka::{
 use std::time::Duration;
 use uuid::Uuid;
 
+/// TODO: documentation
 pub struct Kafka {
     config: Config,
     consumer: StreamConsumer<KafkaConsumerContext>,
     producer: FutureProducer<KafkaProducerContext>,
 }
 
+/// TODO: documentation
 impl Kafka {
+    /// TODO: documentation
+    ///
+    /// # Panics
+    /// TODO: documentation panics
     pub fn new(config: Config) -> Self {
         let context = KafkaConsumerContext;
         let consumer = ClientConfig::default()
@@ -40,7 +46,9 @@ impl Kafka {
                 tracing::error!("{:?}", err);
                 err
             })
-            .unwrap();
+            .unwrap_or_else(|err| {
+                panic!("{:?}", err);
+            });
 
         let context = KafkaProducerContext;
         let producer = ClientConfig::default()
@@ -55,7 +63,9 @@ impl Kafka {
                 tracing::error!("{:?}", err);
                 err
             })
-            .unwrap();
+            .unwrap_or_else(|err| {
+                panic!("{:?}", err);
+            });
 
         Kafka {
             config,
@@ -64,6 +74,10 @@ impl Kafka {
         }
     }
 
+    /// TODO: documentation
+    ///
+    /// # Errors
+    /// TODO: documentation errors
     fn echo_message<M: Message>(msg: M) -> Result<(), std::str::Utf8Error> {
         let deserialize = |o| match o {
             None => Ok(""),
@@ -81,16 +95,22 @@ impl Kafka {
     }
 }
 
+/// TODO: documentation
 impl Kafka {
+    /// TODO: documentation
     pub fn process() {}
 
+    /// TODO: documentation
     pub fn handle() {}
 
     // pub fn receive(&self, topic: &str) {
+    /// TODO: documentation
     pub async fn receive(&self) {
         let topic = "TEST_REQ";
 
-        self.consumer.subscribe(&[topic]).unwrap();
+        self.consumer.subscribe(&[topic]).unwrap_or_else(|err| {
+            panic!("{:?}", err);
+        });
 
         loop {
             match self.consumer.recv().await {
@@ -115,7 +135,9 @@ impl Kafka {
                           key, payload, borrowed_message.topic(), borrowed_message.partition(), borrowed_message.offset(), borrowed_message.timestamp());
                     if let Some(headers) = borrowed_message.headers() {
                         for i in 0..headers.count() {
-                            let header = headers.get_as::<str>(i).unwrap();
+                            let header = headers.get_as::<str>(i).unwrap_or_else(|err| {
+                                panic!("{:?}", err);
+                            });
                             tracing::info!("  Header {:#?}: {:?}", header.0, header.1);
                         }
                     }
@@ -138,6 +160,7 @@ impl Kafka {
     }
 
     // pub fn send(&self, topic: &str, key: &str, payload: &str) -> DeliveryFuture {
+    /// TODO: documentation
     pub async fn send(&self) {
         let topic = "TEST_REQ";
         let key = "user_id";

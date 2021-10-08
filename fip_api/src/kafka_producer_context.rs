@@ -8,7 +8,9 @@ use rdkafka::{
 #[derive(Debug)]
 pub struct KafkaProducerContext;
 
+/// TODO: documentation
 impl ClientContext for KafkaProducerContext {
+    /// TODO: documentation
     fn log(&self, level: RDKafkaLogLevel, fac: &str, log_message: &str) {
         match level {
             RDKafkaLogLevel::Emerg
@@ -32,16 +34,19 @@ impl ClientContext for KafkaProducerContext {
         }
     }
 
+    /// TODO: documentation
     fn stats(&self, statistics: Statistics) {
         tracing::info!("Client stats: {:?}", statistics);
     }
 
-    fn error(&self, error: KafkaError, reason: &str) {
-        tracing::error!("librdkafka: {}: {}", error, reason);
+    /// TODO: documentation
+    fn error(&self, err: KafkaError, reason: &str) {
+        tracing::error!("librdkafka: {}: {}", err, reason);
     }
 }
 
 // impl ProducerContext for KafkaProducerContext {
 //     // type DeliveryOpaque: IntoOpaque;
+//     /// TODO: documentation
 //     // fn delivery(&self, delivery_result: &DeliveryResult<'_>, delivery_opaque: Self::DeliveryOpaque);
 // }

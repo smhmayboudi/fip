@@ -1,8 +1,16 @@
+/// TODO: documentation
 pub mod auth_claims;
+/// TODO: documentation
 pub mod auth_enforce;
+/// TODO: documentation
 pub mod auth_error;
+/// TODO: documentation
 pub mod config;
+/// TODO: documentation
 pub mod controller;
+/// TODO: documentation
 pub mod proto;
+/// TODO: documentation
 pub mod server;
+/// TODO: documentation
 pub mod service;
