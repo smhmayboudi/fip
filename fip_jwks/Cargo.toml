@@ -38,7 +38,7 @@ serde = { default-features = false, features = ["derive"], version = "1.0.130" }
 sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
 tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.12.0" }
 tokio-stream = { default-features = false, version = "0.1.7" }
-tonic = { default-features = false, features = ["transport"], version = "0.5.2" }
+tonic = { default-features = false, features = ["transport"], version = "0.6.0" }
 tonic-health = { default-features = false, features = ["transport"], version = "0.4.1" }
 tracing = { default-features = false, version = "0.1.29" }
 tracing-appender = { default-features = false, version = "0.1.2" }
