@@ -18,7 +18,7 @@ rdkafka = { default-features = false, features = ["cmake-build"], version = "0.2
 sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
 thiserror = { default-features = false, version = "1.0.30" }
 tonic = { default-features = false, features = ["transport"], version = "0.5.2" }
-tracing-error = { default-features = false, version = "0.1.2" }
+tracing-error = { default-features = false, version = "0.2.0" }
 
 # [dev-dependencies]
 
