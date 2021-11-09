@@ -6,7 +6,7 @@
 
 
 ```shell
-$ cargo watch -x "run | bunyan"
+$ cargo watch --exec "run | bunyan"
 
 $ grpcurl \
     -d '{"username":"smhmayboudi","password":"smhmayboudi"}' \

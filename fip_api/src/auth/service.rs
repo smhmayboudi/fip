@@ -26,7 +26,7 @@ pub struct Service {
     config: Config,
     access_token_service: AtService,
     jwks_service: JwksService,
-    reference_token_service: RtService,
+    refresh_token_service: RtService,
     user_service: UserService,
 }
 
@@ -38,14 +38,14 @@ impl Service {
         config: Config,
         access_token_service: AtService,
         jwks_service: JwksService,
-        reference_token_service: RtService,
+        refresh_token_service: RtService,
         user_service: UserService,
     ) -> Self {
         Self {
             config,
             access_token_service,
             jwks_service,
-            reference_token_service,
+            refresh_token_service,
             user_service,
         }
     }
@@ -69,7 +69,7 @@ impl Service {
             panic!("password incorrect.");
         }
         let at = self.access_token(&user.id).await?.token;
-        let rt = self.reference_token(&user.id).await?.token;
+        let rt = self.refresh_token(&user.id).await?.token;
         Ok(AuthLoginRes { at, rt })
     }
 
@@ -83,7 +83,7 @@ impl Service {
     #[tracing::instrument(fields(otel.kind = "client"))]
     pub async fn token(&self, req: &AuthTokenReq, sub: &str) -> Result<AuthTokenRes, Status> {
         let _rt = self
-            .reference_token_service
+            .refresh_token_service
             .validate(
                 &RtValidateReq {
                     claims_jti: req.token.clone(),
@@ -172,7 +172,7 @@ impl Service {
 
     /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "client"))]
-    async fn reference_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
+    async fn refresh_token(&self, sub: &str) -> Result<AuthTokenRes, Status> {
         let iat = Utc::now().timestamp();
         let exp = iat + self.config.jwt_rt_exp_in();
         let jti = Uuid::new_v4().to_string().to_uppercase();
@@ -188,7 +188,7 @@ impl Service {
             token_blocked: false,
             token_blocked_description: "".into(),
         };
-        let _rows_affected = self.reference_token_service.save(&rt, sub).await?;
+        let _rows_affected = self.refresh_token_service.save(&rt, sub).await?;
         Ok(AuthTokenRes { token: jti })
     }
 }

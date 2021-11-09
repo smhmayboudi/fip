@@ -1,0 +1,14 @@
+description: Extract branch metadata from the pull request
+inputs:
+  git-ref:
+    description: The git ref (i.e. starting with refs/heads/)
+    required: true
+name: Pull request branch meta
+outputs:
+  name:
+    description: The branch name (without the refs/heads/ prefix)
+runs:
+  args:
+    - ${{ inputs.git-ref }}
+  image: Dockerfile
+  using: docker

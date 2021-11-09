@@ -1,7 +1,14 @@
 # RUSTUP
 
 ```shell
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+$ curl \
+        --fail \
+        --location \
+        --proto '=https' \
+        --show-error \
+        --silent \
+        --tlsv1.2 https://sh.rustup.rs \
+    | sh -s -- -y
 
 $ rustup show
 
@@ -29,7 +36,9 @@ $ rustup +nightly component add \
     rustc-dev \
     rustfmt
 
-$ rustup self update && rustup update && rustup update nightly
+$ rustup self update \
+    && rustup update \
+    && rustup update nightly
 
 $ rustup doc
 $ rustup man

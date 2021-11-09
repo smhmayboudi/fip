@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         -
-          image: localhost:5000/vsc-fip-b565192a7e7b15dd011e738f1a356bc4
+          image: 127.0.0.1:5000/vsc-fip-b565192a7e7b15dd011e738f1a356bc4
           imagePullPolicy: Always
           name: vsc-fip
           resources:
@@ -43,7 +43,7 @@ metadata:
   namespace: default
 spec:
   ports:
-    - 
+    -
       name: ssh
       nodePort: 30030
       port: 2222
