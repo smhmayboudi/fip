@@ -43,8 +43,8 @@ impl Default for Server {
         let access_token_service = AtService::new(access_token_config);
         let jwks_config = JwksConfig::new();
         let jwks_service = JwksService::new(jwks_config);
-        let reference_token_config = RtConfig::new();
-        let reference_token_service = RtService::new(reference_token_config);
+        let refresh_token_config = RtConfig::new();
+        let refresh_token_service = RtService::new(refresh_token_config);
         let user_config = UserConfig::new();
         let user_service = UserService::new(user_config);
         let config = Config::new();
@@ -52,7 +52,7 @@ impl Default for Server {
             config.clone(),
             access_token_service,
             jwks_service,
-            reference_token_service,
+            refresh_token_service,
             user_service,
         );
         let controller = Controller::new(config, service);

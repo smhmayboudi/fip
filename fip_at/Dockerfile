@@ -1,4 +1,4 @@
-FROM docker.io/rust:1.56.0-bullseye as builder
+FROM docker.io/rust:1.56.1-bullseye as builder
 WORKDIR /fip
 ADD . .
 RUN rustup component add rustfmt

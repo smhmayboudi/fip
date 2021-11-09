@@ -11,7 +11,7 @@ $ openssl req -new -sha256 -key server.key -out server.csr
 # basicConstraints=CA:FALSE
 # keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 # subjectAltName = @alt_names
-# 
+#
 # [alt_names]
 # DNS.1 = localhost
 $ openssl x509 -req -in server.csr -CA my_ca.pem -CAkey my_ca.key -CAcreateserial -out server.pem -days 1825 -sha256 -extfile server.ext

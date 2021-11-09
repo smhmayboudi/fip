@@ -1,17 +1,21 @@
 .DEFAULT_GOAL := help
 
+# ARCH: aarch64, armv7, x86_64
 # CARGO: cargo, cross
+# DENY_CHECK_WHICH: advisories, bans, licenses, sources
 # PACKAGE: fip_api
 # RELEASE: --release
 # STRIP: aarch64-linux-gnu-strip, arm-linux-gnueabihf-strip, strip
 # TARGET: aarch64-unknown-linux-musl, armv7-unknown-linux-musleabihf, x86_64-unknown-linux-musl
-# VERSION: git describe --tags --abbrev=0
+# VERSION: git describe --abbrev=0 --tags
 
+ARCHITECTURE ?= $(shell $(RUSTUP) show | $(SED) -n 's/^Default host: \(.*\)/\1/p' | $(AWK) 'BEGIN { FS = "-" }; { print $$1 }')
 CARGO ?= cargo
+DENY_CHECK_WHICH ?= advisories bans licenses sources
 PACKAGE ?= fip_api
 # RELEASE ?= --release
 STRIP ?= strip
-TARGET ?= $(shell rustup show | sed -n 's/^Default host: \(.*\)/\1/p')
+TARGET ?= $(shell $(RUSTUP) show | $(SED) -n 's/^Default host: \(.*\)/\1/p')
 VERSION ?= v0.1.0
 
 TARGET_DIR = target/$(TARGET)
@@ -21,7 +25,7 @@ ifdef RELEASE
 endif
 
 BIN = $(BIN_DIR)/$(PACKAGE)
-BIN_NAME = $(PACKAGE)-$(VERSION)-$(TARGET)
+BIN_NAME = $(PACKAGE)-$(VERSION)-$(ARCHITECTURE)
 
 COVERAGE_DIR = $(TARGET_DIR)/cov
 DOCUMENTATION_DIR = $(TARGET_DIR)/doc
@@ -53,7 +57,6 @@ AWK = awk
 CAT = cat
 CONVENTIONAL_COMMITS_LINTER = conventional_commits_linter --allow-angular-type-only --from-stdin
 CP = cp -R
-CUT = cut
 FIND_RM = find . -type f -name *.prof* -exec rm -fr {} +
 GIT = git
 GRCOV = grcov
@@ -61,7 +64,8 @@ GREP = grep
 MKDIR = mkdir -p
 RM = rm -fr
 RUSTUP = rustup
-SHASUM = shasum -a 256
+SED = sed
+SHASUM = shasum --algorithm 256
 SORT = sort
 
 $(BIN): add-fmt add-target fetch
@@ -217,7 +221,7 @@ coverage: add-fmt add-grcov add-llvm add-target clean-coverage fetch ## Test cov
 
 .PHONY: deny-check
 deny-check: add-deny fetch ## Deny check
-	$(CARGO_DENY) check
+	$(CARGO_DENY) check $(DENY_CHECK_WHICH)
 
 .PHONY: deny-fetch
 deny-fetch: add-deny fetch ## Deny fetch
@@ -258,17 +262,17 @@ git: add-git-config add-git-hooks ## Add git config & hooks
 
 .PHONY: help
 help: ## Help
-	@$(GREP) -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+	@$(GREP) --extended-regexp '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| $(SORT) \
-		| $(AWK) 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-33s\033[0m %s\n", $$1, $$2}'
+		| $(AWK) 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-33s\033[0m %s\n", $$1, $$2 }'
 
 .PHONY: release
-release: $(BIN) ## Release
+release: $(BIN) clean-release ## Release
 	$(MKDIR) release
 	$(CP) $(BIN) release/$(BIN_NAME)
 	$(STRIP) release/$(BIN_NAME)
 	$(SHASUM) release/$(BIN_NAME) \
-		| $(CUT) -d " " -f 1 > release/$(BIN_NAME).sha256
+		| $(AWK) '{ print $$1 }' > release/$(BIN_NAME).sha256
 
 .PHONY: run
 run: ## Run
