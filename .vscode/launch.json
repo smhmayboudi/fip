@@ -9,12 +9,9 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin",
-                    "fip_api",
-                    "--manifest-path",
-                    "fip_api/Cargo.toml",
-                    "--package",
-                    "fip_api"
+                    "--bin=fip_api",
+                    "--manifest-path=fip_api/Cargo.toml",
+                    "--package=fip_api"
                 ],
                 "filter": {
                     "name": "fip_api",
@@ -31,13 +28,10 @@
             "cargo": {
                 "args": [
                     "test",
+                    "--bin=fip_api",
+                    "--manifest-path=fip_api/Cargo.toml",
                     "--no-run",
-                    "--bin",
-                    "fip_api",
-                    "--manifest-path",
-                    "fip_api/Cargo.toml",
-                    "--package",
-                    "fip_api"
+                    "--package=fip_api"
                 ],
                 "filter": {
                     "name": "fip_api",
@@ -55,10 +49,8 @@
                 "args": [
                     "build",
                     "--lib",
-                    "--manifest-path",
-                    "fip_common/Cargo.toml",
-                    "--package",
-                    "fip_common"
+                    "--manifest-path=fip_common/Cargo.toml",
+                    "--package=fip_common"
                 ],
                 "filter": {
                     "name": "fip_common",
@@ -75,12 +67,10 @@
             "cargo": {
                 "args": [
                     "test",
-                    "--no-run",
                     "--lib",
-                    "--manifest-path",
-                    "fip_common/Cargo.toml",
-                    "--package",
-                    "fip_common"
+                    "--manifest-path=fip_common/Cargo.toml",
+                    "--no-run",
+                    "--package=fip_common"
                 ],
                 "filter": {
                     "name": "fip_common",
@@ -97,12 +87,9 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin",
-                    "fip_at",
-                    "--manifest-path",
-                    "fip_at/Cargo.toml",
-                    "--package",
-                    "fip_at"
+                    "--bin=fip_at",
+                    "--manifest-path=fip_at/Cargo.toml",
+                    "--package=fip_at"
                 ],
                 "filter": {
                     "name": "fip_at",
@@ -119,13 +106,10 @@
             "cargo": {
                 "args": [
                     "test",
+                    "--bin=fip_at",
+                    "--manifest-path=fip_at/Cargo.toml",
                     "--no-run",
-                    "--bin",
-                    "fip_at",
-                    "--manifest-path",
-                    "fip_at/Cargo.toml",
-                    "--package",
-                    "fip_at"
+                    "--package=fip_at"
                 ],
                 "filter": {
                     "name": "fip_at",
@@ -142,12 +126,9 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin",
-                    "fip_jwks",
-                    "--manifest-path",
-                    "fip_jwks/Cargo.toml",
-                    "--package",
-                    "fip_jwks"
+                    "--bin=fip_jwks",
+                    "--manifest-path=fip_jwks/Cargo.toml",
+                    "--package=fip_jwks"
                 ],
                 "filter": {
                     "name": "fip_jwks",
@@ -164,13 +145,10 @@
             "cargo": {
                 "args": [
                     "test",
+                    "--bin=fip_jwks",
+                    "--manifest-path=fip_jwks/Cargo.toml",
                     "--no-run",
-                    "--bin",
-                    "fip_jwks",
-                    "--manifest-path",
-                    "fip_jwks/Cargo.toml",
-                    "--package",
-                    "fip_jwks"
+                    "--package=fip_jwks"
                 ],
                 "filter": {
                     "name": "fip_jwks",
@@ -187,12 +165,9 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin",
-                    "fip_rt",
-                    "--manifest-path",
-                    "fip_rt/Cargo.toml",
-                    "--package",
-                    "fip_rt"
+                    "--bin=fip_rt",
+                    "--manifest-path=fip_rt/Cargo.toml",
+                    "--package=fip_rt"
                 ],
                 "filter": {
                     "name": "fip_rt",
@@ -209,13 +184,10 @@
             "cargo": {
                 "args": [
                     "test",
+                    "--bin=fip_rt",
+                    "--manifest-path=fip_rt/Cargo.toml",
                     "--no-run",
-                    "--bin",
-                    "fip_rt",
-                    "--manifest-path",
-                    "fip_rt/Cargo.toml",
-                    "--package",
-                    "fip_rt"
+                    "--package=fip_rt"
                 ],
                 "filter": {
                     "name": "fip_rt",
@@ -232,12 +204,9 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin",
-                    "fip_user",
-                    "--manifest-path",
-                    "fip_user/Cargo.toml",
-                    "--package",
-                    "fip_user"
+                    "--bin=fip_user",
+                    "--manifest-path=fip_user/Cargo.toml",
+                    "--package=fip_user"
                 ],
                 "filter": {
                     "name": "fip_user",
@@ -254,13 +223,10 @@
             "cargo": {
                 "args": [
                     "test",
+                    "--bin=fip_user",
+                    "--manifest-path=fip_user/Cargo.toml",
                     "--no-run",
-                    "--bin",
-                    "fip_user",
-                    "--manifest-path",
-                    "fip_user/Cargo.toml",
-                    "--package",
-                    "fip_user"
+                    "--package=fip_user"
                 ],
                 "filter": {
                     "name": "fip_user",

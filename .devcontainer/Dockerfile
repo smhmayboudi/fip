@@ -1,6 +1,6 @@
 # https://github.com/microsoft/vscode-dev-containers/blob/v0.205.1/containers/rust/.devcontainer/base.Dockerfile
 
-ARG VARIANT=1.56.0-bullseye
+ARG VARIANT=1.56.1-bullseye
 FROM rust:${VARIANT}
 
 ARG ADD_NON_FREE_PACKAGES="true"
@@ -34,25 +34,34 @@ ARG USER_UID="1000"
 ARG USE_MOBY="true"
 ARG USE_PPA_IF_AVAILABLE="latest"
 
-COPY library-scripts/*.sh library-scripts/*.env /tmp/library-scripts/
-
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt-get update  \
+RUN set -eux \
+    && export DEBIAN_FRONTEND="noninteractive" \
+    && apt-get update \
     # Remove imagemagick due to https://security-tracker.debian.org/tracker/CVE-2019-10131
-    && apt-get purge -y imagemagick imagemagick-6-common \
-    && bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "${INSTALL_OH_MYS}" "${ADD_NON_FREE_PACKAGES}" \
-    && bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${SOURCE_SOCKET}" "${TARGET_SOCKET}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
-    # && bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
-    && bash /tmp/library-scripts/git-from-src-debian.sh "${GIT_VERSION}" "${USE_PPA_IF_AVAILABLE}" \
-    && bash /tmp/library-scripts/kubectl-helm-debian.sh "${KUBECTL_VERSION}" "${HELM_VERSION}" "${MINIKUBE_VERSION}" "${KUBECTL_SHA256}" "${HELM_SHA256}" "${MINIKUBE_SHA256}" \
-    && bash /tmp/library-scripts/rust-debian.sh "${CARGO_HOME}" "${RUSTUP_HOME}" "${USERNAME}" "${UPDATE_RC}" "${UPDATE_RUST}" "${RUST_VERSION}" "${RUSTUP_PROFILE}" \
-    && bash /tmp/library-scripts/sshd-debian.sh "${SSHD_PORT}" "${USERNAME}" "${START_SSHD}" "${NEW_PASSWORD}" "${FIX_ENVIRONMENT}" \
-    && apt-get install -y --no-install-recommends binutils-aarch64-linux-gnu binutils-arm-linux-gnueabihf binutils-x86-64-linux-gnu cmake docker.io musl-tools jq sqlite3 \
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    && apt-get purge --yes imagemagick imagemagick-6-common \
+    && bash -c "$(curl --fail --location --output /tmp/library-scripts/meta.env --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/containers/rust/.devcontainer/library-scripts/meta.env)" \
+    && bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/common-debian.sh)" -- "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "${INSTALL_OH_MYS}" "${ADD_NON_FREE_PACKAGES}" \
+    && bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/docker-debian.sh)" -- "${ENABLE_NONROOT_DOCKER}" "${SOURCE_SOCKET}" "${TARGET_SOCKET}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
+    # && bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/docker-in-docker-debian.sh)" -- "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
+    && bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/git-from-src-debian.sh)" -- "${GIT_VERSION}" "${USE_PPA_IF_AVAILABLE}" \
+    && bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/kubectl-helm-debian.sh)" -- "${KUBECTL_VERSION}" "${HELM_VERSION}" "${MINIKUBE_VERSION}" "${KUBECTL_SHA256}" "${HELM_SHA256}" "${MINIKUBE_SHA256}" \
+    && bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/rust-debian.sh)" -- "${CARGO_HOME}" "${RUSTUP_HOME}" "${USERNAME}" "${UPDATE_RC}" "${UPDATE_RUST}" "${RUST_VERSION}" "${RUSTUP_PROFILE}" \
+    && bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/sshd-debian.sh)" -- "${SSHD_PORT}" "${USERNAME}" "${START_SSHD}" "${NEW_PASSWORD}" "${FIX_ENVIRONMENT}" \
+    && bash -c "$(curl --fail --location --show-error --silent --output /usr/local/share/copy-kube-config.sh https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/containers/kubernetes-helm/.devcontainer/copy-kube-config.sh)" \
+    && apt-get install --no-install-recommends --yes \
+        binutils-aarch64-linux-gnu \
+        binutils-arm-linux-gnueabihf \
+        binutils-x86-64-linux-gnu \
+        cmake \
+        docker.io \
+        musl-tools \
+        sqlite3 \
+    && apt-get autoremove --yes \
+    && apt-get clean --yes \
+    && rm -fr /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
-COPY copy-kube-config.sh /usr/local/share/
-
-RUN chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
+RUN set -eux \
+    && chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
     && echo "source /usr/local/share/copy-kube-config.sh" | tee -a /root/.bashrc /root/.zshrc /home/${USERNAME}/.bashrc >> /home/${USERNAME}/.zshrc
 
 ENV CROSS_DOCKER_IN_DOCKER=true

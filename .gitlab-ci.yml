@@ -22,16 +22,19 @@ default:
 
 .target_1: &target_1
   variables:
+    ARCHITECTURE: "aarch64"
     STRIP: "aarch64-linux-gnu-strip"
     TARGET: "aarch64-unknown-linux-musl"
 
 .target_2: &target_2
   variables:
+    ARCHITECTURE: "armv7"
     STRIP: "arm-linux-gnueabihf-strip"
     TARGET: "armv7-unknown-linux-musleabihf"
 
 .target_3: &target_3
   variables:
+    ARCHITECTURE: "x86_64"
     STRIP: "strip"
     TARGET: "x86_64-unknown-linux-musl"
 
@@ -65,7 +68,7 @@ rust_build:
     DOCKER_HOST: "tcp://127.0.0.1:2375"
     DOCKER_TLS_CERTDIR: ""
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -89,7 +92,7 @@ rust_build:
     DOCKER_HOST: "tcp://127.0.0.1:2375"
     DOCKER_TLS_CERTDIR: ""
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -114,7 +117,7 @@ rust_build:
   variables:
     CARGO: "cargo"
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -133,7 +136,7 @@ rust_build:
   variables:
     CARGO: "cargo"
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -145,18 +148,18 @@ rust_build:
   script:
     - "curl \
       --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" \
-      --upload-file release/${PACKAGE}-${VERSION}-${TARGET} \
-      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${TARGET}"
+      --upload-file release/${PACKAGE}-${VERSION}-${ARCHITECTURE} \
+      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}"
     - "curl \
       --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" \
-      --upload-file release/${PACKAGE}-${VERSION}-${TARGET}.sha256 \
-      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${TARGET}.sha256"
+      --upload-file release/${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256 \
+      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256"
   stage: "upload"
   variables:
     CARGO: "cargo"
     PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}"
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -169,29 +172,29 @@ rust_build:
     assets:
       links:
         # -
-        #   name: "${PACKAGE}-${VERSION}-${TARGET}"
-        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${TARGET}"
+        #   name: "${PACKAGE}-${VERSION}-${ARCHITECTURE}"
+        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}"
         # -
-        #   name: "${PACKAGE}-${VERSION}-${TARGET}.sha256"
-        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${TARGET}.sha256"
+        #   name: "${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256"
+        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256"
         -
-          name: "${PACKAGE}-${VERSION}-aarch64-unknown-linux-musl"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-aarch64-unknown-linux-musl"
+          name: "${PACKAGE}-${VERSION}-aarch64"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-aarch64"
         -
-          name: "${PACKAGE}-${VERSION}-aarch64-unknown-linux-musl.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-aarch64-unknown-linux-musl.sha256"
+          name: "${PACKAGE}-${VERSION}-aarch64.sha256"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-aarch64.sha256"
         -
-          name: "${PACKAGE}-${VERSION}-armv7-unknown-linux-musleabihf"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7-unknown-linux-musleabihf"
+          name: "${PACKAGE}-${VERSION}-armv7"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7"
         -
-          name: "${PACKAGE}-${VERSION}-armv7-unknown-linux-musleabihf.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7-unknown-linux-musleabihf.sha256"
+          name: "${PACKAGE}-${VERSION}-armv7.sha256"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7.sha256"
         -
-          name: "${PACKAGE}-${VERSION}-x86_64-unknown-linux-musl"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-x86_64-unknown-linux-musl"
+          name: "${PACKAGE}-${VERSION}-x86_64"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-x86_64"
         -
-          name: "${PACKAGE}-${VERSION}-x86_64-unknown-linux-musl.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-x86_64-unknown-linux-musl.sha256"
+          name: "${PACKAGE}-${VERSION}-x86_64.sha256"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-x86_64.sha256"
     description: "CHANGELOG.md"
     name: "Release ${VERSION}"
     tag_name: "${VERSION}"
@@ -202,7 +205,7 @@ rust_build:
     CARGO: "cargo"
     PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}"
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -221,7 +224,7 @@ rust_build:
   variables:
     CARGO: "cargo"
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -241,7 +244,7 @@ rust_build:
   variables:
     CARGO: "cargo"
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 
@@ -255,11 +258,11 @@ rust_build:
   script:
     - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
     - "docker pull ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION} || true"
-    - "docker build --cache-from ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION} -f ${DOCKERFILE} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_COMMIT_SHA} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:latest ."
+    - "docker build --cache-from ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION} --filename ${DOCKERFILE} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_COMMIT_SHA} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:latest ."
     - "docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_COMMIT_SHA}"
     - "docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION}"
     # - "mkdir -p '${MOUNT_POINT}'"
-    # - "docker run -v "${MOUNT_POINT}:/mnt" ${IMAGE_NAME} /mnt/script/to/run/tests""
+    # - "docker run --volume "${MOUNT_POINT}:/mnt" ${IMAGE_NAME} /mnt/script/to/run/tests""
   services:
     - "docker:20.10.7-dind-rootlesss"
   stage: "deploy"
@@ -271,7 +274,7 @@ rust_build:
     # MOUNT_POINT: /builds/${CI_PROJECT_PATH}/mnt
     # MOUNT_POINT: "${CI_PROJECT_DIR}/mnt"
     RELEASE: "--release"
-    RUST_VERSION: "1.56.0-bullseye"
+    RUST_VERSION: "1.56.1-bullseye"
     VERSION: "${CI_COMMIT_TAG}"
   when: "manual"
 

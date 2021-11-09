@@ -170,7 +170,7 @@ After your pull request is merged, you can safely delete your branch and pull th
 - Delete the local branch:
 
     ```shell
-    git branch -D my-fix-branch
+    git branch --delete --force my-fix-branch
     ```
 
 - Update your master with the latest upstream version:

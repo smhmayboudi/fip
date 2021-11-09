@@ -1,8 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eux
 set -o errexit
 set -o pipefail
 set -o nounset
 
-make audit deny-check check test
+make \
+    audit \
+    check \
+    deny-check \
+    test

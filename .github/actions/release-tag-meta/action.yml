@@ -1,14 +1,14 @@
 description: Extract release metadata from the tag
 inputs:
   git-ref:
-    description: "The git ref (i.e. starting with refs/tags)"
+    description: The git ref (i.e. starting with refs/tags/)
     required: true
-name: release-tag-meta
+name: Release tag meta
 outputs:
-  tag:
-    description: "The git tag (without the refs prefix)"
   name:
-    description: "The release name"
+    description: The release name (without the refs/heads/v prefix)
+  tag:
+    description: The git tag (without the refs/tags/ prefix)
 runs:
   args:
     - ${{ inputs.git-ref }}

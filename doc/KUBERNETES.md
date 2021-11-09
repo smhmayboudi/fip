@@ -46,31 +46,31 @@ $ brew install linkerd
 $ curl https://kind.sigs.k8s.io/examples/kind-with-registry.sh > ./script/kind-with-registry.sh
 $ chmod 777 ./script/kind-with-registry.sh
 $ ./script/kind-with-registry.sh
- 
+
 # [https://linkerd.io/2.11/getting-started/]
 $ kubectl version --short
-$ curl -sSL https://run.linkerd.io/install | sh [BY PASS IF YOU USED BREW]
+$ curl --location --show-error --silent https://run.linkerd.io/install | sh [BY PASS IF YOU USED BREW]
 $ linkerd version
 $ linkerd check --pre
-$ linkerd install | kubectl apply -f -
+$ linkerd install | kubectl apply --filename -
 $ linkerd check
-$ linkerd viz install | kubectl apply -f -
+$ linkerd viz install | kubectl apply --filename -
 
 ## optional
-$ linkerd jaeger install | kubectl apply -f -
-$ linkerd multicluster install | kubectl apply -f -
+$ linkerd jaeger install | kubectl apply --filename -
+$ linkerd multicluster install | kubectl apply --filename -
 $ linkerd check
 $ linkerd viz dashboard &
-$ linkerd -n linkerd-viz viz top deployment/web [ERROR]
+$ linkerd --namespace linkerd-viz viz top deployment/web [ERROR]
 
-$ docker build . -f ./fip_api/Dockerfile -t fip-api:0.1.0-nonroot
+$ docker build . --file ./fip_api/Dockerfile --tag fip-api:0.1.0-nonroot
 $ docker tag fip-api:0.1.0-nonroot 127.0.0.1:5000/fip-api:0.1.0-nonroot
 $ docker push 127.0.0.1:5000/fip-api:0.1.0-nonroot
-$ cat ./fip_api/fip-api.yml | kubectl apply -f -
+$ cat ./fip_api/fip-api.yml | kubectl apply --filename -
 
-$ kubectl -n fip-api-namespace port-forward service/fip-api 8080:8080
+$ kubectl --namespace fip-api-namespace port-forward service/fip-api 8080:8080
 
-$ kubectl get -n fip-api-namespace deployment -o yaml | linkerd inject - | kubectl apply -f -
-$ linkerd -n fip-api-namespace check --proxy
-$ linkerd -n fip-api-namespace viz stat deployment
+$ kubectl get --namespace fip-api-namespace deployment --output yaml | linkerd inject - | kubectl apply --filename -
+$ linkerd --namespace fip-api-namespace check --proxy
+$ linkerd --namespace fip-api-namespace viz stat deployment
 ```

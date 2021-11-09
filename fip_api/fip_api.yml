@@ -16,7 +16,7 @@ metadata:
   namespace: fip-api-namespace
 spec:
   ports:
-    - 
+    -
       name: grpc
       port: 8080
       targetPort: 8080

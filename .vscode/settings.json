@@ -1,5 +1,9 @@
 {
     "debug.allowBreakpointsEverywhere": true,
+    "editor.defaultFormatter": "matklad.rust-analyzer",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "editor.inlineSuggest.enabled": true,
     "files.watcherExclude": {
         "**/*.prof*": true,
         "**/.git/**": true,
@@ -9,12 +13,15 @@
         "**/target/**": true,
         "**/test/**": true
     },
-    "editor.defaultFormatter": "rust-lang.rust",
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": true,
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "plaintext": true,
+        "markdown": false
+    },
+    "lldb.verboseLogging": true,
     "redhat.telemetry.enabled": true,
-    "rust-client.updateOnStartup": true,
-    "rust.all_features": true,
+    "rust-analyzer.checkOnSave.command": "clippy",
     "sqltools.connections": [
         {
             "database": "${workspaceFolder:fip}/fip_at/at.db",
