@@ -1,0 +1,182 @@
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  audit:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Cargo Audit
+    needs:
+      - conventional-commits-linter
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        name: Audit
+        run: make audit
+        shell: bash
+    timeout-minutes: 5
+  check:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Cargo Check
+    needs:
+      - conventional-commits-linter
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        name: Check
+        run: make check
+        shell: bash
+    timeout-minutes: 5
+  conventional-commits-linter:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Conventional Commits Linter
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        id: pull_request-branch-meta
+        name: Pull request branch meta
+        uses: ./.github/actions/pull_request-branch-meta
+        with:
+          git-ref: ${{ github.ref }}
+      -
+        name: Conventional Commits
+        run: ./script/conventional-commits-linter.sh ${{ steps.pull_request-branch-meta.outputs.name }}
+        shell: bash
+    timeout-minutes: 5
+  deny-check:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    continue-on-error: ${{ matrix.checks == 'dvisories' }}
+    name: Cargo Deny Check (${{ matrix.checks }})
+    needs:
+      - conventional-commits-linter
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        env:
+          DENY_CHECK_WHICH: ${{ matrix.checks }}
+        name: Deny Check
+        run: make deny-check
+        shell: bash
+      # -
+      #   name: Deny Check
+      #   uses: EmbarkStudios/cargo-deny-action@0ca727bbae7b7b578b9a5f98186caac35aa2a00d
+      #   with:
+      #     arguments: >-
+      #       --all-features
+      #       --workspace
+      #     command: check ${{ matrix.checks }}
+    strategy:
+      matrix:
+        checks:
+          - advisories
+          - bans licenses sources
+    timeout-minutes: 10
+  clippy:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Cargo Clippy
+    needs:
+      - conventional-commits-linter
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        name: Clippy
+        run: make clippy
+        shell: bash
+    timeout-minutes: 5
+  fmt-check:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Cargo Format Check
+    needs:
+      - conventional-commits-linter
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        name: Format Check
+        run: make fmt-check
+        shell: bash
+    timeout-minutes: 5
+  test:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Cargo Test
+    needs:
+      - conventional-commits-linter
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        name: Test
+        run: make test
+        shell: bash
+    timeout-minutes: 5
+name: Pull Request Main
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize

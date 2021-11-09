@@ -1,9 +1,9 @@
 # FROM docker.io/curlimages/curl:7.77.0 as linkerd
 # ARG LINKERD_AWAIT_VERSION=v0.2.4
-# RUN curl -sSL -o /tmp/linkerd-await https://github.com/linkerd/linkerd-await/releases/download/release%2F${LINKERD_AWAIT_VERSION}/linkerd-await-${LINKERD_AWAIT_VERSION}-amd64 \
+# RUN curl --location --output /tmp/linkerd-await --show-error --silent https://github.com/linkerd/linkerd-await/releases/download/release%2F${LINKERD_AWAIT_VERSION}/linkerd-await-${LINKERD_AWAIT_VERSION}-amd64 \
 #     && chmod 755 /tmp/linkerd-await
 
-FROM rust:1.56.0-bullseye as builder
+FROM rust:1.56.1-bullseye as builder
 WORKDIR /fip_api
 ADD . .
 RUN rustup component add rustfmt
