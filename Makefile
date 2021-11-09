@@ -15,7 +15,7 @@ DENY_CHECK_WHICH ?= advisories bans licenses sources
 PACKAGE ?= fip_api
 # RELEASE ?= --release
 STRIP ?= strip
-TARGET ?= $(shell rustup show | sed -n 's/^Default host: \(.*\)/\1/p')
+TARGET ?= $(shell $(RUSTUP) show | $(SED) -n 's/^Default host: \(.*\)/\1/p')
 VERSION ?= v0.1.0
 
 TARGET_DIR = target/$(TARGET)
