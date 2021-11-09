@@ -6,13 +6,11 @@ set -o pipefail
 set -o nounset
 
 # create registry container unless it already exists
-reg_name='kind-registry'
-reg_port='5000'
-running="$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)"
-if [ "${running}" != 'true' ]; then
-  docker run \
-    -d --restart=always -p "127.0.0.1:${reg_port}:5000" --name "${reg_name}" \
-    registry:2.7.1
+reg_name="kind-registry"
+reg_port="5000"
+running="$(docker inspect --format '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)"
+if [ "${running}" != "true" ]; then
+  docker run --detach --name "${reg_name}" --publish "127.0.0.1:${reg_port}:5000" --restart always registry:2.7.1
 fi
 
 # create a cluster with the local registry enabled in containerd
@@ -31,7 +29,7 @@ docker network connect "kind" "${reg_name}" || true
 
 # Document the local registry
 # https://github.com/kubernetes/enhancements/tree/master/keps/sig-cluster-lifecycle/generic/1755-communicating-a-local-registry
-cat <<EOF | kubectl apply -f -
+cat <<EOF | kubectl apply --filename -
 apiVersion: v1
 kind: ConfigMap
 metadata:
