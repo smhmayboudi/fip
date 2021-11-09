@@ -1,13 +1,17 @@
 .DEFAULT_GOAL := help
 
+# ARCH: aarch64, armv7, x86_64
 # CARGO: cargo, cross
+# DENY_CHECK_WHICH: advisories, bans, licenses, sources
 # PACKAGE: fip_api
 # RELEASE: --release
 # STRIP: aarch64-linux-gnu-strip, arm-linux-gnueabihf-strip, strip
 # TARGET: aarch64-unknown-linux-musl, armv7-unknown-linux-musleabihf, x86_64-unknown-linux-musl
-# VERSION: git describe --tags --abbrev=0
+# VERSION: git describe --abbrev=0 --tags
 
+ARCHITECTURE ?= $(shell rustup show | sed -n 's/^Default host: \(.*\)/\1/p' | awk 'BEGIN { FS = "-" }; { print $$1 }')
 CARGO ?= cargo
+DENY_CHECK_WHICH ?= advisories bans licenses sources
 PACKAGE ?= fip_api
 # RELEASE ?= --release
 STRIP ?= strip
@@ -21,7 +25,7 @@ ifdef RELEASE
 endif
 
 BIN = $(BIN_DIR)/$(PACKAGE)
-BIN_NAME = $(PACKAGE)-$(VERSION)-$(TARGET)
+BIN_NAME = $(PACKAGE)-$(VERSION)-$(ARCHITECTURE)
 
 COVERAGE_DIR = $(TARGET_DIR)/cov
 DOCUMENTATION_DIR = $(TARGET_DIR)/doc
@@ -49,39 +53,24 @@ CARGO_CLIPPY = $(CARGO) clippy --all-features --all-targets --frozen --workspace
 CARGO_DENY = $(CARGO) deny --all-features --workspace
 CARGO_FMT = $(CARGO) fmt --all
 
-AWK = awk
-CAT = cat
-CONVENTIONAL_COMMITS_LINTER = conventional_commits_linter --allow-angular-type-only --from-stdin
-CP = cp -R
-CUT = cut
-FIND_RM = find . -type f -name *.prof* -exec rm -fr {} +
-GIT = git
-GRCOV = grcov
-GREP = grep
-MKDIR = mkdir -p
-RM = rm -fr
-RUSTUP = rustup
-SHASUM = shasum -a 256
-SORT = sort
-
 $(BIN): add-fmt add-target fetch
 	$(CARGO_BUILD)
 
 GIT_HOOKS_COMMIT_MSG = .git/hooks/commit-msg
 $(GIT_HOOKS_COMMIT_MSG):
-	$(CP) .githooks/commit-msg $@
+	cp .githooks/commit-msg $@
 
 GIT_HOOKS_PRE_COMMIT = .git/hooks/pre-commit
 $(GIT_HOOKS_PRE_COMMIT):
-	$(CP) .githooks/pre-commit $@
+	cp .githooks/pre-commit $@
 
 GIT_HOOKS_PRE_PUSH = .git/hooks/pre-push
 $(GIT_HOOKS_PRE_PUSH):
-	$(CP) .githooks/pre-push $@
+	cp .githooks/pre-push $@
 
 GIT_HOOKS_PREPARE_COMMIT_MSG = .git/hooks/prepare-commit-msg
 $(GIT_HOOKS_PREPARE_COMMIT_MSG):
-	$(CP) .githooks/prepare-commit-msg $@
+	cp .githooks/prepare-commit-msg $@
 
 GIT_HOOKS = $(GIT_HOOKS_COMMIT_MSG) $(GIT_HOOKS_PRE_COMMIT) $(GIT_HOOKS_PRE_PUSH) $(GIT_HOOKS_PREPARE_COMMIT_MSG)
 
@@ -92,7 +81,7 @@ add-audit: ## Add the audit
 
 .PHONY: add-clippy
 add-clippy: ## Add the clippy
-	$(RUSTUP) component add clippy
+	rustup component add clippy
 
 .PHONY: add-conventional-commits-linter
 add-conventional-commits-linter: ## Add the conventional commits linter
@@ -102,35 +91,54 @@ add-conventional-commits-linter: ## Add the conventional commits linter
 add-deny: ## Add the deny
 	$(CARGO) install --locked cargo-deny
 
+DETECTED_OS := $(shell uname 2>/dev/null || echo "Windows")
+
+.PHNY: add-os-dependency
+add-os-dependency: ## Add the os dependency
+	if [ "${DETECTED_OS}" = "Darwin" ]; then \
+		brew install --quiet cmake sqlite3; \
+	elif [ "${DETECTED_OS}" = "Linux" ]; then \
+		export DEBIAN_FRONTEND="noninteractive" \
+		&& apt-get update \
+		&& apt-get install --no-install-recommends --yes \
+			cmake \
+			sqlite3 \
+		&& apt-get autoremove --yes \
+		&& apt-get clean --yes \
+		&& rm -fr /tmp/* /var/lib/apt/lists/* /var/tmp/*; \
+	else \
+		echo "Please install cmake and sqlite3 on ${DETECTED_OS}"; \
+	fi
+
 .PHONY: add-fmt
 add-fmt: ## Add the fmt
-	$(RUSTUP) component add rustfmt
+	rustup component add rustfmt
 
 .PHONY: add-git-config
 add-git-config: ## Add the git configs
-	$(GIT) config --global branch.autosetuprebase always
-	$(GIT) config --global color.branch true
-	$(GIT) config --global color.diff true
-	$(GIT) config --global color.interactive true
-	$(GIT) config --global color.status true
-	$(GIT) config --global color.ui true
-	$(GIT) config --global commit.gpgsign true
-	$(GIT) config --global core.autocrlf input
-	$(GIT) config --global core.editor "code --wait"
-	$(GIT) config --global diff.tool code
-	$(GIT) config --global difftool.code.cmd "code --diff \$$LOCAL \$$REMOTE --wait"
-	$(GIT) config --global gpg.program gpg
-	$(GIT) config --global init.defaultbranch main
-	$(GIT) config --global log.date relative
-	$(GIT) config --global merge.tool code
-	$(GIT) config --global mergetool.code.cmd "code --wait \$$MERGED"
-	$(GIT) config --global pull.default current
-	$(GIT) config --global pull.rebase true
-	$(GIT) config --global push.default current
-	$(GIT) config --global rebase.autostash true
-	$(GIT) config --global rerere.enabled true
-	$(GIT) config --global stash.showpatch true
-	$(GIT) config --global tag.gpgsign true
+	git config --global branch.autosetuprebase always
+	git config --global color.branch true
+	git config --global color.diff true
+	git config --global color.interactive true
+	git config --global color.status true
+	git config --global color.ui true
+	git config --global commit.gpgsign true
+	git config --global core.autocrlf input
+	git config --global core.editor "code --wait"
+	git config --global diff.tool code
+	git config --global difftool.code.cmd "code --diff \$$LOCAL \$$REMOTE --wait"
+	git config --global gpg.program gpg
+	git config --global init.defaultbranch main
+	git config --global log.date relative
+	git config --global merge.tool code
+	git config --global mergetool.code.cmd "code --wait \$$MERGED"
+	git config --global pull.default current
+	git config --global pull.rebase true
+	git config --global push.default current
+	git config --global rebase.autostash true
+	git config --global rerere.enabled true
+	git config --global stash.showpatch true
+	git config --global tag.gpgsign true
 
 .PHONY: add-git-hooks
 add-git-hooks: clean-git-hooks $(GIT_HOOKS) ## Add the git hooks
@@ -141,11 +149,11 @@ add-grcov: ## Add the grcov
 
 .PHONY: add-llvm
 add-llvm: ## Add the llvm tools preview
-	$(RUSTUP) component add llvm-tools-preview
+	rustup component add llvm-tools-preview
 
 .PHONY: add-target
 add-target: ## Add a target
-	$(RUSTUP) target add $(TARGET)
+	rustup target add $(TARGET)
 
 .PHONY: audit
 audit: add-audit ## Audit
@@ -164,31 +172,31 @@ check: add-fmt add-target fetch ## Check
 
 .PHONY: clean
 clean: clean-coverage clean-doc clean-release ## Clean
-	$(RM) target
+	rm -fr target
 
 .PHONY: clean-build
 clean-build: add-target ## Clean build
 	$(CARGO_CLEAN)
-	$(RM) $(BIN_DIR)
+	rm -fr $(BIN_DIR)
 
 .PHONY: clean-coverage
 clean-coverage: ## Clean cov
-	$(FIND_RM)
-	$(RM) $(COVERAGE_DIR)
-	$(RM) coverage
+	find . -type f -name *.prof* -exec rm -fr {} +
+	rm -fr $(COVERAGE_DIR)
+	rm -fr coverage
 
 .PHONY: clean-doc
 clean-doc: ## Clean doc
-	$(RM) $(DOCUMENTATION_DIR)
-	$(RM) documentation
+	rm -fr $(DOCUMENTATION_DIR)
+	rm -fr documentation
 
 .PHONY: clean-git-hooks
 clean-git-hooks: ## Clean git hooks
-	$(RM) $(GIT_HOOKS)
+	rm -fr $(GIT_HOOKS)
 
 .PHONY: clean-release
 clean-release: ## Clean release
-	$(RM) release
+	rm -fr release
 
 .PHONY: clippy
 clippy: add-clippy add-fmt fetch ## Clippy
@@ -196,13 +204,13 @@ clippy: add-clippy add-fmt fetch ## Clippy
 
 .PHONY: conventional-commits-linter
 conventional-commits-linter: add-conventional-commits-linter ## Conventional commits linter
-	$(CONVENTIONAL_COMMITS_LINTER)
+	conventional_commits_linter --allow-angular-type-only --from-stdin
 
 .PHONY: coverage
 coverage: add-fmt add-grcov add-llvm add-target clean-coverage fetch ## Test cov
 	RUSTC_BOOTSTRAP=1 RUSTFLAGS="-Zinstrument-coverage" $(CARGO_BUILD)
 	RUSTC_BOOTSTRAP=1 RUSTFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="$(PACKAGE)-%p-%m.profraw" $(CARGO_TEST)
-	$(GRCOV) . \
+	grcov . \
 		--binary-path $(BIN_DIR) \
 		--branch \
 		--guess-directory-when-missing \
@@ -211,13 +219,13 @@ coverage: add-fmt add-grcov add-llvm add-target clean-coverage fetch ## Test cov
 		--output-path $(COVERAGE_DIR) \
 		--output-type html \
 		--source-dir .
-	$(MKDIR) coverage
-	$(CP) $(COVERAGE_DIR)/* coverage
-	$(CAT) coverage/coverage.json
+	mkdir -p coverage
+	cp -R $(COVERAGE_DIR)/* coverage
+	cat coverage/coverage.json
 
 .PHONY: deny-check
 deny-check: add-deny fetch ## Deny check
-	$(CARGO_DENY) check
+	$(CARGO_DENY) check $(DENY_CHECK_WHICH)
 
 .PHONY: deny-fetch
 deny-fetch: add-deny fetch ## Deny fetch
@@ -230,8 +238,8 @@ deny-fix: add-deny fetch ## Deny fix
 .PHONY: doc
 doc: add-fmt add-target clean-doc fetch ## Doc
 	$(CARGO_DOC)
-	$(MKDIR) documentation
-	$(CP) $(DOCUMENTATION_DIR)/* documentation
+	mkdir -p documentation
+	cp -R $(DOCUMENTATION_DIR)/* documentation
 
 .PHONY: fetch
 fetch: Cargo.lock ## Fetch
@@ -258,17 +266,17 @@ git: add-git-config add-git-hooks ## Add git config & hooks
 
 .PHONY: help
 help: ## Help
-	@$(GREP) -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
-		| $(SORT) \
-		| $(AWK) 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-33s\033[0m %s\n", $$1, $$2}'
+	@grep --extended-regexp '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+		| sort \
+		| awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-33s\033[0m %s\n", $$1, $$2 }'
 
 .PHONY: release
-release: $(BIN) ## Release
-	$(MKDIR) release
-	$(CP) $(BIN) release/$(BIN_NAME)
+release: $(BIN) clean-release ## Release
+	mkdir -p release
+	cp $(BIN) release/$(BIN_NAME)
 	$(STRIP) release/$(BIN_NAME)
-	$(SHASUM) release/$(BIN_NAME) \
-		| $(CUT) -d " " -f 1 > release/$(BIN_NAME).sha256
+	shasum --algorithm 256 release/$(BIN_NAME) \
+		| awk '{ print $$1 }' > release/$(BIN_NAME).sha256
 
 .PHONY: run
 run: ## Run

@@ -6,28 +6,27 @@ $ rustup target add \
     armv7-unknown-linux-musleabihf \
     x86_64-unknown-linux-musl
 $ cargo build --package fip_api --release --target aarch64-unknown-linux-musl
+```
 
-$ docker build . -f ./fip_api/Dockerfile -t fip-api:0.1.0-nonroot
-$ docker run -e LINKERD_AWAIT_DISABLED=TRUE -i -p 8080:8080 --rm fip-api:0.1.0-nonroot
+```shell
+$ rustc --print target-list
+$ rustc --print target-cpus --target ${TRIPLE}
+$ rustc --print target-features --target ${TRIPLE}
+```
 
-$ shasum -a 256 target/release/fip_api
+```shell
+$ docker build . --file ./fip_api/Dockerfile --tag fip-api:0.1.0-nonroot
+$ docker run --env LINKERD_AWAIT_DISABLED=TRUE --interactive --publish 8080:8080 --rm fip-api:0.1.0-nonroot
+```
 
+```shell
 $ brew install upx
 $ upx --ultra-brute ./target/aarch64-unknown-linux-musl/release/fip_api
 ```
 
 ```shell
-$ GIT_COMMITTER_DATE=$(git log -n1 --pretty=%aD) git tag -a -m "Release 0.1.0" 0.1.0
-$ git push --tags
-
-$ rustc --print target-list
-$ rustc --target ${TRIPLE} --print target-cpus
-$ rustc --target ${TRIPLE} --print target-features
-
-$ perf record --call-graph=dwarf ./target/release/fip_api
-$ perf report --hierarchy -M intel
-
-$ RUSTFLAGS="-C target-cpu=native" cargo build --release
+$ perf record --call-graph dwarf ./target/aarch64-unknown-linux-musl/release/fip_api
+$ perf report --disassembler-style intel --hierarchy
 ```
 
 ```shell
