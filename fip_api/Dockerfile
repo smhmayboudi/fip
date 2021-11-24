@@ -19,12 +19,13 @@
 # CMD ["/fip_api"]
 
 FROM docker.io/curlimages/curl:7.80.0 as curl
+ARG ARCHITECTURE="arm64"
 ARG VERSION="v0.1.0"
 RUN set -eux \
-    && curl --location --output /tmp/fip_api --show-error --silent https://github.com/smhmayboudi/fip/releases/download/${VERSION}/fip_api-${VERSION}-aarch64 \
+    && curl --location --output /tmp/fip_api --show-error --silent https://github.com/smhmayboudi/fip/releases/download/${VERSION}/fip_api-${VERSION}-${ARCHITECTURE} \
     && chmod 755 /tmp/fip_api
 
-FROM gcr.io/distroless/static-debian11:nonroot
+FROM ${ARCHITECTURE}/gcr.io/distroless/cc-debian11:nonroot
 USER 65532
 COPY --from=curl /tmp/fip_api /fip_api
 COPY ./auth_model.conf /
