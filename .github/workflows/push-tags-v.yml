@@ -39,7 +39,7 @@ jobs:
       matrix:
         include:
           -
-            architecture: aarch64
+            architecture: arm64
             strip: aarch64-linux-gnu-strip
             target: aarch64-unknown-linux-musl
           -
@@ -47,7 +47,7 @@ jobs:
             strip: arm-linux-gnueabihf-strip
             target: armv7-unknown-linux-musleabihf
           -
-            architecture: x86_64
+            architecture: amd64
             strip: strip
             target: x86_64-unknown-linux-musl
         target:

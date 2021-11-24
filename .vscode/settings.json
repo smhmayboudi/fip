@@ -15,9 +15,9 @@
     },
     "github.copilot.enable": {
         "*": true,
-        "yaml": true,
+        "markdown": false,
         "plaintext": true,
-        "markdown": false
+        "yaml": true
     },
     "lldb.verboseLogging": true,
     "redhat.telemetry.enabled": true,

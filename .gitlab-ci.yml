@@ -43,7 +43,7 @@ rust_build:
     - "docker logout ${HARBOR_REGISTRY_URL}"
   allow_failure: false
   before_script:
-    - "echo -n \"${HARBOR_PASSWORD}\" \
+    - "echo \"${HARBOR_PASSWORD}\" \
       | docker login --password-stdin ${HARBOR_REGISTRY_URL} --username ${HARBOR_USERNAME}"
   dependencies: []
   # extends:
