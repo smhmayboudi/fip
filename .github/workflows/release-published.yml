@@ -53,8 +53,6 @@ jobs:
         with:
           build-args: |
             VERSION=${{ fromJSON(steps.metadata.outputs.json).labels['org.opencontainers.image.version'] }}
-# BUILDTIME=${{ fromJSON(steps.metadata.outputs.json).labels['org.opencontainers.image.created'] }}
-# REVISION=${{ fromJSON(steps.metadata.outputs.json).labels['org.opencontainers.image.revision'] }}
           cache-from: type=registry,ref=${{ github.repository }}/${{ env.PACKAGE}}:latest
           cache-to: type=inline
           context: fip_api
@@ -70,10 +68,4 @@ name: Release Published
 on:
   release:
     types:
-      # - created
-      # - deleted
-      # - edited
-      # - prereleased
       - published
-      # - released
-      # - unpublished

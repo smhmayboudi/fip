@@ -26,7 +26,7 @@ RUN set -eux \
     && curl --location --output /tmp/fip_api --show-error --silent https://github.com/smhmayboudi/fip/releases/download/v${VERSION}/fip_api-v${VERSION}-$(echo "${TARGETPLATFORM}" | sed s,^linux/,, | sed s,/,,) \
     && chmod 755 /tmp/fip_api
 
-FROM gcr.io/distroless/cc-debian11:nonroot
+FROM --platform=${TARGETPLATFORM} gcr.io/distroless/cc-debian11:nonroot
 USER 65532
 COPY --from=curl /tmp/fip_api /fip_api
 COPY ./auth_model.conf /
