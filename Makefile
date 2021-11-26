@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-# ARCH: aarch64, armv7, x86_64
+# ARCHVARIANT: arm64, armv7, amd64
 # CARGO: cargo, cross
 # DENY_CHECK_WHICH: advisories, bans, licenses, sources
 # PACKAGE: fip_api
@@ -9,13 +9,13 @@
 # TARGET: aarch64-unknown-linux-musl, armv7-unknown-linux-musleabihf, x86_64-unknown-linux-musl
 # VERSION: git describe --abbrev=0 --tags
 
-ARCHITECTURE ?= $(shell rustup show | sed -n 's/^Default host: \(.*\)/\1/p' | awk 'BEGIN { FS = "-" }; { print $$1 }')
+ARCHVARIANT ?= $(shell rustup show | sed -n "s/^Default host: \(.*\)/\1/p" | awk 'BEGIN { FS = "-" }; { print $$1 }')
 CARGO ?= cargo
 DENY_CHECK_WHICH ?= advisories bans licenses sources
 PACKAGE ?= fip_api
 # RELEASE ?= --release
 STRIP ?= strip
-TARGET ?= $(shell rustup show | sed -n 's/^Default host: \(.*\)/\1/p')
+TARGET ?= $(shell rustup show | sed -n "s/^Default host: \(.*\)/\1/p")
 VERSION ?= v0.1.0
 
 TARGET_DIR = target/$(TARGET)
@@ -25,7 +25,7 @@ ifdef RELEASE
 endif
 
 BIN = $(BIN_DIR)/$(PACKAGE)
-BIN_NAME = $(PACKAGE)-$(VERSION)-$(ARCHITECTURE)
+BIN_NAME = $(PACKAGE)-$(VERSION)-$(ARCHVARIANT)
 
 COVERAGE_DIR = $(TARGET_DIR)/cov
 DOCUMENTATION_DIR = $(TARGET_DIR)/doc
@@ -96,7 +96,10 @@ DETECTED_OS := $(shell uname 2>/dev/null || echo "Windows")
 .PHNY: add-os-dependency
 add-os-dependency: ## Add the os dependency
 	if [ "${DETECTED_OS}" = "Darwin" ]; then \
-		brew install --quiet cmake sqlite3; \
+		brew install --quiet \
+			cmake \
+			sqlite3 \
+		; \
 	elif [ "${DETECTED_OS}" = "Linux" ]; then \
 		export DEBIAN_FRONTEND="noninteractive" \
 		&& apt-get update \
@@ -105,7 +108,8 @@ add-os-dependency: ## Add the os dependency
 			sqlite3 \
 		&& apt-get autoremove --yes \
 		&& apt-get clean --yes \
-		&& rm -fr /tmp/* /var/lib/apt/lists/* /var/tmp/*; \
+		&& rm -fr /tmp/* /var/lib/apt/lists/* /var/tmp/*\
+		; \
 	else \
 		echo "Please install cmake and sqlite3 on ${DETECTED_OS}"; \
 	fi

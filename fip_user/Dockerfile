@@ -1,11 +1,26 @@
-FROM docker.io/rust:1.56.1-bullseye as builder
-WORKDIR /fip
-ADD . .
-RUN rustup component add rustfmt
-RUN cargo build --package fip_user --release
+FROM docker.io/curlimages/curl:7.80.0 as fip_user
+ARG BUILDARCH
+ARG BUILDOS
+ARG BUILDPLATFORM
+ARG BUILDVARIANT
+ARG TARGETARCH
+ARG TARGETOS
+ARG TARGETPLATFORM
+ARG TARGETVARIANT
+ARG VERSION
+RUN set -eux \
+    && curl --location --output /tmp/fip_user --show-error --silent https://github.com/smhmayboudi/fip/releases/download/v${VERSION}/fip_user-v${VERSION}-${TARGETARCH}${TARGETVARIANT} \
+    && chmod 755 /tmp/fip_user
 
-FROM gcr.io/distroless/cc-debian11:nonroot
-COPY --from=builder /fip/fip_user/at.db /
-COPY --from=builder /fip/target/release/fip_user /
-USER 65532
+# FROM docker.io/curlimages/curl:7.80.0 as linkerd-await
+# ARG LINKERD_AWAIT_VERSION=v0.2.4
+# RUN curl --location --output /tmp/linkerd-await --show-error --silent https://github.com/linkerd/linkerd-await/releases/download/release%2F${LINKERD_AWAIT_VERSION}/linkerd-await-${LINKERD_AWAIT_VERSION}-amd64 \
+#     && chmod 755 /tmp/linkerd-await
+
+FROM gcr.io/distroless/static-debian11:nonroot
+COPY --chown=nonroot:nonroot --from=fip_user /tmp/fip_user /fip_user
+# COPY --chown=nonroot:nonroot --from=linkerd-await /tmp/linkerd-await /linkerd-await
+COPY --chown=nonroot:nonroot ./user.db /
+USER nonroot:nonroot
+# ENTRYPOINT ["/linkerd-await", "--shutdown", "--"]
 CMD ["/fip_user"]
