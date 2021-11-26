@@ -30,23 +30,23 @@ ARG PACKAGE
 COPY --chown=nonroot:nonroot --from=fip /tmp/${PACKAGE} /${PACKAGE}
 # COPY --chown=nonroot:nonroot --from=linkerd-await /tmp/linkerd-await /linkerd-await
 
-# FROM base AS fip_api
-COPY --chown=nonroot:nonroot ./auth_model.conf /
-COPY --chown=nonroot:nonroot ./auth_policy.csv /
+FROM base AS fip_api
+# COPY --chown=nonroot:nonroot ./fip_api/auth_model.conf /
+# COPY --chown=nonroot:nonroot ./fip_api/auth_policy.csv /
 
-# FROM base AS fip_at
+FROM base AS fip_at
 # COPY --chown=nonroot:nonroot ./fip_at/at.db /
 
-# FROM base AS fip_jwks
+FROM base AS fip_jwks
 # COPY --chown=nonroot:nonroot ./fip_jwks/jwks.db /
 
-# FROM base AS fip_rt
+FROM base AS fip_rt
 # COPY --chown=nonroot:nonroot ./fip_rt/rt.db /
 
-# FROM base AS fip_user
+FROM base AS fip_user
 # COPY --chown=nonroot:nonroot ./fip_user/user.db /
 
-# FROM ${PACKAGE} AS after-condition
+FROM ${PACKAGE} AS after-condition
 USER nonroot:nonroot
 # ENTRYPOINT ["/linkerd-await", "--shutdown", "--"]
 CMD ["/${PACKAGE}"]

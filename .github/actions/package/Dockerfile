@@ -1,4 +1,6 @@
-ARG RUST_VERSION=1.56.1-bullseye
+# syntax=docker.io/docker/dockerfile:1.3.1
+
+ARG RUST_VERSION="1.56.1-bullseye"
 FROM rust:${RUST_VERSION}
 RUN set -eux \
     && export DEBIAN_FRONTEND="noninteractive" \

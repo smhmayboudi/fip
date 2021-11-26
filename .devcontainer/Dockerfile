@@ -1,6 +1,6 @@
-# https://github.com/microsoft/vscode-dev-containers/blob/v0.205.1/containers/rust/.devcontainer/base.Dockerfile
+# syntax=docker.io/docker/dockerfile:1.3.1
 
-ARG VARIANT=1.56.1-bullseye
+ARG VARIANT="1.56.1-bullseye"
 FROM rust:${VARIANT}
 
 ARG ADD_NON_FREE_PACKAGES="true"

@@ -1,6 +1,8 @@
 env:
+  BASE_DIGEST: sha256:bca3c203cdb36f5914ab8568e4c25165643ea9b711b41a8a58b42c80a51ed609
+  BASE_NAME: gcr.io/distroless/static-debian11
+  BASE_TAG: nonroot
   CARGO_TERM_COLOR: always
-  PACKAGE: fip_api
 jobs:
   build-and-push-docker-image:
     name: Build and Publish Docker Image
@@ -19,16 +21,16 @@ jobs:
         with:
           labels: |
             org.opencontainers.image.authors=${{ github.actor }}
-            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}/tree/${{ github.sha }}/${{ env.PACKAGE }}
-            org.opencontainers.image.title=${{ env.PACKAGE}}
-            org.opencontainers.image.url=${{ github.server_url }}/${{ github.repository }}/main/${{ env.PACKAGE }}
+            org.opencontainers.image.base.digest=${{ env.BASE_DIGEST }}
+            org.opencontainers.image.base.name=${{ env.BASE_NAME }}:${{ env.BASE_TAG }}
+            org.opencontainers.image.description=${{ matrix.package }}
+            org.opencontainers.image.documentation=${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}/${{ matrix.package }}
+            org.opencontainers.image.ref.name=${{ github.repository }}/${{ matrix.package }}/${{ github.ref_name }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}/${{ matrix.package }}
+            org.opencontainers.image.title=${{ matrix.package }}
+            org.opencontainers.image.url=${{ github.server_url }}/${{ github.repository }}/main/${{ matrix.package }}
             org.opencontainers.image.vendor=${{ github.actor }}
-# org.opencontainers.image.base.digest=""
-# org.opencontainers.image.base.name=""
-# org.opencontainers.image.description=""
-# org.opencontainers.image.documentation=""
-# org.opencontainers.image.ref.name=""
-          images: ghcr.io/${{ github.repository }}/${{ env.PACKAGE}}
+          images: ghcr.io/${{ github.repository }}/${{ matrix.package }}
           tags: type=semver,pattern={{version}}
       -
         name: Set up QEMU
@@ -48,22 +50,37 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
       -
-        name: Build and Push Docker Image
+        name: Build and Push Docker Image (${{ matrix.package }})
         uses: docker/build-push-action@a66e35b9cbcf4ad0ea91ffcaf7bbad63ad9e0229
         with:
           build-args: |
+            PACKAGE=${{ matrix.package }}
+            REFERENCE=${{ env.BASE_NAME }}:${{ env.BASE_TAG }}@${{ env.BASE_DIGEST }}
             VERSION=${{ fromJSON(steps.metadata.outputs.json).labels['org.opencontainers.image.version'] }}
-          cache-from: type=registry,ref=${{ github.repository }}/${{ env.PACKAGE}}:latest
-          cache-to: type=inline
-          context: fip_api
-          labels: ${{ steps.metadata.outputs.labels }}
+          cache-from: |
+            type=registry,ref=ghcr.io/${{ github.repository }}/${{ matrix.package }}:latest
+          cache-to: |
+            type=inline
+          context: .
+          labels: |
+            ${{ steps.metadata.outputs.labels }}
           platforms: |
             linux/amd64
             linux/arm/v7
             linux/arm64
           push: true
-          secrets: GIT_AUTH_TOKEN=${{ secrets.PACKAGE_REGISTRY }}
-          tags: ${{ steps.metadata.outputs.tags }}
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.PACKAGE_REGISTRY }}
+          tags: |
+            ${{ steps.metadata.outputs.tags }}
+    strategy:
+      matrix:
+        package:
+          - fip_api
+          - fip_at
+          - fip_jwks
+          - fip_rt
+          - fip_user
 name: Release Published
 on:
   release:
