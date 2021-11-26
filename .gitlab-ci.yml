@@ -22,21 +22,21 @@ default:
 
 .target_1: &target_1
   variables:
-    ARCHITECTURE: "aarch64"
-    STRIP: "aarch64-linux-gnu-strip"
-    TARGET: "aarch64-unknown-linux-musl"
+    ARCHVARIANT: "amd64"
+    STRIP: "strip"
+    TARGET: "x86_64-unknown-linux-musl"
 
 .target_2: &target_2
   variables:
-    ARCHITECTURE: "armv7"
-    STRIP: "arm-linux-gnueabihf-strip"
-    TARGET: "armv7-unknown-linux-musleabihf"
+    ARCHVARIANT: "arm64"
+    STRIP: "aarch64-linux-gnu-strip"
+    TARGET: "aarch64-unknown-linux-musl"
 
 .target_3: &target_3
   variables:
-    ARCHITECTURE: "x86_64"
-    STRIP: "strip"
-    TARGET: "x86_64-unknown-linux-musl"
+    ARCHVARIANT: "armv7"
+    STRIP: "arm-linux-gnueabihf-strip"
+    TARGET: "armv7-unknown-linux-musleabihf"
 
 rust_build:
   after_script:
@@ -148,12 +148,12 @@ rust_build:
   script:
     - "curl \
       --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" \
-      --upload-file release/${PACKAGE}-${VERSION}-${ARCHITECTURE} \
-      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}"
+      --upload-file release/${PACKAGE}-${VERSION}-${ARCHVARIANT} \
+      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}"
     - "curl \
       --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" \
-      --upload-file release/${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256 \
-      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256"
+      --upload-file release/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256 \
+      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256"
   stage: "upload"
   variables:
     CARGO: "cargo"
@@ -172,17 +172,17 @@ rust_build:
     assets:
       links:
         # -
-        #   name: "${PACKAGE}-${VERSION}-${ARCHITECTURE}"
-        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}"
+        #   name: "${PACKAGE}-${VERSION}-${ARCHVARIANT}"
+        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}"
         # -
-        #   name: "${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256"
-        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHITECTURE}.sha256"
+        #   name: "${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256"
+        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256"
         -
-          name: "${PACKAGE}-${VERSION}-aarch64"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-aarch64"
+          name: "${PACKAGE}-${VERSION}-arm64"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-arm64"
         -
-          name: "${PACKAGE}-${VERSION}-aarch64.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-aarch64.sha256"
+          name: "${PACKAGE}-${VERSION}-arm64.sha256"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-arm64.sha256"
         -
           name: "${PACKAGE}-${VERSION}-armv7"
           url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7"
@@ -190,11 +190,11 @@ rust_build:
           name: "${PACKAGE}-${VERSION}-armv7.sha256"
           url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7.sha256"
         -
-          name: "${PACKAGE}-${VERSION}-x86_64"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-x86_64"
+          name: "${PACKAGE}-${VERSION}-amd64"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-amd64"
         -
-          name: "${PACKAGE}-${VERSION}-x86_64.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-x86_64.sha256"
+          name: "${PACKAGE}-${VERSION}-amd64.sha256"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-amd64.sha256"
     description: "CHANGELOG.md"
     name: "Release ${VERSION}"
     tag_name: "${VERSION}"

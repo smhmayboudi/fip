@@ -2,7 +2,7 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   package:
-    name: Package (${{ matrix.architecture }})
+    name: Package (${{ matrix.package }}-${{ matrix.archvariant }})
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -18,9 +18,9 @@ jobs:
           git-ref: ${{ github.ref }}
       -
         env:
-          ARCHITECTURE: ${{ matrix.architecture }}
+          ARCHVARIANT: ${{ matrix.archvariant }}
           CARGO: cross
-          PACKAGE: fip_api
+          PACKAGE: ${{ matrix.package }}
           RELEASE: --release
           STRIP: ${{ matrix.strip }}
           TARGET: ${{ matrix.target }}
@@ -39,21 +39,27 @@ jobs:
       matrix:
         include:
           -
-            architecture: arm64
+            archvariant: amd64
+            strip: strip
+            target: x86_64-unknown-linux-musl
+          -
+            archvariant: arm64
             strip: aarch64-linux-gnu-strip
             target: aarch64-unknown-linux-musl
           -
-            architecture: armv7
+            archvariant: armv7
             strip: arm-linux-gnueabihf-strip
             target: armv7-unknown-linux-musleabihf
-          -
-            architecture: amd64
-            strip: strip
-            target: x86_64-unknown-linux-musl
-        target:
-          - aarch64-unknown-linux-musl
-          - armv7-unknown-linux-musleabihf
-          - x86_64-unknown-linux-musl
+        archvariant:
+          - amd64
+          - arm64
+          - armv7
+        package:
+          - fip_api
+          - fip_at
+          - fip_jwks
+          - fip_rt
+          - fip_user
     timeout-minutes: 30
   release:
     name: GitHub Release
