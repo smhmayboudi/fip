@@ -7,7 +7,7 @@
 # RELEASE: --release
 # STRIP: aarch64-linux-gnu-strip, arm-linux-gnueabihf-strip, strip
 # TARGET: aarch64-unknown-linux-musl, armv7-unknown-linux-musleabihf, x86_64-unknown-linux-musl
-# VERSION: git describe --abbrev=0 --tags
+# VERSION: 0.1.0
 
 ARCHVARIANT ?= $(shell rustup show | sed -n "s/^Default host: \(.*\)/\1/p" | awk 'BEGIN { FS = "-" }; { print $$1 }')
 CARGO ?= cargo
@@ -16,7 +16,7 @@ PACKAGE ?= fip_api
 # RELEASE ?= --release
 STRIP ?= strip
 TARGET ?= $(shell rustup show | sed -n "s/^Default host: \(.*\)/\1/p")
-VERSION ?= v0.1.0
+VERSION ?= 0.1.0
 
 TARGET_DIR = target/$(TARGET)
 BIN_DIR = $(TARGET_DIR)/debug
@@ -25,7 +25,7 @@ ifdef RELEASE
 endif
 
 BIN = $(BIN_DIR)/$(PACKAGE)
-BIN_NAME = $(PACKAGE)-$(VERSION)-$(ARCHVARIANT)
+BIN_NAME = $(PACKAGE)-v$(VERSION)-$(ARCHVARIANT)
 
 COVERAGE_DIR = $(TARGET_DIR)/cov
 DOCUMENTATION_DIR = $(TARGET_DIR)/doc

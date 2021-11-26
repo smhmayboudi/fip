@@ -61,14 +61,8 @@ jobs:
         name: Check Out
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
-        id: pull_request-branch-meta
-        name: Pull request branch meta
-        uses: ./.github/actions/pull_request-branch-meta
-        with:
-          git-ref: ${{ github.ref }}
-      -
         name: Conventional Commits
-        run: ./script/conventional-commits-linter.sh ${{ steps.pull_request-branch-meta.outputs.name }}
+        run: ./script/conventional-commits-linter.sh ${{ github.ref_name }}
         shell: bash
     timeout-minutes: 5
   deny-check:
