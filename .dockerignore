@@ -1,3 +1,4 @@
+*.db-*
 *.prof*
 .git/
 coverage/
