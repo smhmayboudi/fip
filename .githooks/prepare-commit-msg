@@ -76,7 +76,7 @@
 # =============================
 #
 # The full specification of the Angular Commit Message Format can be found at
-# https://gitlab.playpod.ir/alpha/project-template/-/blob/main/CONTRIBUTING.md#commit
+# https://github.com/smhmayboudi/fip/blob/main/CONTRIBUTING.md#commit
 #
 # The following is an excerpt of the specification with the most commonly needed info.
 #
@@ -106,10 +106,10 @@
 #   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
 #   │       │
 #   │       └─⫸ Commit Scope: should be prepared in advance for your project by yourself.
-#   │                          https://gitlab.playpod.ir/alpha/project-template/-/blob/main/CONTRIBUTING.md#scope
+#   │                          https://github.com/smhmayboudi/fip/blob/main/CONTRIBUTING.md#scope
 #   │
 #   └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|style|test
-#                     https://gitlab.playpod.ir/alpha/project-template/-/blob/main/CONTRIBUTING.md#type
+#                     https://github.com/smhmayboudi/fip/blob/main/CONTRIBUTING.md#type
 #
 #
 # Commit Message Body

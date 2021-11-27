@@ -24,19 +24,19 @@ impl ClientContext for KafkaConsumerContext {
             | RDKafkaLogLevel::Alert
             | RDKafkaLogLevel::Critical
             | RDKafkaLogLevel::Error => {
-                tracing::error!(target: "librdkafka", "librdkafka: {} {}", fac, log_message)
+                tracing::error!(target: "librdkafka", "librdkafka: {:?} {:?}", fac, log_message)
             }
             RDKafkaLogLevel::Warning => {
-                tracing::warn!(target: "librdkafka", "librdkafka: {} {}", fac, log_message)
+                tracing::warn!(target: "librdkafka", "librdkafka: {:?} {:?}", fac, log_message)
             }
             RDKafkaLogLevel::Notice => {
-                tracing::info!(target: "librdkafka", "librdkafka: {} {}", fac, log_message)
+                tracing::info!(target: "librdkafka", "librdkafka: {:?} {:?}", fac, log_message)
             }
             RDKafkaLogLevel::Info => {
-                tracing::info!(target: "librdkafka", "librdkafka: {} {}", fac, log_message)
+                tracing::info!(target: "librdkafka", "librdkafka: {:?} {:?}", fac, log_message)
             }
             RDKafkaLogLevel::Debug => {
-                tracing::debug!(target: "librdkafka", "librdkafka: {} {}", fac, log_message)
+                tracing::debug!(target: "librdkafka", "librdkafka: {:?} {:?}", fac, log_message)
             }
         }
     }
@@ -48,7 +48,7 @@ impl ClientContext for KafkaConsumerContext {
 
     /// TODO: documentation
     fn error(&self, err: KafkaError, reason: &str) {
-        tracing::error!("librdkafka: {}: {}", err, reason);
+        tracing::error!("librdkafka: {:?}: {:?}", err, reason);
     }
 }
 

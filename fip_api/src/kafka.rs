@@ -84,7 +84,7 @@ impl Kafka {
             Some(val) => Ok(std::str::from_utf8(val)?),
         };
         println!(
-            "Consumed record from topic {} partition [{}] @ offset {} with key {} and value {}",
+            "Consumed record from topic {:?} partition [{:?}] @ offset {:?} with key {:?} and value {:?}",
             msg.topic(),
             msg.partition(),
             msg.offset(),
@@ -131,7 +131,7 @@ impl Kafka {
                         }
                         Some(Ok(s)) => s,
                     };
-                    tracing::info!("key: '{:?}', payload: '{}', topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                    tracing::info!("key: {:?}, payload: {:?}, topic: {:?}, partition: {:?}, offset: {:?}, timestamp: {:?}",
                           key, payload, borrowed_message.topic(), borrowed_message.partition(), borrowed_message.offset(), borrowed_message.timestamp());
                     if let Some(headers) = borrowed_message.headers() {
                         for i in 0..headers.count() {
@@ -145,13 +145,13 @@ impl Kafka {
                         .consumer
                         .commit_message(&borrowed_message, CommitMode::Sync);
                     match res {
-                        Err(e) => tracing::error!("Could not commit message: {} ", e),
+                        Err(e) => tracing::error!("Could not commit message: {:?} ", e),
                         Ok(()) => tracing::info!("commit message"),
                     };
                 }
                 Err(kafka_error) => {
                     tracing::error!(
-                        "Could not receive and will not process message: {}",
+                        "Could not receive and will not process message: {:?}",
                         kafka_error
                     );
                 }

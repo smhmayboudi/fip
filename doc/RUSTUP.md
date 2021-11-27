@@ -4,7 +4,7 @@
 $ curl \
         --fail \
         --location \
-        --proto '=https' \
+        --proto "=https" \
         --show-error \
         --silent \
         --tlsv1.2 https://sh.rustup.rs \
