@@ -5,6 +5,7 @@
     "editor.formatOnSave": true,
     "editor.inlineSuggest.enabled": true,
     "files.watcherExclude": {
+        "**/*.db-*": true,
         "**/*.prof*": true,
         "**/.git/**": true,
         "**/coverage/**": true,

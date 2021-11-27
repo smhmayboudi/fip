@@ -7,16 +7,8 @@ release/
 target/
 test/
 
-# Created by https://www.toptal.com/developers/gitignore/api/database,dotenv,linux,macos,osx,rust,visualstudiocode,windows
-# Edit at https://www.toptal.com/developers/gitignore?templates=database,dotenv,linux,macos,osx,rust,visualstudiocode,windows
-
-### Database ###
-*.accdb
-*.db
-*.dbf
-*.mdb
-*.pdb
-*.sqlite3
+# Created by https://www.toptal.com/developers/gitignore/api/dotenv,linux,macos,osx,rust,visualstudiocode,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=dotenv,linux,macos,osx,rust,visualstudiocode,windows
 
 ### dotenv ###
 .env
@@ -90,6 +82,7 @@ target/
 **/*.rs.bk
 
 # MSVC Windows builds of rustc generate these, which store debugging information
+*.pdb
 
 ### VisualStudioCode ###
 .vscode/*
@@ -106,6 +99,9 @@ target/
 # Ignore all local history of files
 .history
 .ionide
+
+# Support for Project snippet scope
+!.vscode/*.code-snippets
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -133,5 +129,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/database,dotenv,linux,macos,osx,rust,visualstudiocode,windows
+# End of https://www.toptal.com/developers/gitignore/api/dotenv,linux,macos,osx,rust,visualstudiocode,windows
 n
