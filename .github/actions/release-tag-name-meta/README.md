@@ -1,12 +1,12 @@
-# Release tag name meta action
+# Release tag meta action
 
-Extract release metadata from the tag name.
+Extract release metadata from the tag.
 
 ## Inputs
 
-## `git-ref-name`
+## `git-ref`
 
-**Required** The git ref name.
+**Required** The git ref.
 
 ## Outputs
 
@@ -18,12 +18,16 @@ The prerelease/release name.
 
 Is it release candidate?
 
+## `tag`
+
+The tag version (without the refs/tags/ prefix).
+
 ## `version`
 
-The prerelease/release version.
+The prerelease/release version (without the refs/tags/v prefix).
 
 ## Example usage
 
-uses: actions/release-tag-name-meta@v1
+uses: actions/release-tag-meta@v1
 with:
-  git-ref-name: 'v0.1.0'
+  git-ref: 'refs/tags/v0.1.0'

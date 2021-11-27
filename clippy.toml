@@ -21,7 +21,7 @@
 # pass-by-value-size-limit
 # single-char-binding-names-threshold
 # standard-macro-braces
-# third-party`
+# third-party
 # too-large-for-stack
 # too-many-arguments-threshold
 # too-many-lines-threshold

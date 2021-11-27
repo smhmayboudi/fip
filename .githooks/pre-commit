@@ -11,8 +11,8 @@ make \
 
 for FILE in $(git diff --name-status --staged \
 			| grep .rs \
-			| grep --invert-match 'D' \
-			| grep --invert-match 'R' \
-			| awk 'match($0, /.*/) {print $2}'); do
+			| grep --invert-match "D" \
+			| grep --invert-match "R" \
+			| awk 'BEGIN { FS = " " }; { print $2 }'); do
 	git add ${FILE}
 done

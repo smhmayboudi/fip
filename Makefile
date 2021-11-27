@@ -93,7 +93,7 @@ add-deny: ## Add the deny
 
 DETECTED_OS := $(shell uname 2>/dev/null || echo "Windows")
 
-.PHNY: add-os-dependency
+.PHONY: add-os-dependency
 add-os-dependency: ## Add the os dependency
 	if [ "${DETECTED_OS}" = "Darwin" ]; then \
 		brew install --quiet \
@@ -108,10 +108,11 @@ add-os-dependency: ## Add the os dependency
 			sqlite3 \
 		&& apt-get autoremove --yes \
 		&& apt-get clean --yes \
-		&& rm -fr /tmp/* /var/lib/apt/lists/* /var/tmp/*\
+		&& rm -fr /tmp/* /var/lib/apt/lists/* /var/tmp/* \
 		; \
 	else \
-		echo "Please install cmake and sqlite3 on ${DETECTED_OS}"; \
+		echo "Please install cmake and sqlite3 on ${DETECTED_OS}" \
+		; \
 	fi
 
 .PHONY: add-fmt
@@ -280,7 +281,7 @@ release: $(BIN) clean-release ## Release
 	cp $(BIN) release/$(BIN_NAME)
 	$(STRIP) release/$(BIN_NAME)
 	shasum --algorithm 256 release/$(BIN_NAME) \
-		| awk '{ print $$1 }' > release/$(BIN_NAME).sha256
+		| awk 'BEGIN { FS = " " }; { print $$1 }' > release/$(BIN_NAME).sha256
 
 .PHONY: run
 run: ## Run

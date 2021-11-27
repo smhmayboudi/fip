@@ -23,7 +23,7 @@ required-features = []  # Features required to build this target (N/A for lib).
 tonic-build = { default-features = false, version = "0.6.0" }
 
 [dependencies]
-anyhow = { default-features = false, features = ["std"], version = "1.0.49" }
+anyhow = { default-features = false, features = ["std"], version = "1.0.51" }
 # chrono = { default-features = false, version = "0.4.19" }
 dotenv = { default-features = false, version = "0.15.0" }
 envy = { default-features = false, version = "0.4.2" }
