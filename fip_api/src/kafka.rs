@@ -131,7 +131,7 @@ impl Kafka {
                         }
                         Some(Ok(s)) => s,
                     };
-                    tracing::info!("key: '{:?}', payload: '{}', topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                    tracing::info!("key: {:?}, payload: {}, topic: {}, partition: {}, offset: {}, timestamp: {:?}",
                           key, payload, borrowed_message.topic(), borrowed_message.partition(), borrowed_message.offset(), borrowed_message.timestamp());
                     if let Some(headers) = borrowed_message.headers() {
                         for i in 0..headers.count() {

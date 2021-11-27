@@ -280,7 +280,7 @@ release: $(BIN) clean-release ## Release
 	cp $(BIN) release/$(BIN_NAME)
 	$(STRIP) release/$(BIN_NAME)
 	shasum --algorithm 256 release/$(BIN_NAME) \
-		| awk '{ print $$1 }' > release/$(BIN_NAME).sha256
+		| awk 'BEGIN { FS = " " }; { print $$1 }' > release/$(BIN_NAME).sha256
 
 .PHONY: run
 run: ## Run

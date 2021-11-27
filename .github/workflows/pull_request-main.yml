@@ -21,10 +21,11 @@ jobs:
         run: make add-os-dependency
         shell: bash
       -
+        id: audit
         name: Audit
-        run: make audit
+        run: make audit | exit 0
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 10
   check:
     container:
       image: docker://rust:1.56.1-bullseye
@@ -48,7 +49,7 @@ jobs:
         name: Check
         run: make check
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 10
   conventional-commits-linter:
     container:
       image: docker://rust:1.56.1-bullseye
@@ -62,13 +63,13 @@ jobs:
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
         name: Conventional Commits
-        run: ./script/conventional-commits-linter.sh ${{ github.ref_name }}
+        run: ./script/conventional-commits-linter.sh ${{ github.event.pull_request.head.ref }}
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 10
   deny-check:
     container:
       image: docker://rust:1.56.1-bullseye
-    continue-on-error: ${{ matrix.checks == 'dvisories' }}
+    continue-on-error: ${{ matrix.checks == 'advisories' }}
     name: Cargo Deny Check (${{ matrix.checks }})
     needs:
       - clippy
@@ -88,8 +89,9 @@ jobs:
       -
         env:
           DENY_CHECK_WHICH: ${{ matrix.checks }}
+        id: deny-check
         name: Deny Check
-        run: make deny-check
+        run: make deny-check | exit 0
         shell: bash
       # -
       #   name: Deny Check
@@ -126,7 +128,32 @@ jobs:
         name: Clippy
         run: make clippy
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 10
+  coverage:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Coverage
+    needs:
+      - clippy
+      - conventional-commits-linter
+      - fmt-check
+      - test
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Check Out
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        name: Test
+        run: make coverage
+        shell: bash
+    timeout-minutes: 10
   fmt-check:
     container:
       image: docker://rust:1.56.1-bullseye
@@ -148,7 +175,7 @@ jobs:
         name: Format Check
         run: make fmt-check
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 10
   test:
     container:
       image: docker://rust:1.56.1-bullseye
@@ -172,7 +199,7 @@ jobs:
         name: Test
         run: make test
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 10
 name: Pull Request Main
 on:
   pull_request:
