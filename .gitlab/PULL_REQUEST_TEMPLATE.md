@@ -3,7 +3,7 @@
 Please check if your pull request fulfils the following requirements:
 
 <!-- Please check the one that applies to this pull request using "x". -->
-- [ ] The commit message follows our guidelines: https://gitlab.playpod.ir/alpha/project-template/-/blob/main/CONTRIBUTING.md#commit-message-format
+- [ ] The commit message follows our guidelines: https://github.com/smhmayboudi/fip/blob/main/CONTRIBUTING.md#commit-message-format
 - [ ] Tests for the changes have been added / updated (for feat / fix / refactor)
 - [ ] Docs for the changes have been added / updated (for feat / fix / refactor)
 
@@ -23,7 +23,7 @@ What kind of change does this pull request introduce?
 
 ## What is the current behaviour?
 
-<!-- Please describe the current behaviour that you are modifying or link to a relevant issue. -->
+<!-- Please describe the current behaviour that you are modifying or linking to a relevant issue. -->
 Issue #
 
 ## What is the new behaviour?

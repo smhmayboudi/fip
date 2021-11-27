@@ -65,7 +65,7 @@ where
 impl std::fmt::Display for Error {
     /// TODO: documentation
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n\nerror_kind:\n{}", self.error_kind)?;
-        write!(f, "\n\nspan_trace: {}", self.span_trace)
+        write!(f, "\n\nerror_kind: {:?}", self.error_kind)?;
+        write!(f, "\n\nspan_trace: {:?}", self.span_trace)
     }
 }

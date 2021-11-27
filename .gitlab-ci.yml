@@ -11,272 +11,265 @@
 
 default:
   cache:
-    key: "${CI_PROJECT_PATH_SLUG}"
+    key: ${CI_PROJECT_PATH_SLUG}
     paths:
-      - "/usr/local/cargo/registry"
-  image: "core-harbor.playpod.ir/library/rust-build:${RUST_VERSION}"
+      - /usr/local/cargo/registry
+  image: core-harbor.playpod.ir/library/rust-build:${RUST_VERSION}
 
 # .default-rule: &default-rule
 #   only:
-#     - "merge-requests"
+#     - merge-requests
 
 .target_1: &target_1
   variables:
-    ARCHVARIANT: "amd64"
-    STRIP: "strip"
-    TARGET: "x86_64-unknown-linux-musl"
+    ARCHVARIANT: amd64
+    STRIP: strip
+    TARGET: x86_64-unknown-linux-musl
 
 .target_2: &target_2
   variables:
-    ARCHVARIANT: "arm64"
-    STRIP: "aarch64-linux-gnu-strip"
-    TARGET: "aarch64-unknown-linux-musl"
+    ARCHVARIANT: arm64
+    STRIP: aarch64-linux-gnu-strip
+    TARGET: aarch64-unknown-linux-musl
 
 .target_3: &target_3
   variables:
-    ARCHVARIANT: "armv7"
-    STRIP: "arm-linux-gnueabihf-strip"
-    TARGET: "armv7-unknown-linux-musleabihf"
+    ARCHVARIANT: armv7
+    STRIP: arm-linux-gnueabihf-strip
+    TARGET: armv7-unknown-linux-musleabihf
 
 rust_build:
   after_script:
-    - "docker logout ${HARBOR_REGISTRY_URL}"
+    - docker logout ${HARBOR_REGISTRY_URL}
   allow_failure: false
   before_script:
-    - "echo \"${HARBOR_PASSWORD}\" \
-      | docker login --password-stdin ${HARBOR_REGISTRY_URL} --username ${HARBOR_USERNAME}"
+    - echo '${HARBOR_PASSWORD}' | docker login --password-stdin ${HARBOR_REGISTRY_URL} --username ${HARBOR_USERNAME}
   dependencies: []
   # extends:
-  #   - ".default-rule"
-  image: "${HARBOR_REGISTRY_URL}/proxy_cache/library/docker:18.09.9-git"
+  #   - .default-rule
+  image: ${HARBOR_REGISTRY_URL}/proxy_cache/library/docker:18.09.9-git
   needs: []
   script:
-    - "docker pull ${HARBOR_REGISTRY_URL}/library/rust-build:${RUST_VERSION} || true"
-    - "docker build \
+    - docker pull ${HARBOR_REGISTRY_URL}/library/rust-build:${RUST_VERSION} || true
+    - docker build \
       --build-arg RUST_VERSION=${RUST_VERSION} \
       --cache-from ${HARBOR_REGISTRY_URL}/library/rust-build:${RUST_VERSION} \
       --pull \
       --tag ${HARBOR_REGISTRY_URL}/library/rust-build:${RUST_VERSION} \
-      ."
-    - "docker push ${HARBOR_REGISTRY_URL}/library/rust-build"
+      .
+    - docker push ${HARBOR_REGISTRY_URL}/library/rust-build
   services:
-    - "${HARBOR_REGISTRY_URL}/proxy_cache/library/docker:18.09.9-dind"
-  stage: "rust_build"
+    - ${HARBOR_REGISTRY_URL}/proxy_cache/library/docker:18.09.9-dind
+  stage: rust_build
   variables:
-    CARGO: "cargo"
-    DOCKER_DRIVER: "overlay2"
-    DOCKER_HOST: "tcp://127.0.0.1:2375"
-    DOCKER_TLS_CERTDIR: ""
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://127.0.0.1:2375
+    DOCKER_TLS_CERTDIR: ''
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 .build: &build
   allow_failure: false
   artifacts:
-    expire_in: "1 week"
+    expire_in: 1 week
     paths:
-      - "release"
+      - release
     # public: false
   # extends:
-  #   - ".default-rule"
+  #   - .default-rule
   script:
-    - "make release"
+    - make release
   services:
-    - "${HARBOR_REGISTRY_URL}/proxy_cache/library/docker:18.09.9-dind"
-  stage: "build"
+    - ${HARBOR_REGISTRY_URL}/proxy_cache/library/docker:18.09.9-dind
+  stage: build
   variables:
-    CARGO: "cargo"
-    DOCKER_DRIVER: "overlay2"
-    DOCKER_HOST: "tcp://127.0.0.1:2375"
-    DOCKER_TLS_CERTDIR: ""
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://127.0.0.1:2375
+    DOCKER_TLS_CERTDIR: ''
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 .test: &test
   allow_failure: false
   artifacts:
-    expire_in: "1 week"
+    expire_in: 1 week
     paths:
-      - "test"
+      - test
     # public: false
     reports:
-      junit: "test/results.xml"
-    when: "always"
+      junit: test/results.xml
+    when: always
   # extends:
-  #   - ".default-rule"
+  #   - .default-rule
   script:
-    - "${CARGO} install --locked cargo2junit"
-    - "mkdir -p test"
-    - "RUSTC_BOOTSTRAP=1 ${CARGO} test -- --format json -Zunstable-options | tee test/results.json"
-    - "cat test/results.json | cargo2junit > test/results.xml"
-  stage: "test"
+    - ${CARGO} install --locked cargo2junit
+    - mkdir -p test
+    - RUSTC_BOOTSTRAP=1 ${CARGO} test -- --format json -Zunstable-options | tee test/results.json
+    - cat test/results.json | cargo2junit > test/results.xml
+  stage: test
   variables:
-    CARGO: "cargo"
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 .coverage: &coverage
   allow_failure: true
   artifacts:
-    expire_in: "1 week"
+    expire_in: 1 week
     paths:
-      - "coverage"
+      - coverage
     # public: false
   # extends:
-  #   - ".default-rule"
+  #   - .default-rule
   script:
-    - "make coverage"
-  stage: "coverage"
+    - make coverage
+  stage: coverage
   variables:
-    CARGO: "cargo"
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 .upload: &upload
   allow_failure: false
   # extends:
-  #   - ".default-rule"
-  image: "curlimages/curl:7.78.0"
+  #   - .default-rule
+  image: curlimages/curl:7.78.0
   script:
-    - "curl \
-      --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" \
-      --upload-file release/${PACKAGE}-${VERSION}-${ARCHVARIANT} \
-      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}"
-    - "curl \
-      --header \"JOB-TOKEN: ${CI_JOB_TOKEN}\" \
-      --upload-file release/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256 \
-      ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256"
-  stage: "upload"
+    - curl --header 'JOB-TOKEN: ${CI_JOB_TOKEN}' --upload-file release/${PACKAGE}-${VERSION}-${ARCHVARIANT} ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}
+    - curl --header 'JOB-TOKEN: ${CI_JOB_TOKEN}' --upload-file release/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256 ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256
+  stage: upload
   variables:
-    CARGO: "cargo"
-    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}"
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    PACKAGE_REGISTRY_URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 .release: &release
   allow_failure: false
   # extends:
-  #   - ".default-rule"
-  image: "registry.gitlab.com/gitlab-org/release-cli:latest"
+  #   - .default-rule
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
   release:
     assets:
       links:
         # -
-        #   name: "${PACKAGE}-${VERSION}-${ARCHVARIANT}"
-        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}"
+        #   name: ${PACKAGE}-${VERSION}-${ARCHVARIANT}
+        #   url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}
         # -
-        #   name: "${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256"
-        #   url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256"
+        #   name: ${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256
+        #   url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-${ARCHVARIANT}.sha256
         -
-          name: "${PACKAGE}-${VERSION}-arm64"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-arm64"
+          name: ${PACKAGE}-${VERSION}-arm64
+          url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-arm64
         -
-          name: "${PACKAGE}-${VERSION}-arm64.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-arm64.sha256"
+          name: ${PACKAGE}-${VERSION}-arm64.sha256
+          url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-arm64.sha256
         -
-          name: "${PACKAGE}-${VERSION}-armv7"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7"
+          name: ${PACKAGE}-${VERSION}-armv7
+          url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7
         -
-          name: "${PACKAGE}-${VERSION}-armv7.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7.sha256"
+          name: ${PACKAGE}-${VERSION}-armv7.sha256
+          url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-armv7.sha256
         -
-          name: "${PACKAGE}-${VERSION}-amd64"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-amd64"
+          name: ${PACKAGE}-${VERSION}-amd64
+          url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-amd64
         -
-          name: "${PACKAGE}-${VERSION}-amd64.sha256"
-          url: "${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-amd64.sha256"
-    description: "CHANGELOG.md"
-    name: "Release ${VERSION}"
-    tag_name: "${VERSION}"
+          name: ${PACKAGE}-${VERSION}-amd64.sha256
+          url: ${PACKAGE_REGISTRY_URL}/${PACKAGE}-${VERSION}-amd64.sha256
+    description: CHANGELOG.md
+    name: Release ${VERSION}
+    tag_name: ${VERSION}
   script:
-    - "echo \"running release_job\""
-  stage: "release"
+    - echo 'running release_job'
+  stage: release
   variables:
-    CARGO: "cargo"
-    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}"
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    PACKAGE_REGISTRY_URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 .documentation: &documentation
   allow_failure: false
   artifacts:
-    expire_in: "1 week"
+    expire_in: 1 week
     paths:
-      - "documentation"
+      - documentation
     # public: false
   # extends:
-  #   - ".default-rule"
+  #   - .default-rule
   script:
-    - "make doc"
-  stage: "documentation"
+    - make doc
+  stage: documentation
   variables:
-    CARGO: "cargo"
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 .pages:
   allow_failure: false
   artifacts:
     paths:
-      - "public"
+      - public
     # public: false
   # extends:
-  #   - ".default-rule"
+  #   - .default-rule
   script:
-    - "mkdir public"
-    - "mv coverage public"
-    - "mv documentation public"
-  stage: "pages"
+    - mkdir public
+    - mv coverage public
+    - mv documentation public
+  stage: pages
   variables:
-    CARGO: "cargo"
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    CARGO: cargo
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 # DEPLOY
 
 .deploy: &deploy
   allow_failure: false
   # extends:
-  #   - ".default-rule"
-  image: "docker:20.10.7"
+  #   - .default-rule
+  image: docker:20.10.7
   script:
-    - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
-    - "docker pull ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION} || true"
-    - "docker build --cache-from ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION} --filename ${DOCKERFILE} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_COMMIT_SHA} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:latest ."
-    - "docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_COMMIT_SHA}"
-    - "docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION}"
-    # - "mkdir -p '${MOUNT_POINT}'"
-    # - "docker run --volume "${MOUNT_POINT}:/mnt" ${IMAGE_NAME} /mnt/script/to/run/tests""
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+    - docker pull ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION} || true
+    - docker build --cache-from ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION} --filename ${DOCKERFILE} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_COMMIT_SHA} --tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:latest .
+    - docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${CI_COMMIT_SHA}
+    - docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${RUST_VERSION}
+    # - mkdir -p '${MOUNT_POINT}'
+    # - docker run --volume ${MOUNT_POINT}:/mnt ${IMAGE_NAME} /mnt/script/to/run/tests
   services:
-    - "docker:20.10.7-dind-rootlesss"
-  stage: "deploy"
+    - docker:20.10.7-dind-rootlesss
+  stage: deploy
   variables:
-    CARGO: "cargo"
-    DOCKER_DRIVER: "overlay2"
-    DOCKER_HOST: "tcp://127.0.0.1:2376"
-    DOCKER_TLS_CERTDIR: ""
+    CARGO: cargo
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://127.0.0.1:2376
+    DOCKER_TLS_CERTDIR: 
     # MOUNT_POINT: /builds/${CI_PROJECT_PATH}/mnt
-    # MOUNT_POINT: "${CI_PROJECT_DIR}/mnt"
-    RELEASE: "--release"
-    RUST_VERSION: "1.56.1-bullseye"
-    VERSION: "${CI_COMMIT_TAG}"
-  when: "manual"
+    # MOUNT_POINT: ${CI_PROJECT_DIR}/mnt
+    RELEASE: --release
+    RUST_VERSION: 1.56.1-bullseye
+    VERSION: ${CI_COMMIT_TAG}
+  when: manual
 
 # END job-specific configuration
 
@@ -287,17 +280,17 @@ rust_build:
 # BEGIN actual pipeline definition
 
 stages:
-- "rust_build"
-- "build"
-- "test"
-- "coverage"
-- "upload"
-- "release"
-- "documentation"
-- "pages"
-- "deploy"
+- rust_build
+- build
+- test
+- coverage
+- upload
+- release
+- documentation
+- pages
+- deploy
 
 include:
-- local: "fip_api/.gitlab-ci.yml"
+- local: fip_api/.gitlab-ci.yml
 
 # END actual pipeline definition

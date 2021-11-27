@@ -20,12 +20,12 @@
 
 [profile.bench]
 codegen-units = 256
-debug = true
-debug-assertions = true
-incremental = true
+debug = false
+debug-assertions = false
+incremental = false
 lto = false
 opt-level = 0
-overflow-checks = true
+overflow-checks = false
 panic = "unwind"
 rpath = false
 split-debuginfo = "off"
@@ -40,7 +40,7 @@ opt-level = 0
 overflow-checks = true
 panic = "unwind"
 rpath = false
-split-debuginfo = "off"
+split-debuginfo = "packed"
 
 [profile.test]
 codegen-units = 256
@@ -52,7 +52,7 @@ opt-level = 0
 overflow-checks = true
 panic = "unwind"
 rpath = false
-split-debuginfo = "off"
+split-debuginfo = "packed"
 
 [profile.release]
 codegen-units = 1
