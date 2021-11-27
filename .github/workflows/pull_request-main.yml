@@ -4,6 +4,8 @@ jobs:
   audit:
     container:
       image: docker://rust:1.56.1-bullseye
+    # TODO: remove this once the `audit` job is stable
+    continue-on-error: true
     name: Cargo Audit
     needs:
       - clippy
@@ -21,6 +23,7 @@ jobs:
         run: make add-os-dependency
         shell: bash
       -
+        id: audit
         name: Audit
         run: make audit
         shell: bash
@@ -62,13 +65,15 @@ jobs:
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
         name: Conventional Commits
-        run: ./script/conventional-commits-linter.sh ${{ github.ref_name }}
+        run: ./script/conventional-commits-linter.sh ${{ github.event.pull_request.head.ref }}
         shell: bash
     timeout-minutes: 5
   deny-check:
     container:
       image: docker://rust:1.56.1-bullseye
-    continue-on-error: ${{ matrix.checks == 'dvisories' }}
+    # continue-on-error: ${{ matrix.checks == 'advisories' }}
+    # TODO: remove this once the `audit` job is stable
+    continue-on-error: true
     name: Cargo Deny Check (${{ matrix.checks }})
     needs:
       - clippy
@@ -88,6 +93,7 @@ jobs:
       -
         env:
           DENY_CHECK_WHICH: ${{ matrix.checks }}
+        id: deny-check
         name: Deny Check
         run: make deny-check
         shell: bash
@@ -125,6 +131,31 @@ jobs:
       -
         name: Clippy
         run: make clippy
+        shell: bash
+    timeout-minutes: 5
+  coverage:
+    container:
+      image: docker://rust:1.56.1-bullseye
+    name: Coverage
+    needs:
+      - clippy
+      - conventional-commits-linter
+      - fmt-check
+      - test
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Check Out
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        name: Add OS Dependency
+        run: make add-os-dependency
+        shell: bash
+      -
+        name: Test
+        run: make coverage
         shell: bash
     timeout-minutes: 5
   fmt-check:

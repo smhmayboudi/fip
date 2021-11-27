@@ -11,11 +11,11 @@ jobs:
         name: Check Out
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
-        id: release-tag-name-meta
+        id: release-tag-meta
         name: Release Tag Name Meta
-        uses: ./.github/actions/release-tag-name-meta
+        uses: ./.github/actions/release-tag-meta
         with:
-          git-ref-name: ${{ github.ref_name }}
+          git-ref: ${{ github.ref }}
       -
         env:
           ARCHVARIANT: ${{ matrix.archvariant }}
@@ -24,7 +24,7 @@ jobs:
           RELEASE: --release
           STRIP: ${{ matrix.strip }}
           TARGET: ${{ matrix.target }}
-          VERSION: ${{ steps.release-tag-name-meta.outputs.version }}
+          VERSION: ${{ steps.release-tag-meta.outputs.version }}
         name: Package
         uses: ./.github/actions/package
         with:
@@ -73,11 +73,11 @@ jobs:
         name: Check Out
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
-        id: release-tag-name-meta
+        id: release-tag-meta
         name: Release Tag Name Meta
-        uses: ./.github/actions/release-tag-name-meta
+        uses: ./.github/actions/release-tag-meta
         with:
-          git-ref-name: ${{ github.ref_name }}
+          git-ref: ${{ github.ref }}
       -
         name: Download Artifacts
         uses: actions/download-artifact@3be87be14a055c47b01d3bd88f8fe02320a9bb60
@@ -94,11 +94,12 @@ jobs:
           body_path: ${{ github.workspace }}-CHANGELOG.md
           files: artifact/**/*
           generate_release_notes: true
-          name: ${{ steps.release-tag-name-meta.outputs.name }}
-          prerelease: ${{ steps.release-tag-name-meta.outputs.prerelease }}
+          name: ${{ steps.release-tag-meta.outputs.name }}
+          prerelease: ${{ steps.release-tag-meta.outputs.prerelease }}
+          tag_name: ${{ steps.release-tag-meta.outputs.tag }}
           token: ${{ secrets.PACKAGE_REGISTRY }}
     timeout-minutes: 5
-name: Push Tag V
+name: Push Tags V
 on:
   push:
     tags:

@@ -15,6 +15,12 @@ jobs:
         name: Check Out
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
       -
+        id: release-tag-meta
+        name: Release Tag Name Meta
+        uses: ./.github/actions/release-tag-meta
+        with:
+          git-ref: ${{ github.ref }}
+      -
         name: Extract Metadata (Tags, Labels) for Docker
         id: metadata
         uses: docker/metadata-action@548e2346a9987b56d8a4104fe776321ff8e23440
@@ -24,9 +30,9 @@ jobs:
             org.opencontainers.image.base.digest=${{ env.BASE_DIGEST }}
             org.opencontainers.image.base.name=${{ env.BASE_NAME }}:${{ env.BASE_TAG }}
             org.opencontainers.image.description=${{ matrix.package }}
-            org.opencontainers.image.documentation=${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}/${{ matrix.package }}
-            org.opencontainers.image.ref.name=${{ github.repository }}/${{ matrix.package }}/${{ github.ref_name }}
-            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}/${{ matrix.package }}
+            org.opencontainers.image.documentation=${{ github.server_url }}/${{ github.repository }}/tree/${{ steps.release-tag-meta.outputs.tag }}/${{ matrix.package }}
+            org.opencontainers.image.ref.name=${{ github.repository }}/${{ matrix.package }}/${{ steps.release-tag-meta.outputs.tag }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}/tree/${{ steps.release-tag-meta.outputs.tag }}/${{ matrix.package }}
             org.opencontainers.image.title=${{ matrix.package }}
             org.opencontainers.image.url=${{ github.server_url }}/${{ github.repository }}/main/${{ matrix.package }}
             org.opencontainers.image.vendor=${{ github.actor }}
