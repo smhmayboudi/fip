@@ -205,7 +205,7 @@ clean-release: ## Clean release
 	rm -fr release
 
 .PHONY: clippy
-clippy: add-clippy add-fmt fetch ## Clippy
+clippy: add-clippy fetch ## Clippy
 	$(CARGO_CLIPPY)
 
 .PHONY: conventional-commits-linter
