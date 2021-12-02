@@ -1,3 +1,5 @@
+# cargo-features
+
 # [[bench]]
 
 # [[bin]]
@@ -24,7 +26,7 @@ syn = { default-features = false, features = ["clone-impls", "derive", "extra-tr
 crate-type = ["rlib"]       # The crate types to generate.
 # doc = true                # Is documented by default.
 # doctest = true            # Documentation examples are tested by default.
-# edition = "2018"          # The edition of the target.
+# edition = "2021"          # The edition of the target.
 # harness = true            # Use libtest harness.
 name = "fip_api_attributes" # The name of the target.
 path = "src/lib.rs"         # The source file of the target.
@@ -34,26 +36,49 @@ proc-macro = true           # Set to `true` for a proc-macro library.
 
 [package]
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
+# autobins
+# autobenches
+# autoexamples
+# autotests
+# build
 categories = ["network-programming"]
+# default-run
 description = "fip_api_attributes"
-edition = "2018"
-homepage = ""
-include = ["src/**/*"]
+documentation = "https://github.com/smhmayboudi/fip/fip_api_attributes"
+edition = "2021"
+# exclude
+homepage = "https://github.com/smhmayboudi/fip"
+include = [
+    "src/**/*",
+]
 keywords = [
     "fip",
     "api",
     "attributes",
 ]
 license = "MIT"
+# license-file
+# links
+# metadata
 name = "fip_api_attributes"
 publish = false
-repository =  "https://github.com/smhmayboudi/fip"
+readme = "fip_api_attributes/README.md"
+# resolver
+rust-version = "1.57.0"
+repository = "https://github.com/smhmayboudi/fip"
 version = "0.1.0"
-
-# [profile]
+# workspace
 
 # [patch]
 
+# [profile.<name>]
+
 # [replace]
+
+# [target.<cfg>]
+
+# [target.<triple>]
+
+# [target.<triple>.<links>]
 
 # [workspace]

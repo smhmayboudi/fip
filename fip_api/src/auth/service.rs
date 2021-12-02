@@ -65,9 +65,10 @@ impl Service {
                 "00000000-0000-0000-0000-000000000000",
             )
             .await?;
-        if self.hash(req.password.clone()) != user.password {
-            panic!("password incorrect.");
-        }
+        assert!(
+            !(self.hash(req.password.clone()) != user.password),
+            "password incorrect."
+        );
         let at = self.access_token(&user.id).await?.token;
         let rt = self.refresh_token(&user.id).await?.token;
         Ok(AuthLoginRes { at, rt })

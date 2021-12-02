@@ -2,6 +2,8 @@
 channel = "stable"
 components = [
     "clappy",
-    # "miri",
-    "rustfmt",
+    "miri",
+    "rustfmt"
 ]
+profile = "default"
+targets = []

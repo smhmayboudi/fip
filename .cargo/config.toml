@@ -1,7 +1,17 @@
-# [alias]
+# paths                             # path dependency overrides
+
+# [alias]                           # command aliases
 
 [build]
-rustflags = [
+# dep-info-basedir                  # path for the base directory for targets in depfiles
+# incremental                       # whether or not to enable incremental compilation
+# jobs                              # number of parallel jobs, defaults to # of CPUs
+# pipelining                        # rustc pipelining
+# rustc                             # the rust compiler tool
+# rustc-workspace-wrapper           # run this wrapper instead of `rustc` for workspace members
+# rustc-wrapper                     # run this wrapper instead of `rustc`
+# rustdoc                           # the doc generator tool
+rustdocflags = [                    # custom flags to pass to rustdoc
     "-Dabsolute_paths_not_starting_with_crate",
     # "-Dbox_pointers",
     "-Ddeprecated_in_future",
@@ -38,7 +48,7 @@ rustflags = [
     "-Dvariant_size_differences",
     "-Dwarnings"
 ]
-rustdocflags = [
+rustflags = [                       # custom flags to pass to all compiler invocations
     "-Dabsolute_paths_not_starting_with_crate",
     # "-Dbox_pointers",
     "-Ddeprecated_in_future",
@@ -75,27 +85,93 @@ rustdocflags = [
     "-Dvariant_size_differences",
     "-Dwarnings"
 ]
+# target                            # build for the target triple (ignored by `cargo install`)
+# target-dir                        # path of where to place all generated artifacts
 
 # [cargo-new]
+# vcs
+
+# [doc]
+# browser
+
+# [env]
 
 # [http]
+# cainfo                            # path to Certificate Authority (CA) bundle
+# check-revoke                      # check for SSL certificate revocation
+# debug                             # HTTP debugging
+# low-speed-limit                   # network timeout threshold (bytes/sec)
+# multiplexing                      # HTTP/2 multiplexing
+# proxy                             # HTTP proxy in libcurl format
+# ssl-version                       # TLS version to use
+# ssl-version.max                   # maximum TLS version
+# ssl-version.min                   # minimum TLS version
+# timeout                           # timeout for each HTTP request, in seconds
+# user-agent                        # the user-agent header
 
 # [install]
+# git-fetch-with-cli                # use the `git` executable for git operations
+# offline                           # do not access the network
+# retry                             # network retries
+# root
 
 # [net]
 
-# [profile.<name>]
+# [patch.<registry>]
 
-# [registries.<name>]
+# [profile.<name>]
+# codegen-units                     # Number of code generation units.
+# debug                             # Include debug info.
+# debug-assertions                  # Enables debug assertions.
+# incremental                       # Incremental compilation.
+# lto                               # Sets link-time optimization.
+# opt-level                         # Optimization level.
+# overflow-checks                   # Enables runtime integer overflow checks.
+# panic                             # The panic strategy.
+# rpath                             # Sets the rpath linking option.
+# split-debuginfo                   # Debug info splitting behavior.
+
+# [profile.<name>.build-override]   # Overrides build-script settings.
+# Same keys for a normal profile.
+
+# [profile.<name>.package.<name>]   # Override profile for a package.
+
+# [registries.<name>]               # registries other than crates.io
+# index                             # URL of the registry index
+# token                             # authentication token for the registry
 
 # [registry]
+# default                           # name of the default registry
+# token                             # authentication token for crates.io
 
 # [source.<name>]
+# branch                            # branch name for the git repository
+# directory                         # path to a directory source
+# git                               # URL of a git repository source
+# local-registry                    # path to a local registry source
+# registry                          # URL to a registry source
+# replace-with                      # replace this source with the given named source
+# rev                               # revision for the git repository
+# tag                               # tag name for the git repository
 
 # [target.<cfg>]
+# runner                            # wrapper to run executables
+# rustflags                         # custom flags for `rustc`
 
 # [target.<triple>]
 
-# [target.<triple>.<links>]
+# [target.<triple>.<links>]         # `links` build script override
+# metadata_key1
+# metadata_key2
+# rustc-cdylib-link-arg
+# rustc-cfg
+# rustc-env
+# rustc-flags
+# rustc-link-lib
+# rustc-link-search
 
 # [term]
+# color                             # whether cargo colorizes output
+# progress.when                     # whether cargo shows progress bar
+# progress.width                    # width of progress bar
+# verbose = false                   # whether cargo provides verbose output
