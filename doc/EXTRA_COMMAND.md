@@ -15,8 +15,8 @@ $ rustc --print target-features --target ${TRIPLE}
 ```
 
 ```shell
-$ docker build . --file ./fip_api/Dockerfile --tag fip-api:0.1.0-nonroot
-$ docker run --env LINKERD_AWAIT_DISABLED=TRUE --interactive --publish 8080:8080 --rm fip-api:0.1.0-nonroot
+$ docker build . --file ./fip_api/Dockerfile --tag fip/api:0.1.0-nonroot
+$ docker run --env LINKERD_AWAIT_DISABLED=TRUE --interactive --publish 8080:8080 --rm fip/api:0.1.0-nonroot
 ```
 
 ```shell
