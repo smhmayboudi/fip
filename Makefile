@@ -3,6 +3,9 @@
 # ARCHVARIANT: arm64, armv7, amd64
 # CARGO: cargo, cross
 # DENY_CHECK_WHICH: advisories, bans, licenses, sources
+# GRCOV_COVERAGE_TYPE: cobertura, lcov, html
+# MESSAGE_FORMAT: human, json, short
+# MIRI_SUB_COMMAND: run, test
 # PACKAGE: fip_api
 # RELEASE: --release
 # STRIP: aarch64-linux-gnu-strip, arm-linux-gnueabihf-strip, strip
@@ -12,23 +15,27 @@
 ARCHVARIANT ?= $(shell rustup show | sed -n "s/^Default host: \(.*\)/\1/p" | awk 'BEGIN { FS = "-" }; { print $$1 }')
 CARGO ?= cargo
 DENY_CHECK_WHICH ?= advisories bans licenses sources
+GRCOV_COVERAGE_TYPE ?= lcov
+MESSAGE_FORMAT ?= human
 PACKAGE ?= fip_api
+MIRI_SUB_COMMAND ?= run
 # RELEASE ?= --release
 STRIP ?= strip
 TARGET ?= $(shell rustup show | sed -n "s/^Default host: \(.*\)/\1/p")
 VERSION ?= 0.1.0
 
-TARGET_DIR = target/$(TARGET)
-BIN_DIR = $(TARGET_DIR)/debug
+TARGET_DIR := target/$(TARGET)
+BIN_DIR := $(TARGET_DIR)/debug
 ifdef RELEASE
-	BIN_DIR = $(TARGET_DIR)/release
+	BIN_DIR := $(TARGET_DIR)/release
 endif
 
-BIN = $(BIN_DIR)/$(PACKAGE)
-BIN_NAME = $(PACKAGE)-v$(VERSION)-$(ARCHVARIANT)
+BIN := $(BIN_DIR)/$(PACKAGE)
+BIN_NAME := $(PACKAGE)-v$(VERSION)-$(ARCHVARIANT)
 
-COVERAGE_DIR = $(TARGET_DIR)/cov
-DOCUMENTATION_DIR = $(TARGET_DIR)/doc
+COVERAGE_DIR := $(TARGET_DIR)/cov
+DETECTED_OS := $(shell uname 2>/dev/null || echo "Windows")
+DOCUMENTATION_DIR := $(TARGET_DIR)/doc
 
 CARGO_BENCH = $(CARGO) bench --all-features --all-targets --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
 CARGO_BUILD = $(CARGO) build --all-features --all-targets --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
@@ -38,10 +45,11 @@ CARGO_DOC = $(CARGO) doc --document-private-items --frozen --no-default-features
 CARGO_FETCH = $(CARGO) fetch --locked --target $(TARGET)
 CARGO_FIX = $(CARGO) fix --all-features --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
 CARGO_RUN = $(CARGO) run --all-features --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
+CARGO_RUSTC = $(CARGO) +nightly rustc --all-features --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
 CARGO_TEST = $(CARGO) test --all-features --all-targets --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
 
 CARGO_AUDIT = $(CARGO) audit
-CARGO_CLIPPY = $(CARGO) clippy --all-features --all-targets --frozen --workspace -- \
+CARGO_CLIPPY = $(CARGO) clippy --all-features --all-targets --frozen --message-format $(MESSAGE_FORMAT) --workspace -- \
 	--deny clippy::all \
 	--deny clippy::cargo \
 	--deny clippy::nursery \
@@ -52,8 +60,13 @@ CARGO_CLIPPY = $(CARGO) clippy --all-features --all-targets --frozen --workspace
 	--allow clippy::module_name_repetitions
 CARGO_DENY = $(CARGO) deny --all-features --workspace
 CARGO_FMT = $(CARGO) fmt --all
+ifeq ("$(MIRI_SUB_COMMAND)", "run")
+	CARGO_MIRI = $(CARGO) +nightly miri run --all-features --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
+else
+	CARGO_MIRI = $(CARGO) +nightly miri test --all-features --all-targets --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
+endif
 
-$(BIN): add-fmt add-target fetch
+$(BIN): add-fmt fetch
 	$(CARGO_BUILD)
 
 GIT_HOOKS_COMMIT_MSG = .git/hooks/commit-msg
@@ -91,11 +104,10 @@ add-conventional-commits-linter: ## Add the conventional commits linter
 add-deny: ## Add the deny
 	$(CARGO) install --locked cargo-deny
 
-DETECTED_OS := $(shell uname 2>/dev/null || echo "Windows")
-
 .PHONY: add-os-dependency
 add-os-dependency: ## Add the os dependency
 	if [ "${DETECTED_OS}" = "Darwin" ]; then \
+		bash -c "$(curl --fail --location --show-error --silent https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
 		brew install --quiet \
 			cmake \
 			sqlite3 \
@@ -119,8 +131,8 @@ add-os-dependency: ## Add the os dependency
 add-fmt: ## Add the fmt
 	rustup component add rustfmt
 
-.PHONY: add-git-config
-add-git-config: ## Add the git configs
+.PHONY: add-git-configs
+add-git-configs: ## Add the git configs
 	git config --global branch.autosetuprebase always
 	git config --global color.branch true
 	git config --global color.diff true
@@ -152,9 +164,19 @@ add-git-hooks: clean-git-hooks $(GIT_HOOKS) ## Add the git hooks
 add-grcov: ## Add the grcov
 	$(CARGO) install --locked grcov
 
-.PHONY: add-llvm
-add-llvm: ## Add the llvm tools preview
+.PHONY: add-llvm-tools-preview
+add-llvm-tools-preview: ## Add the llvm tools preview
 	rustup component add llvm-tools-preview
+
+.PHONY: add-measureme
+add-measureme: ## Add the measureme
+	$(CARGO) install --git https://github.com/rust-lang/measureme --tag 10.0.0 crox flamegraph stack_collapse summarize
+
+.PHONY: add-miri
+add-miri: ## Add the miri
+	rustup toolchain install nightly
+	rustup +nightly component add miri
+	$(CARGO) +nightly miri setup
 
 .PHONY: add-target
 add-target: ## Add a target
@@ -165,27 +187,26 @@ audit: add-audit ## Audit
 	$(CARGO_AUDIT)
 
 .PHONY: bench
-bench: add-fmt add-target fetch ## Bench
+bench: add-fmt fetch ## Bench
 	$(CARGO_BENCH)
 
 .PHONY: build
 build: clean-build $(BIN) ## Build
 
 .PHONY: check
-check: add-fmt add-target fetch ## Check
+check: add-fmt fetch ## Check
 	$(CARGO_CHECK)
 
 .PHONY: clean
-clean: clean-coverage clean-doc clean-release ## Clean
+clean: clean-coverage clean-doc clean-profile clean-release ## Clean
 	rm -fr target
 
 .PHONY: clean-build
-clean-build: add-target ## Clean build
+clean-build: fetch ## Clean build
 	$(CARGO_CLEAN)
-	rm -fr $(BIN_DIR)
 
 .PHONY: clean-coverage
-clean-coverage: ## Clean cov
+clean-coverage: ## Clean coverage
 	find . -type f -name *.prof* -exec rm -fr {} +
 	rm -fr $(COVERAGE_DIR)
 	rm -fr coverage
@@ -198,6 +219,10 @@ clean-doc: ## Clean doc
 .PHONY: clean-git-hooks
 clean-git-hooks: ## Clean git hooks
 	rm -fr $(GIT_HOOKS)
+
+.PHONY: clean-profile
+clean-profile: ## Clean profile
+	rm -fr profile
 
 .PHONY: clean-release
 clean-release: ## Clean release
@@ -212,46 +237,74 @@ conventional-commits-linter: add-conventional-commits-linter ## Conventional com
 	conventional_commits_linter --allow-angular-type-only --from-stdin
 
 .PHONY: coverage
-coverage: add-fmt add-grcov add-llvm add-target clean-coverage fetch ## Test cov
+coverage: add-fmt add-grcov add-llvm-tools-preview clean-coverage fetch ## Coverage
+	mkdir -p $(COVERAGE_DIR)
+	mkdir -p coverage
 	RUSTC_BOOTSTRAP=1 RUSTFLAGS="-Zinstrument-coverage" $(CARGO_BUILD)
 	RUSTC_BOOTSTRAP=1 RUSTFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="$(PACKAGE)-%p-%m.profraw" $(CARGO_TEST)
-	grcov . \
-		--binary-path $(BIN_DIR) \
-		--branch \
-		--guess-directory-when-missing \
-		--ignore "/*" \
-		--ignore-not-existing \
-		--output-path $(COVERAGE_DIR) \
-		--output-type html \
-		--source-dir .
-	mkdir -p coverage
+	if [ "$(GRCOV_COVERAGE_TYPE)" = "cobertura" ]; then \
+		grcov . \
+			--binary-path $(BIN_DIR) \
+			--branch \
+			--guess-directory-when-missing \
+			--ignore "/*" \
+			--ignore-not-existing \
+			--output-path $(COVERAGE_DIR)/coverage.xml \
+			--output-type cobertura \
+			--source-dir . \
+		;\
+	elif [ "$(GRCOV_COVERAGE_TYPE)" = "lcov" ]; then \
+		grcov . \
+			--binary-path $(BIN_DIR) \
+			--branch \
+			--guess-directory-when-missing \
+			--ignore "/*" \
+			--ignore-not-existing \
+			--output-path $(COVERAGE_DIR)/lcov.info \
+			--output-type lcov \
+			--source-dir . \
+		;\
+	elif [ "$(GRCOV_COVERAGE_TYPE)" = "html" ]; then \
+		grcov . \
+			--binary-path $(BIN_DIR) \
+			--branch \
+			--guess-directory-when-missing \
+			--ignore "/*" \
+			--ignore-not-existing \
+			--output-path $(COVERAGE_DIR) \
+			--output-type html \
+			--source-dir . \
+		;\
+	else \
+		echo "Unknown coverage type: $(GRCOV_COVERAGE_TYPE)" \
+		;\
+	fi
 	cp -R $(COVERAGE_DIR)/* coverage
-	cat coverage/coverage.json
 
 .PHONY: deny-check
-deny-check: add-deny fetch ## Deny check
+deny-check: add-deny ## Deny check
 	$(CARGO_DENY) check $(DENY_CHECK_WHICH)
 
 .PHONY: deny-fetch
-deny-fetch: add-deny fetch ## Deny fetch
+deny-fetch: add-deny ## Deny fetch
 	$(CARGO_DENY) fetch
 
 .PHONY: deny-fix
-deny-fix: add-deny fetch ## Deny fix
+deny-fix: add-deny ## Deny fix
 	$(CARGO_DENY) fix
 
 .PHONY: doc
-doc: add-fmt add-target clean-doc fetch ## Doc
+doc: add-fmt clean-doc fetch ## Doc
 	$(CARGO_DOC)
 	mkdir -p documentation
 	cp -R $(DOCUMENTATION_DIR)/* documentation
 
 .PHONY: fetch
-fetch: Cargo.lock ## Fetch
+fetch: Cargo.lock add-target ## Fetch
 	$(CARGO_FETCH)
 
 .PHONY: fix
-fix: ## Fix
+fix: fetch ## Fix
 	$(CARGO_FIX)
 
 .PHONY: fmt
@@ -267,13 +320,37 @@ generate-lockfile: ## Generate lockfile
 	$(CARGO) generate-lockfile
 
 .PHONY: git
-git: add-git-config add-git-hooks ## Add git config & hooks
+git: add-git-configs add-git-hooks ## Add git configs & hooks
 
 .PHONY: help
 help: ## Help
 	@grep --extended-regexp '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| sort \
 		| awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-33s\033[0m %s\n", $$1, $$2 }'
+
+.PHONY: measureme
+measureme: add-measureme ## Measureme flamegraph
+	RUSTFLAGS="-Zself-profile=profile -Zself-profile-events=default,args" $(CARGO_RUSTC)
+
+.PHONY: measureme-crox
+measureme-crox: measureme ## Measureme crox
+	crox --dir profile --minimum-duration 2
+
+.PHONY: measureme-flamegraph
+measureme-flamegraph: measureme ## Measureme flamegraph
+	flamegraph $(PACKAGE)-$(PID)
+
+.PHONY: measureme-stack-collapse
+measureme-stack-collapse: measureme ## Measureme stack collapse
+	stack_collapse $(PACKAGE)-$(PID)
+
+.PHONY: measureme-summarize
+measureme-summarize: measureme ## Measureme summarize
+	summarize summarize $(PACKAGE)-{$(PID)
+
+.PHONY: miri
+miri: add-miri ## Miri
+	$(CARGO_MIRI)
 
 .PHONY: release
 release: $(BIN) clean-release ## Release
@@ -284,16 +361,14 @@ release: $(BIN) clean-release ## Release
 		| awk 'BEGIN { FS = " " }; { print $$1 }' > release/$(BIN_NAME).sha256
 
 .PHONY: run
-run: ## Run
+run: fetch ## Run
 	$(CARGO_RUN)
 
 .PHONY: test
-test: add-fmt add-target fetch ## Test
+test: add-fmt fetch ## Test
 	$(CARGO_TEST)
 
 
-
-# CARGO_RUSTC = $(CARGO) rustc --all-features --frozen --package $(PACKAGE) $(RELEASE) --target $(TARGET)
 
 # Usage: rustc [OPTIONS] INPUT
 #

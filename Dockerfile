@@ -1,8 +1,7 @@
 # syntax=docker.io/docker/dockerfile:1.3.1
 
 ARG PACKAGE=${PACKAGE:-"fip_api"}
-ARG REFERENCE=${REFERENCE:-"gcr.io/distroless/static-debian11:nonroot@sha256:bca3c203cdb36f5914ab8568e4c25165643ea9b711b41a8a58b42c80a51ed609"}
-ARG VERSION=${VERSION:-"0.1.0"}
+ARG REF_NAME=${REF_NAME:-"gcr.io/distroless/static-debian11:nonroot@sha256:bca3c203cdb36f5914ab8568e4c25165643ea9b711b41a8a58b42c80a51ed609"}
 
 FROM docker.io/curlimages/curl:7.80.0 as fip
 ARG BUILDARCH
@@ -25,7 +24,7 @@ RUN set -eux \
 # RUN curl --location --output /tmp/linkerd-await --show-error --silent https://github.com/linkerd/linkerd-await/releases/download/release%2F${LINKERD_AWAIT_VERSION}/linkerd-await-${LINKERD_AWAIT_VERSION}-amd64 \
 #     && chmod 755 /tmp/linkerd-await
 
-FROM ${REFERENCE} as base
+FROM ${REF_NAME} as base
 ARG PACKAGE
 COPY --chown=nonroot:nonroot --from=fip /tmp/${PACKAGE} /${PACKAGE}
 # COPY --chown=nonroot:nonroot --from=linkerd-await /tmp/linkerd-await /linkerd-await

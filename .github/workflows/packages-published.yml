@@ -1,0 +1,43 @@
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Check Out
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      -
+        id: release-package-meta
+        name: Release Package Meta
+        uses: ./.github/actions/release-package-meta
+        with:
+          package: ${{ matrix.package }}
+      -
+        env:
+          TRIVY_PASSWORD: ${{ secrets.PACKAGE_REGISTRY }}
+          TRIVY_USERNAME: ${{ github.actor }}
+        name: Trivy
+        uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
+        with:
+          format: template
+          image-ref: ghcr.io/${{ github.repository }}/${{ steps.release-package-meta.outputs.package }}:latest
+          output: trivy.sarif
+          template: "@/contrib/sarif.tpl"
+      -
+        name: Upload Sarif
+        uses: github/codeql-action/upload-sarif@546b30f35ae5a3db0e0be1843008c2224f71c3b0
+        with:
+          sarif_file: trivy.sarif
+    strategy:
+      matrix:
+        package:
+          - fip_api
+          - fip_at
+          - fip_jwks
+          - fip_rt
+          - fip_user
+name: Registry Package Published
+on:
+  registry_package:
+    types:
+      - published
