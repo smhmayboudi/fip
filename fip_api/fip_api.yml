@@ -57,7 +57,7 @@ spec:
             -
               name: PROM_PORT
               value: "8801"
-          image: 127.0.0.1:5000/fip_api:0.1.0
+          image: 127.0.0.1:5000/fip/api:0.1.0
           name: fip-api-service
           ports:
             -
