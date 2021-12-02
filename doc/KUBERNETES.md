@@ -63,10 +63,10 @@ $ linkerd check
 $ linkerd viz dashboard &
 $ linkerd --namespace linkerd-viz viz top deployment/web [ERROR]
 
-$ docker build . --file ./fip_api/Dockerfile --tag fip-api:0.1.0-nonroot
-$ docker tag fip-api:0.1.0-nonroot 127.0.0.1:5000/fip-api:0.1.0-nonroot
-$ docker push 127.0.0.1:5000/fip-api:0.1.0-nonroot
-$ cat ./fip_api/fip-api.yml | kubectl apply --filename -
+$ docker build . --file ./fip/api/Dockerfile --tag fip/api:0.1.0-nonroot
+$ docker tag fip/api:0.1.0-nonroot 127.0.0.1:5000/fip/api:0.1.0-nonroot
+$ docker push 127.0.0.1:5000/fip/api:0.1.0-nonroot
+$ cat ./fip_api/fip_api.yml | kubectl apply --filename -
 
 $ kubectl --namespace fip-api-namespace port-forward service/fip-api 8080:8080
 

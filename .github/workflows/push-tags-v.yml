@@ -2,7 +2,7 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   package:
-    name: Package (${{ matrix.archvariant }}-${{ matrix.package }})
+    name: Package
     permissions:
       contents: read
     runs-on: ubuntu-latest

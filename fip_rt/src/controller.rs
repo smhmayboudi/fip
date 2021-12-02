@@ -17,6 +17,7 @@ use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 /// TODO: documentation
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Controller {
     config: Config,
