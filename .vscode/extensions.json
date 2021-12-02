@@ -1,7 +1,6 @@
 {
     "recommendations": [
         "bungcip.better-toml",
-        "coenraads.bracket-pair-colorizer-2",
         "eamodio.gitlens",
         "github.copilot",
         "github.vscode-pull-request-github",

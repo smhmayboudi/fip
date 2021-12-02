@@ -13,6 +13,6 @@ for FILE in $(git diff --name-status --staged \
 			| grep .rs \
 			| grep --invert-match "D" \
 			| grep --invert-match "R" \
-			| awk 'BEGIN { FS = " " }; { print $2 }'); do
+			| cut -d " " -f 2); do
 	git add ${FILE}
 done

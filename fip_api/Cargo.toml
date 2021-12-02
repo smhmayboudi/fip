@@ -1,3 +1,5 @@
+# cargo-features
+
 # [[bench]]
 
 [[bin]]
@@ -5,7 +7,7 @@
 # crate-type = ["bin"]  # The crate types to generate.
 # doc = true            # Is documented by default.
 # doctest = true        # Documentation examples are tested by default.
-# edition = "2018"      # The edition of the target.
+# edition = "2021"      # The edition of the target.
 # harness = true        # Use libtest harness.
 name = "fip_api"        # The name of the target.
 path = "src/main.rs"    # The source file of the target.
@@ -20,7 +22,7 @@ required-features = []  # Features required to build this target (N/A for lib).
 # [badges]
 
 [build-dependencies]
-tonic-build = { default-features = false, version = "0.6.0" }
+tonic-build = { default-features = false, version = "0.6.2" }
 
 [dependencies]
 anyhow = { default-features = false, features = ["std"], version = "1.0.51" }
@@ -30,20 +32,20 @@ dotenv = { default-features = false, version = "0.15.0" }
 envy = { default-features = false, version = "0.4.2" }
 # fip_api_attributes = { default-features = false, path = "../fip_api_attributes", version = "0.1.0" }
 fip_common = { default-features = false, path = "../fip_common", version = "0.1.0" }
-futures = { default-features = false, version = "0.3.18" }
+futures = { default-features = false, version = "0.3.19" }
 http = { default-features = false, version = "0.2.5" }
-hyper = { default-features = false, version = "0.14.15" }
+hyper = { default-features = false, version = "0.14.16" }
 jsonwebtoken = { default-features = false, version = "7.2.0" }
 opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
 # opentelemetry-jaeger = { default-features = false, features = ["tokio"], version = "0.15.0" }
 opentelemetry-zipkin = { default-features = false, features = ["reqwest-client"], version = "0.14.0" }
 prost = { default-features = false, version = "0.9.0" }
 # rdkafka = { default-features = false, features = ["cmake-build"], version = "0.26.0" }
-serde = { default-features = false, features = ["derive"], version = "1.0.130" }
+serde = { default-features = false, features = ["derive"], version = "1.0.132" }
 sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
 thiserror = { default-features = false, version = "1.0.30" }
-tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.14.0" }
-tonic = { default-features = false, features = ["transport"], version = "0.6.1" }
+tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.15.0" }
+tonic = { default-features = false, features = ["transport"], version = "0.6.2" }
 tonic-health = { default-features = false, features = ["transport"], version = "0.5.0" }
 tower-service = { default-features = false, version = "0.3.1" }
 tracing = { default-features = false, version = "0.1.29" }
@@ -55,34 +57,58 @@ tracing-subscriber = { default-features = false, features = ["env-filter", "fmt"
 uuid = { default-features = false, features = ["v4"], version = "0.8.2" }
 
 # [dev-dependencies]
+# pretty_assertions = { default-features = false, features = ["alloc", "std"], version = "1.0.0" }
 
 # [features]
 
+# [lib]
+
 [package]
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
+# autobins
+# autobenches
+# autoexamples
+# autotests
+# build
 categories = ["network-programming"]
+# default-run
 description = "fip_api"
-edition = "2018"
-homepage = ""
+documentation = "https://github.com/smhmayboudi/fip/fip_api"
+edition = "2021"
+# exclude
+homepage = "https://github.com/smhmayboudi/fip"
 include = [
-    "src/**/*",
-    "proto/*",
     "build.rs",
+    "proto/*",
+    "src/**/*",
 ]
 keywords = [
     "fip",
     "api",
 ]
 license = "MIT"
+# license-file
+# links
+# metadata
 name = "fip_api"
 publish = false
+readme = "fip_api/README.md"
+# resolver
+rust-version = "1.57.0"
 repository = "https://github.com/smhmayboudi/fip"
 version = "0.1.0"
-
-# [profile]
+# workspace
 
 # [patch]
 
+# [profile.<name>]
+
 # [replace]
+
+# [target.<cfg>]
+
+# [target.<triple>]
+
+# [target.<triple>.<links>]
 
 # [workspace]

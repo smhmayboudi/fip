@@ -1,5 +1,5 @@
 [build]
-xargo = true
+xargo = false
 
 [build.env]
 passthrough = [

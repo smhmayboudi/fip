@@ -1,8 +1,11 @@
 {
     "debug.allowBreakpointsEverywhere": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.bracketPairColorization.enabled": true,
     "editor.defaultFormatter": "matklad.rust-analyzer",
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true,
+    "editor.guides.bracketPairs": "active",
     "editor.inlineSuggest.enabled": true,
     "files.watcherExclude": {
         "**/*.db-*": true,
@@ -10,6 +13,7 @@
         "**/.git/**": true,
         "**/coverage/**": true,
         "**/documentation/**": true,
+        "**/profile/**": true,
         "**/release/**": true,
         "**/target/**": true,
         "**/test/**": true
@@ -22,7 +26,9 @@
     },
     "lldb.verboseLogging": true,
     "redhat.telemetry.enabled": true,
+    "rust-analyzer.cargo.allFeatures": true,
     "rust-analyzer.checkOnSave.command": "clippy",
+    "rust-analyzer.checkOnSave.overrideCommand": ["make", "clippy", "MESSAGE_FORMAT=json"],
     "sqltools.connections": [
         {
             "database": "${workspaceFolder:fip}/fip_at/at.db",
@@ -55,5 +61,6 @@
     ],
     "sqltools.useNodeRuntime": true,
     "terminal.integrated.sendKeybindingsToShell": true,
+    "window.zoomLevel": 1,
     "workbench.iconTheme": "material-icon-theme"
 }

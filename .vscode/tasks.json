@@ -14,9 +14,10 @@
                 "isDefault": true
             },
             "label": "Make: build",
-            "problemMatcher": [
-                "$rustc"
-            ],
+            "presentation":{
+                "clear": true
+            },
+            "problemMatcher": "$rustc",
             "type": "shell"
         },
         {
@@ -27,9 +28,10 @@
             "command": "make",
             "group": "none",
             "label": "Make: check",
-            "problemMatcher": [
-                "$rustc"
-            ],
+            "presentation":{
+                "clear": true
+            },
+            "problemMatcher": "$rustc",
             "type": "shell"
         },
         {
@@ -39,9 +41,10 @@
             "command": "make",
             "group": "none",
             "label": "Make: clean",
-            "problemMatcher": [
-                "$rustc"
-            ],
+            "presentation":{
+                "clear": true
+            },
+            "problemMatcher": "$rustc",
             "type": "shell"
         },
         {
@@ -52,9 +55,10 @@
             "command": "make",
             "group": "none",
             "label": "Make: run",
-            "problemMatcher": [
-                "$rustc"
-            ],
+            "presentation":{
+                "clear": true
+            },
+            "problemMatcher": "$rustc",
             "type": "shell"
         },
         {
@@ -67,9 +71,10 @@
                 "isDefault": true
             },
             "label": "Make: test",
-            "problemMatcher": [
-                "$rustc"
-            ],
+            "presentation":{
+                "clear": true
+            },
+            "problemMatcher": "$rustc",
             "type": "shell"
         }
     ],
