@@ -4,6 +4,7 @@ use fip_common::error::Error;
 use sqlx::sqlite::{SqlitePool, SqlitePoolOptions};
 
 /// TODO: documentation
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Repository {
     config: Config,

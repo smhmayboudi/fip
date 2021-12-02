@@ -5,7 +5,7 @@
 # crate-type = ["bin"]  # The crate types to generate.
 # doc = true            # Is documented by default.
 # doctest = true        # Documentation examples are tested by default.
-# edition = "2018"      # The edition of the target.
+# edition = "2021"      # The edition of the target.
 # harness = true        # Use libtest harness.
 name = "fip_user"       # The name of the target.
 path = "src/main.rs"    # The source file of the target.
@@ -20,7 +20,7 @@ required-features = []  # Features required to build this target (N/A for lib).
 # [badges]
 
 [build-dependencies]
-tonic-build = "0.6.0"
+tonic-build = "0.6.2"
 
 [dependencies]
 anyhow = { default-features = false, features = ["std"], version = "1.0.51" }
@@ -28,17 +28,17 @@ anyhow = { default-features = false, features = ["std"], version = "1.0.51" }
 dotenv = { default-features = false, version = "0.15.0" }
 envy = { default-features = false, version = "0.4.2" }
 fip_common = { default-features = false, path = "../fip_common", version = "0.1.0" }
-futures = { default-features = false, version = "0.3.18" }
+futures = { default-features = false, version = "0.3.17" }
 opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
 # opentelemetry-jaeger = { default-features = false, features = ["tokio"], version = "0.15.0" }
 opentelemetry-zipkin = { default-features = false, features = ["reqwest-client"], version = "0.14.0" }
 prost = { default-features = false, version = "0.9.0" }
 # rdkafka = { default-features = false, features = ["cmake-build"], version = "0.26.0" }
-serde = { default-features = false, features = ["derive"], version = "1.0.130" }
+serde = { default-features = false, features = ["derive"], version = "1.0.132" }
 sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
-tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.14.0" }
+tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.15.0" }
 tokio-stream = { default-features = false, version = "0.1.8" }
-tonic = { default-features = false, features = ["transport"], version = "0.6.1" }
+tonic = { default-features = false, features = ["transport"], version = "0.6.2" }
 tonic-health = { default-features = false, features = ["transport"], version = "0.5.0" }
 tracing = { default-features = false, version = "0.1.29" }
 tracing-appender = { default-features = false, version = "0.2.0" }
@@ -56,7 +56,7 @@ uuid = { default-features = false, features = ["v4"], version = "0.8.2" }
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
 categories = ["network-programming"]
 description = "fip_user"
-edition = "2018"
+edition = "2021"
 homepage = ""
 include = [
     "src/**/*",

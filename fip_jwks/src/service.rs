@@ -11,6 +11,7 @@ use fip_common::error::Error;
 use uuid::Uuid;
 
 /// TODO: documentation
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Service {
     config: Config,
@@ -40,7 +41,7 @@ impl Service {
     #[tracing::instrument]
     pub async fn find(&self, req: &JwksFindReq) -> Result<Vec<JwksRes>, Error> {
         let res = self.repository.find().await?;
-        Ok(res.into_iter().map(|model| model.into()).collect())
+        Ok(res.into_iter().map(Into::into).collect())
     }
 
     /// TODO: documentation
