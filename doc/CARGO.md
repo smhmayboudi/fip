@@ -33,11 +33,15 @@ $ cargo install --force --locked \
     cargo-audit \
     cargo-cache \
     cargo-deny \
-    cargo2junit \
+    cargo-edit \
+    cargo-llvm-lines \
+    cargo-watch \
     conventional_commits_linter \
     cross \
     grcov \
-    sqlx-cli
+    sccache \
+    sqlx-cli \
+    xargo
 $ cargo uninstall
 
 $ cargo audit

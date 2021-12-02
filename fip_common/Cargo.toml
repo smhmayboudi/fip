@@ -1,3 +1,5 @@
+# cargo-features
+
 # [[bench]]
 
 # [[bin]]
@@ -17,7 +19,7 @@ opentelemetry = { default-features = false, features = ["rt-tokio"], version = "
 rdkafka = { default-features = false, features = ["cmake-build"], version = "0.28.0" }
 sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
 thiserror = { default-features = false, version = "1.0.30" }
-tonic = { default-features = false, features = ["transport"], version = "0.6.1" }
+tonic = { default-features = false, features = ["transport"], version = "0.6.2" }
 tracing-error = { default-features = false, version = "0.2.0" }
 
 # [dev-dependencies]
@@ -29,7 +31,7 @@ tracing-error = { default-features = false, version = "0.2.0" }
 crate-type = ["rlib"]   # The crate types to generate.
 # doc = true            # Is documented by default.
 # doctest = true        # Documentation examples are tested by default.
-# edition = "2018"      # The edition of the target.
+# edition = "2021"      # The edition of the target.
 # harness = true        # Use libtest harness.
 name = "fip_common"     # The name of the target.
 path = "src/lib.rs"     # The source file of the target.
@@ -39,25 +41,48 @@ path = "src/lib.rs"     # The source file of the target.
 
 [package]
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
+# autobins
+# autobenches
+# autoexamples
+# autotests
+# build
 categories = ["network-programming"]
+# default-run
 description = "fip_common"
-edition = "2018"
-homepage = ""
-include = ["src/**/*"]
+documentation = "https://github.com/smhmayboudi/fip/fip_common"
+edition = "2021"
+# exclude
+homepage = "https://github.com/smhmayboudi/fip"
+include = [
+    "src/**/*",
+]
 keywords = [
     "fip",
     "common",
 ]
 license = "MIT"
+# license-file
+# links
+# metadata
 name = "fip_common"
 publish = false
-repository =  "https://github.com/smhmayboudi/fip"
+readme = "fip_common/README.md"
+# resolver
+rust-version = "1.57.0"
+repository = "https://github.com/smhmayboudi/fip"
 version = "0.1.0"
-
-# [profile]
+# workspace
 
 # [patch]
 
+# [profile.<name>]
+
 # [replace]
+
+# [target.<cfg>]
+
+# [target.<triple>]
+
+# [target.<triple>.<links>]
 
 # [workspace]

@@ -5,6 +5,7 @@ use crate::api::{
 use fip_common::error::Error;
 
 /// TODO: documentation
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Service {
     config: Config,

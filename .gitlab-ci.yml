@@ -67,7 +67,7 @@ rust_build:
     DOCKER_HOST: tcp://127.0.0.1:2375
     DOCKER_TLS_CERTDIR: ''
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
@@ -91,32 +91,21 @@ rust_build:
     DOCKER_HOST: tcp://127.0.0.1:2375
     DOCKER_TLS_CERTDIR: ''
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
 .test: &test
-  allow_failure: false
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - test
-    # public: false
-    reports:
-      junit: test/results.xml
-    when: always
+  allow_failure: true
   # extends:
   #   - .default-rule
   script:
-    - ${CARGO} install --locked cargo2junit
-    - mkdir -p test
-    - RUSTC_BOOTSTRAP=1 ${CARGO} test -- --format json -Zunstable-options | tee test/results.json
-    - cat test/results.json | cargo2junit > test/results.xml
+    - make test
   stage: test
   variables:
     CARGO: cargo
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
@@ -126,6 +115,8 @@ rust_build:
     expire_in: 1 week
     paths:
       - coverage
+    reports:
+      cobertura: coverage.xml
     # public: false
   # extends:
   #   - .default-rule
@@ -134,8 +125,9 @@ rust_build:
   stage: coverage
   variables:
     CARGO: cargo
+    GRCOV_COVERAGE_TYPE: cobertura
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
@@ -152,7 +144,7 @@ rust_build:
     CARGO: cargo
     PACKAGE_REGISTRY_URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
@@ -198,7 +190,7 @@ rust_build:
     CARGO: cargo
     PACKAGE_REGISTRY_URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE}/${VERSION}
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
@@ -217,7 +209,7 @@ rust_build:
   variables:
     CARGO: cargo
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
@@ -237,7 +229,7 @@ rust_build:
   variables:
     CARGO: cargo
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
@@ -257,17 +249,17 @@ rust_build:
     # - mkdir -p '${MOUNT_POINT}'
     # - docker run --volume ${MOUNT_POINT}:/mnt ${IMAGE_NAME} /mnt/script/to/run/tests
   services:
-    - docker:20.10.7-dind-rootlesss
+    - docker:20.10.7-dind-rootless
   stage: deploy
   variables:
     CARGO: cargo
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://127.0.0.1:2376
-    DOCKER_TLS_CERTDIR: 
+    DOCKER_TLS_CERTDIR:
     # MOUNT_POINT: /builds/${CI_PROJECT_PATH}/mnt
     # MOUNT_POINT: ${CI_PROJECT_DIR}/mnt
     RELEASE: --release
-    RUST_VERSION: 1.56.1-bullseye
+    RUST_VERSION: 1.57.0-bullseye
     VERSION: ${CI_COMMIT_TAG}
   when: manual
 
