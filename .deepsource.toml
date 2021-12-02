@@ -1,0 +1,41 @@
+version = 1
+
+[[analyzers]]
+name = "docker"
+enabled = true
+
+[[analyzers]]
+name = "rust"
+enabled = true
+
+[[analyzers]]
+name = "shell"
+enabled = true
+
+[analyzers.meta]
+dialect = "bash"
+
+[[analyzers]]
+name = "sql"
+enabled = true
+
+[analyzers.meta]
+max_line_length = 100
+tab_space_size = 4
+indent_unit = "tab"
+comma_style = "trailing"
+capitalisation_policy = "consistent"
+allow_scalar = true
+single_table_references = "consistent"
+
+[[transformers]]
+name = "rustfmt"
+enabled = true
+
+[[analyzers]]
+name = "secrets"
+enabled = true
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true
