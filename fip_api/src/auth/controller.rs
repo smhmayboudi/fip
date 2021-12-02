@@ -15,6 +15,7 @@ use tonic::{Request, Response, Status};
 // use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 /// TODO: documentation
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Controller {
     config: Config,

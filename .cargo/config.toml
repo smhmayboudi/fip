@@ -1,7 +1,7 @@
 # [alias]
 
 [build]
-rustflags = [
+rustdocflags = [
     "-Dabsolute_paths_not_starting_with_crate",
     # "-Dbox_pointers",
     "-Ddeprecated_in_future",
@@ -38,7 +38,7 @@ rustflags = [
     "-Dvariant_size_differences",
     "-Dwarnings"
 ]
-rustdocflags = [
+rustflags = [
     "-Dabsolute_paths_not_starting_with_crate",
     # "-Dbox_pointers",
     "-Ddeprecated_in_future",

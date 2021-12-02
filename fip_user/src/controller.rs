@@ -18,6 +18,7 @@ use tracing::Span;
 use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 /// TODO: documentation
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Controller {
     config: Config,
@@ -27,7 +28,6 @@ pub struct Controller {
 /// TODO: documentation
 impl Controller {
     /// TODO: documentation
-    #[must_use]
     #[must_use]
     pub const fn new(config: Config, service: Service) -> Self {
         Self { config, service }
