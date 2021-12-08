@@ -20,7 +20,7 @@ required-features = []  # Features required to build this target (N/A for lib).
 # [badges]
 
 [build-dependencies]
-tonic-build = { default-features = false, version = "0.6.0" }
+tonic-build = { default-features = false, version = "0.6.2" }
 
 [dependencies]
 anyhow = { default-features = false, features = ["std"], version = "1.0.51" }
