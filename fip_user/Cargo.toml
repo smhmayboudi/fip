@@ -34,7 +34,7 @@ opentelemetry = { default-features = false, features = ["rt-tokio"], version = "
 opentelemetry-zipkin = { default-features = false, features = ["reqwest-client"], version = "0.14.0" }
 prost = { default-features = false, version = "0.9.0" }
 # rdkafka = { default-features = false, features = ["cmake-build"], version = "0.26.0" }
-serde = { default-features = false, features = ["derive"], version = "1.0.130" }
+serde = { default-features = false, features = ["derive"], version = "1.0.131" }
 sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
 tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.14.0" }
 tokio-stream = { default-features = false, version = "0.1.8" }
