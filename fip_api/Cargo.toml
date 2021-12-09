@@ -32,7 +32,7 @@ envy = { default-features = false, version = "0.4.2" }
 fip_common = { default-features = false, path = "../fip_common", version = "0.1.0" }
 futures = { default-features = false, version = "0.3.18" }
 http = { default-features = false, version = "0.2.5" }
-hyper = { default-features = false, version = "0.14.15" }
+hyper = { default-features = false, version = "0.14.16" }
 jsonwebtoken = { default-features = false, version = "7.2.0" }
 opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
 # opentelemetry-jaeger = { default-features = false, features = ["tokio"], version = "0.15.0" }
