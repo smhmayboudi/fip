@@ -86,7 +86,7 @@ add-audit: ## Add the audit
 
 .PHONY: add-clippy
 add-clippy: ## Add the clippy
-	rustup component add clippy
+	rustup $(NIGHTLY) component add clippy
 
 .PHONY: add-conventional-commits-linter
 add-conventional-commits-linter: ## Add the conventional commits linter
@@ -118,7 +118,7 @@ endif
 
 .PHONY: add-fmt
 add-fmt: ## Add the fmt
-	rustup component add rustfmt
+	rustup $(NIGHTLY) component add rustfmt
 
 .PHONY: add-git-configs
 add-git-configs: ## Add the git configs
@@ -155,7 +155,7 @@ add-grcov: ## Add the grcov
 
 .PHONY: add-llvm-tools-preview
 add-llvm-tools-preview: ## Add the llvm tools preview
-	rustup component add llvm-tools-preview
+	rustup $(NIGHTLY) component add llvm-tools-preview
 
 .PHONY: add-measureme
 add-measureme: ## Add the measureme
