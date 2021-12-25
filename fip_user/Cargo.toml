@@ -25,12 +25,11 @@ required-features = []  # Features required to build this target (N/A for lib).
 tonic-build = "0.6.2"
 
 [dependencies]
-anyhow = { default-features = false, features = ["std"], version = "1.0.51" }
+anyhow = { default-features = false, features = ["std"], version = "1.0.52" }
 # chrono = { default-features = false, version = "0.4.19" }
 dotenv = { default-features = false, version = "0.15.0" }
 envy = { default-features = false, version = "0.4.2" }
 fip_common = { default-features = false, path = "../fip_common", version = "0.1.0" }
-futures = { default-features = false, version = "0.3.19" }
 opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
 # opentelemetry-jaeger = { default-features = false, features = ["tokio"], version = "0.15.0" }
 opentelemetry-zipkin = { default-features = false, features = ["reqwest-client"], version = "0.14.0" }
@@ -47,7 +46,7 @@ tracing-appender = { default-features = false, version = "0.2.0" }
 tracing-bunyan-formatter = { default-features = false, version = "0.3.1" }
 tracing-error = { default-features = false, version = "0.2.0" }
 tracing-opentelemetry = { default-features = false, features = ["tracing-log"], version = "0.16.0" }
-tracing-subscriber = { default-features = false, features = ["env-filter", "fmt"], version = "0.3.3" }
+tracing-subscriber = { default-features = false, features = ["env-filter", "fmt"], version = "0.3.4" }
 uuid = { default-features = false, features = ["v4"], version = "0.8.2" }
 
 # [dev-dependencies]
