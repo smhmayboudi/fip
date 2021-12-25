@@ -10,8 +10,6 @@ use crate::{
     service::Service,
 };
 use fip_common::opentelemetry::MetadataMap;
-use futures::Stream;
-use std::pin::Pin;
 use tokio_stream::wrappers::ReceiverStream;
 use tonic::{Request, Response, Status};
 use tracing::Span;
@@ -36,7 +34,7 @@ impl Controller {
 
 #[tonic::async_trait]
 impl User for Controller {
-    type FindStream = Pin<Box<dyn Stream<Item = Result<UserRes, Status>> + Send + Sync>>;
+    type FindStream = ReceiverStream<Result<UserRes, Status>>;
 
     /// TODO: documentation
     #[tracing::instrument(fields(otel.kind = "server"))]
@@ -106,9 +104,7 @@ impl User for Controller {
             }
         });
 
-        Ok(Response::new(
-            Box::pin(ReceiverStream::new(rx)) as Self::FindStream
-        ))
+        Ok(Response::new(ReceiverStream::new(rx)))
     }
 
     /// TODO: documentation
