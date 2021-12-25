@@ -322,7 +322,7 @@ jobs:
           VDB_HOME: ${{ github.workspace }}/vdb
           WORKSPACE: ""
         name: ShiftLeft Security Scan
-        uses: ShiftLeftSecurity/scan-action@54980bbdae434b8e7903cfcffa98a2601c207962
+        uses: ShiftLeftSecurity/scan-action@0001ba0daf81f40441d7f7f0413af69ed10f44b6
       -
         name: Upload Sarif
         uses: github/codeql-action/upload-sarif@5f532563584d71fdef14ee64d17bafb34f751ce5
