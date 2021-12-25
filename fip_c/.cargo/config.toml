@@ -1,0 +1,27 @@
+[build]
+rustc-wrapper = "/Users/smhmayboudi/.cargo/bin/sccache"
+rustflags=[
+    "-Clink-arg=-fuse-ld=lld",
+    # "-Cprofile-generate=/tmp/pgo-data",
+    # "-Zbuild-std=core,alloc",
+    # "-Zbuild-std=std,panic_abort",
+    # "-Zbuild-std-features=panic_immediate_abort",
+]
+
+# [unstable]
+# build-std = [
+#     "alloc",
+#     "compiler_builtins",
+#     "core",
+#     "panic_abort",
+#     "proc_macro",
+#     "std",
+# ]
+# build-std-features = ["compiler-builtins-mem"]
+
+# cargo +nightly build -Z timings
+# mtime-on-use = true
+# multitarget = true
+# timings = ["html"]
+
+# -Zallow-features=
