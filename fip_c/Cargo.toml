@@ -1,0 +1,82 @@
+# cargo-features
+
+# [[bench]]
+
+[[bin]]
+# bench = true          # Is benchmarked by default.
+# crate-type = ["bin"]  # The crate types to generate.
+# doc = true            # Is documented by default.
+# doctest = true        # Documentation examples are tested by default.
+# edition = "2021"      # The edition of the target.
+# harness = true        # Use libtest harness.
+name = "fip_c"          # The name of the target.
+path = "src/main.rs"    # The source file of the target.
+# proc-macro = false    # Set to `true` for a proc-macro library.
+required-features = []  # Features required to build this target (N/A for lib).
+# test = true           # Is tested by default.
+
+# [[example]]
+
+# [[test]]
+
+# [badges]
+
+[build-dependencies]
+cc = { default-features = false, version = "1.0.72" }
+
+[dependencies]
+
+# [dev-dependencies]
+
+# [features]
+
+# [lib]
+
+[package]
+authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
+# autobins
+# autobenches
+# autoexamples
+# autotests
+# build
+categories = ["network-programming"]
+# default-run
+description = "fip_c"
+documentation = "https://github.com/smhmayboudi/fip/fip_c"
+edition = "2021"
+# exclude
+homepage = "https://github.com/smhmayboudi/fip"
+include = [
+    "build.rs",
+    "src/**/*",
+]
+keywords = [
+    "fip",
+    "c",
+]
+license = "MIT"
+# license-file
+# links
+# metadata
+name = "fip_c"
+publish = false
+readme = "fip_c/README.md"
+# resolver
+rust-version = "1.57.0"
+repository = "https://github.com/smhmayboudi/fip"
+version = "0.1.0"
+# workspace
+
+# [patch]
+
+# [profile.<name>]
+
+# [replace]
+
+# [target.<cfg>]
+
+# [target.<triple>]
+
+# [target.<triple>.<links>]
+
+# [workspace]
