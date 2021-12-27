@@ -15,7 +15,7 @@
 [dependencies]
 # proc-macro2 = { default-features = false, version = "1.0.24" }
 quote = { default-features = false, features = ["proc-macro"], version = "1.0.10" }
-syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.83" }
+syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.84" }
 
 # [dev-dependencies]
 
