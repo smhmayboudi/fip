@@ -230,12 +230,12 @@ conventional-commits-linter: add-conventional-commits-linter ## Conventional com
 	conventional_commits_linter --allow-angular-type-only --from-stdin
 
 .PHONY: coverage
-coverage: NIGHTLY = +nightly
+# coverage: NIGHTLY = +nightly
 coverage: add-fmt add-grcov add-llvm-tools-preview add-nightly-toolchain clean-coverage fetch ## Coverage
 	mkdir -p $(COVERAGE_DIR)
 	mkdir -p coverage
-	RUSTFLAGS="-Zinstrument-coverage" $(CARGO_BUILD)
-	RUSTFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="$(PACKAGE)-%p-%m.profraw" $(CARGO_TEST)
+	RUSTC_BOOTSTRAP=1 RUSTFLAGS="-Zinstrument-coverage -Zpanic_abort_tests" $(CARGO_BUILD)
+	RUSTC_BOOTSTRAP=1 RUSTFLAGS="-Zinstrument-coverage -Zpanic_abort_tests" LLVM_PROFILE_FILE="$(PACKAGE)-%p-%m.profraw" $(CARGO_TEST)
 ifeq ("$(GRCOV_COVERAGE_TYPE)", "cobertura")
 	grcov . \
 		--binary-path $(BIN_DIR) \

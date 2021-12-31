@@ -40,7 +40,7 @@ incremental = false
 # inline-threshold
 # link-arg
 # link-args
-# link-dead-code
+link-dead-code = false
 # link-self-contained
 # linker
 # linker-flavor
@@ -73,7 +73,7 @@ rpath = false
 [profile.dev]
 # code-model
 # code-model
-codegen-units = 256
+codegen-units = 1
 # control-flow-guard
 debug = true
 debug-assertions = true
@@ -87,7 +87,7 @@ incremental = true
 # inline-threshold
 # link-arg
 # link-args
-# link-dead-code
+link-dead-code = true
 # link-self-contained
 # linker
 # linker-flavor
@@ -102,7 +102,7 @@ lto = false
 # no-vectorize-slp
 opt-level = 0
 overflow-checks = true
-panic = "unwind"
+panic = "abort"
 # passes
 # prefer-dynamic
 # profile-generate
@@ -120,7 +120,7 @@ rpath = false
 [profile.test]
 # code-model
 # code-model
-codegen-units = 256
+codegen-units = 1
 # control-flow-guard
 debug = true
 debug-assertions = true
@@ -134,7 +134,7 @@ incremental = true
 # inline-threshold
 # link-arg
 # link-args
-# link-dead-code
+link-dead-code = true
 # link-self-contained
 # linker
 # linker-flavor
@@ -149,7 +149,7 @@ lto = false
 # no-vectorize-slp
 opt-level = 0
 overflow-checks = true
-panic = "unwind"
+panic = "abort"
 # passes
 # prefer-dynamic
 # profile-generate
@@ -180,7 +180,7 @@ incremental = false
 # inline-threshold
 # link-arg
 # link-args
-# link-dead-code
+link-dead-code = false
 # link-self-contained
 # linker
 # linker-flavor

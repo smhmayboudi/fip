@@ -35,8 +35,8 @@ opentelemetry = { default-features = false, features = ["rt-tokio"], version = "
 opentelemetry-zipkin = { default-features = false, features = ["reqwest-client"], version = "0.14.0" }
 prost = { default-features = false, version = "0.9.0" }
 # rdkafka = { default-features = false, features = ["cmake-build"], version = "0.26.0" }
-serde = { default-features = false, features = ["derive"], version = "1.0.132" }
-sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
+serde = { default-features = false, features = ["derive"], version = "1.0.133" }
+sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.10" }
 tokio = { default-features = false, features = ["macros", "rt-multi-thread", "time"], version = "1.15.0" }
 tokio-stream = { default-features = false, version = "0.1.8" }
 tonic = { default-features = false, features = ["transport"], version = "0.6.2" }
@@ -46,7 +46,7 @@ tracing-appender = { default-features = false, version = "0.2.0" }
 tracing-bunyan-formatter = { default-features = false, version = "0.3.1" }
 tracing-error = { default-features = false, version = "0.2.0" }
 tracing-opentelemetry = { default-features = false, features = ["tracing-log"], version = "0.16.0" }
-tracing-subscriber = { default-features = false, features = ["env-filter", "fmt"], version = "0.3.4" }
+tracing-subscriber = { default-features = false, features = ["env-filter", "fmt"], version = "0.3.5" }
 uuid = { default-features = false, features = ["v4"], version = "0.8.2" }
 
 # [dev-dependencies]
@@ -56,6 +56,8 @@ uuid = { default-features = false, features = ["v4"], version = "0.8.2" }
 # [lib]
 
 [package]
+name = "fip_rt"
+version = "0.1.0"
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
 # autobins
 # autobenches
@@ -64,7 +66,6 @@ authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
 # build
 categories = ["network-programming"]
 # default-run
-description = "fip_rt"
 documentation = "https://github.com/smhmayboudi/fip/fip_rt"
 edition = "2021"
 # exclude
@@ -82,14 +83,13 @@ license = "MIT"
 # license-file
 # links
 # metadata
-name = "fip_rt"
 publish = false
 readme = "fip_rt/README.md"
 # resolver
 rust-version = "1.57.0"
 repository = "https://github.com/smhmayboudi/fip"
-version = "0.1.0"
 # workspace
+description = "fip_rt"
 
 # [patch]
 
