@@ -14,8 +14,8 @@
 
 [dependencies]
 # proc-macro2 = { default-features = false, version = "1.0.24" }
-quote = { default-features = false, features = ["proc-macro"], version = "1.0.10" }
-syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.83" }
+quote = { default-features = false, features = ["proc-macro"], version = "1.0.14" }
+syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.84" }
 
 # [dev-dependencies]
 
@@ -35,6 +35,8 @@ proc-macro = true           # Set to `true` for a proc-macro library.
 # test = true               # Is tested by default.
 
 [package]
+name = "fip_api_attributes"
+version = "0.1.0"
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
 # autobins
 # autobenches
@@ -43,7 +45,6 @@ authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
 # build
 categories = ["network-programming"]
 # default-run
-description = "fip_api_attributes"
 documentation = "https://github.com/smhmayboudi/fip/fip_api_attributes"
 edition = "2021"
 # exclude
@@ -60,14 +61,13 @@ license = "MIT"
 # license-file
 # links
 # metadata
-name = "fip_api_attributes"
 publish = false
 readme = "fip_api_attributes/README.md"
 # resolver
 rust-version = "1.57.0"
 repository = "https://github.com/smhmayboudi/fip"
-version = "0.1.0"
 # workspace
+description = "fip_api_attributes"
 
 # [patch]
 

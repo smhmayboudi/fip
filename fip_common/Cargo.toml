@@ -13,11 +13,11 @@
 # [build-dependencies]
 
 [dependencies]
-http = { default-features = false, version = "0.2.5" }
+http = { default-features = false, version = "0.2.6" }
 jsonwebtoken = { default-features = false, version = "7.2.0" }
 opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
 rdkafka = { default-features = false, features = ["cmake-build"], version = "0.28.0" }
-sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.9" }
+sqlx = { default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlite"], version = "0.5.10" }
 thiserror = { default-features = false, version = "1.0.30" }
 tonic = { default-features = false, features = ["transport"], version = "0.6.2" }
 tracing-error = { default-features = false, version = "0.2.0" }
@@ -40,6 +40,8 @@ path = "src/lib.rs"     # The source file of the target.
 # test = true           # Is tested by default.
 
 [package]
+name = "fip_common"
+version = "0.1.0"
 authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
 # autobins
 # autobenches
@@ -48,7 +50,6 @@ authors = ["Hossein Mayboudi <smhmayboudi@gmail.com>"]
 # build
 categories = ["network-programming"]
 # default-run
-description = "fip_common"
 documentation = "https://github.com/smhmayboudi/fip/fip_common"
 edition = "2021"
 # exclude
@@ -64,14 +65,13 @@ license = "MIT"
 # license-file
 # links
 # metadata
-name = "fip_common"
 publish = false
 readme = "fip_common/README.md"
 # resolver
 rust-version = "1.57.0"
 repository = "https://github.com/smhmayboudi/fip"
-version = "0.1.0"
 # workspace
+description = "fip_common"
 
 # [patch]
 

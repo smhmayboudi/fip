@@ -1,1 +1,12 @@
-* text=auto
+[attr]rust text eol=lf whitespace=tab-in-indent,trailing-space,tabwidth=4
+
+* text=auto eol=lf
+*.c rust
+*.cpp rust
+*.fixed linguist-language=rust
+*.h rust
+*.lock -diff -merge linguist-generated=false
+*.mir linguist-language=rust
+*.rs rust diff=rust
+*.sh rust diff=bash
+*.toml linguist-language=toml
