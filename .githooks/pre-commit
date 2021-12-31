@@ -14,5 +14,5 @@ for FILE in $(git diff --name-status --staged \
 			| grep --invert-match "D" \
 			| grep --invert-match "R" \
 			| cut -d " " -f 2); do
-	git add ${FILE}
+	git add "${FILE}"
 done

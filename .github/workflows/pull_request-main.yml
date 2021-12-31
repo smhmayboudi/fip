@@ -7,7 +7,6 @@ jobs:
     name: Cargo Audit
     needs:
       - clippy
-      - conventional-commits-linter
       - fmt-check
     permissions:
       contents: read
@@ -45,7 +44,6 @@ jobs:
     name: Cargo Check
     needs:
       - clippy
-      - conventional-commits-linter
       - fmt-check
     permissions:
       contents: read
@@ -74,33 +72,6 @@ jobs:
         run: make check
         shell: bash
     timeout-minutes: 30
-  conventional-commits-linter:
-    container:
-      image: docker://rust:1.57.0-bullseye
-    name: Conventional Commits Linter
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Check Out
-        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-      -
-        name: Cache
-        uses: actions/cache@937d24475381cd9c75ae6db12cb4e79714b926ed
-        with:
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-      -
-        name: Conventional Commits
-        run: ./script/conventional-commits-linter.sh ${{ github.event.pull_request.head.ref }}
-        shell: bash
-    timeout-minutes: 30
   deny-check:
     container:
       image: docker://rust:1.57.0-bullseye
@@ -108,7 +79,6 @@ jobs:
     name: Cargo Deny Check
     needs:
       - clippy
-      - conventional-commits-linter
       - fmt-check
     permissions:
       contents: read
@@ -159,8 +129,6 @@ jobs:
     container:
       image: docker://rust:1.57.0-bullseye
     name: Cargo Clippy
-    needs:
-      - conventional-commits-linter
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -194,7 +162,6 @@ jobs:
     name: Coverage
     needs:
       - clippy
-      - conventional-commits-linter
       - fmt-check
       - test
     permissions:
@@ -246,7 +213,6 @@ jobs:
     needs:
       - clippy
       - coverage
-      - conventional-commits-linter
       - fmt-check
       - test
     permissions:
@@ -263,8 +229,6 @@ jobs:
     container:
       image: docker://rust:1.57.0-bullseye
     name: Cargo Format Check
-    needs:
-      - conventional-commits-linter
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -296,7 +260,6 @@ jobs:
     name: Scan
     needs:
       - clippy
-      - conventional-commits-linter
       - fmt-check
     permissions:
       contents: read
@@ -317,6 +280,7 @@ jobs:
         env:
           ENABLE_OSS_RISK: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SCAN_ANNOTATE_PR: true
           SCAN_AUTO_BUILD: false
           SCAN_DEBUG_MODE: debug
           VDB_HOME: ${{ github.workspace }}/vdb
@@ -337,7 +301,6 @@ jobs:
     name: Cargo Test
     needs:
       - clippy
-      - conventional-commits-linter
       - fmt-check
     permissions:
       contents: read
