@@ -13,7 +13,7 @@
 # [build-dependencies]
 
 [dependencies]
-http = { default-features = false, version = "0.2.5" }
+http = { default-features = false, version = "0.2.6" }
 jsonwebtoken = { default-features = false, version = "7.2.0" }
 opentelemetry = { default-features = false, features = ["rt-tokio"], version = "0.16.0" }
 rdkafka = { default-features = false, features = ["cmake-build"], version = "0.28.0" }
