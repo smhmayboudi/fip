@@ -7,7 +7,8 @@ $ curl \
         --proto "=https" \
         --show-error \
         --silent \
-        --tlsv1.2 https://sh.rustup.rs \
+        --tlsv1.2 \
+        https://sh.rustup.rs \
     | sh -s -- -y
 
 $ rustup show
