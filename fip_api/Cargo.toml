@@ -50,7 +50,7 @@ tonic-health = { default-features = false, features = ["transport"], version = "
 tower-service = { default-features = false, version = "0.3.1" }
 tracing = { default-features = false, version = "0.1.29" }
 tracing-appender = { default-features = false, version = "0.2.0" }
-tracing-bunyan-formatter = { default-features = false, version = "0.3.1" }
+tracing-bunyan-formatter = { default-features = false, version = "0.3.2" }
 tracing-error = { default-features = false, version = "0.2.0" }
 tracing-opentelemetry = { default-features = false, features = ["tracing-log"], version = "0.16.0" }
 tracing-subscriber = { default-features = false, features = ["env-filter", "fmt"], version = "0.3.5" }
