@@ -15,7 +15,7 @@
 [dependencies]
 # proc-macro2 = { default-features = false, version = "1.0.24" }
 quote = { default-features = false, features = ["proc-macro"], version = "1.0.14" }
-syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.85" }
+syn = { default-features = false, features = ["clone-impls", "derive", "extra-traits", "fold", "full", "extra-traits", "parsing", "printing", "proc-macro", "visit", "visit-mut"], version = "1.0.86" }
 
 # [dev-dependencies]
 
@@ -64,7 +64,7 @@ license = "MIT"
 publish = false
 readme = "fip_api_attributes/README.md"
 # resolver
-rust-version = "1.57.0"
+rust-version = "1.58.0"
 repository = "https://github.com/smhmayboudi/fip"
 # workspace
 description = "fip_api_attributes"

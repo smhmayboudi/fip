@@ -3,7 +3,7 @@
 {
     "build": {
         "args": {
-            "VARIANT": "1.57.0-bullseye"
+            "VARIANT": "1.58.0-bullseye"
         },
         "dockerfile": "Dockerfile"
     },
@@ -29,9 +29,9 @@
         50054
     ],
     "mounts": [
-        "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
-        "source=${env:HOME}${env:USERPROFILE}/.kube,target=/usr/local/share/kube-localhost,type=bind"
-        // "source=${env:HOME}${env:USERPROFILE}/.minikube,target=/usr/local/share/minikube-localhost,type=bind"
+        "source=${env:HOME}${env:USERPROFILE}/.kube,target=/usr/local/share/kube-localhost,type=bind",
+        "source=${env:HOME}${env:USERPROFILE}/.minikube,target=/usr/local/share/minikube-localhost,type=bind",
+        "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
     ],
     "name": "fip",
     "postStartCommand": "make add-os-dependency fetch",

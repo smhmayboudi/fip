@@ -62,7 +62,7 @@ license = "MIT"
 publish = false
 readme = "fip_c/README.md"
 # resolver
-rust-version = "1.57.0"
+rust-version = "1.58.0"
 repository = "https://github.com/smhmayboudi/fip"
 # workspace
 description = "fip_c"
