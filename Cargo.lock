@@ -408,7 +408,7 @@ dependencies = [
  "http",
  "hyper",
  "jsonwebtoken",
- "opentelemetry",
+ "opentelemetry 0.16.0",
  "opentelemetry-zipkin",
  "prost",
  "serde",
@@ -445,7 +445,7 @@ dependencies = [
  "dotenv",
  "envy",
  "fip_common",
- "opentelemetry",
+ "opentelemetry 0.16.0",
  "opentelemetry-zipkin",
  "prost",
  "serde",
@@ -470,7 +470,7 @@ version = "0.1.0"
 dependencies = [
  "http",
  "jsonwebtoken",
- "opentelemetry",
+ "opentelemetry 0.16.0",
  "rdkafka",
  "sqlx",
  "thiserror",
@@ -486,7 +486,7 @@ dependencies = [
  "dotenv",
  "envy",
  "fip_common",
- "opentelemetry",
+ "opentelemetry 0.16.0",
  "opentelemetry-zipkin",
  "prost",
  "serde",
@@ -514,7 +514,7 @@ dependencies = [
  "dotenv",
  "envy",
  "fip_common",
- "opentelemetry",
+ "opentelemetry 0.16.0",
  "opentelemetry-zipkin",
  "prost",
  "serde",
@@ -541,7 +541,7 @@ dependencies = [
  "dotenv",
  "envy",
  "fip_common",
- "opentelemetry",
+ "opentelemetry 0.16.0",
  "opentelemetry-zipkin",
  "prost",
  "serde",
@@ -1173,38 +1173,56 @@ dependencies = [
 ]
 
 [[package]]
-name = "opentelemetry-http"
-version = "0.5.0"
+name = "opentelemetry"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d50ceb0b0e8b75cb3e388a2571a807c8228dabc5d6670f317b6eb21301095373"
+checksum = "6105e89802af13fdf48c49d7646d3b533a70e536d818aae7e78ba0433d01acb8"
+dependencies = [
+ "async-trait",
+ "crossbeam-channel",
+ "futures-channel",
+ "futures-executor",
+ "futures-util",
+ "js-sys",
+ "lazy_static",
+ "percent-encoding",
+ "pin-project",
+ "rand",
+ "thiserror",
+]
+
+[[package]]
+name = "opentelemetry-http"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "449048140ee61e28f57abe6e9975eedc1f3a29855c7407bd6c12b18578863379"
 dependencies = [
  "async-trait",
  "bytes",
- "futures-util",
  "http",
- "opentelemetry",
+ "opentelemetry 0.17.0",
  "reqwest",
 ]
 
 [[package]]
 name = "opentelemetry-semantic-conventions"
-version = "0.8.0"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ffeac823339e8b0f27b961f4385057bf9f97f2863bc745bd015fd6091f2270e9"
+checksum = "985cc35d832d412224b2cffe2f9194b1b89b6aa5d0bef76d080dce09d90e62bd"
 dependencies = [
- "opentelemetry",
+ "opentelemetry 0.17.0",
 ]
 
 [[package]]
 name = "opentelemetry-zipkin"
-version = "0.14.0"
+version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03d12766fd02acef686cf2f97b2fb6cbd9ba78313e051d3c4cca9591d5c947ed"
+checksum = "fb86c6e02de97a3a7ffa5d267e1ff3f0c930ccf8a31e286277a209af6ed6cfc1"
 dependencies = [
  "async-trait",
  "http",
  "lazy_static",
- "opentelemetry",
+ "opentelemetry 0.17.0",
  "opentelemetry-http",
  "opentelemetry-semantic-conventions",
  "reqwest",
@@ -2220,7 +2238,7 @@ version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ffbf13a0f8b054a4e59df3a173b818e9c6177c02789871f2073977fd0062076"
 dependencies = [
- "opentelemetry",
+ "opentelemetry 0.16.0",
  "tracing",
  "tracing-core",
  "tracing-log",
