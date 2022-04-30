@@ -86,7 +86,7 @@ license = "MIT"
 publish = false
 readme = "fip_jwks/README.md"
 # resolver
-rust-version = "1.58.0"
+rust-version = "1.60.0"
 repository = "https://github.com/smhmayboudi/fip"
 # workspace
 description = "fip_jwks"

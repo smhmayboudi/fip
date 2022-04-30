@@ -1,6 +1,6 @@
 # syntax=docker.io/docker/dockerfile:1.3.1
 
-ARG VARIANT="1.58.0-bullseye"
+ARG VARIANT="1.60.0-bullseye"
 FROM rust:${VARIANT}
 
 ARG ADD_NON_FREE_PACKAGES="true"
