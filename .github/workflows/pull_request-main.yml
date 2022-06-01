@@ -289,7 +289,7 @@ jobs:
         uses: ShiftLeftSecurity/scan-action@54980bbdae434b8e7903cfcffa98a2601c207962
       -
         name: Upload Sarif
-        uses: github/codeql-action/upload-sarif@5f532563584d71fdef14ee64d17bafb34f751ce5
+        uses: github/codeql-action/upload-sarif@27ea8f8fe5977c00f5b37e076ab846c5bd783b96
         with:
           category: ShiftLeft Security Scan
           sarif_file: reports
