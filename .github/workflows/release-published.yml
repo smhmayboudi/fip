@@ -74,7 +74,7 @@ jobs:
             ${{ runner.os }}-buildx-
       -
         name: Log in to Docker Hub
-        uses: docker/login-action@42d299face0c5c43a0487c477f595ac9cf22f1a7
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
         with:
           password: ${{ secrets.PACKAGE_REGISTRY }}
           registry: ghcr.io
