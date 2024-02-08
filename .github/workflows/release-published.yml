@@ -15,7 +15,7 @@ jobs:
     steps:
       -
         name: Check Out
-        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       -
         id: release-tag-meta
         name: Release Tag Meta
